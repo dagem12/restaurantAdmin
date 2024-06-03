@@ -8,22 +8,26 @@
   >
     <div :class="sidebarClass">
       <div class="logo">
-      <a href="#" class="simple-text logo-mini">
+     <div>
+       <a href="#" class="simple-text logo-mini">
         <div class="logo-img">
           <img :src="imgLogo" alt="" />
         </div>
       </a>
+     </div>
 
-      <a
-        href="https://www.creative-tim.com/product/vue-material-dashboard"
+      <div  v-if="isExpanded">
+        <a
+        
         target="_blank"
         class="simple-text logo-normal"
-        v-if="isExpanded"
+       
       >
         {{ title }}
       </a>
-       <div class="sidebar-toggle" @click="toggleSidebar">
-          <md-icon>menu_open</md-icon>
+      </div>
+       <div :class="{'sidebar-toggle': true, 'collapsed': !isExpanded}" @click="toggleSidebar">
+          <md-icon  :class="{'icon-expanded': isExpanded, 'icon-collapsed': !isExpanded}" >menu_open</md-icon>
        </div>
     </div>
    
@@ -123,28 +127,49 @@ export default {
     display: none;
   }
 }
+@media only screen and (max-width: 768px) {
+  .sidebar-wrapper {
+   width: auto; /* Allow sidebar to adjust based on content */
+  transition: width 0.3s ease;
+  }
+}
 .sidebar-expanded {
   width: 250px; /* Adjust as needed */
   transition: width 0.3s ease;
 }
 
 .sidebar-collapsed {
-  width: 80px; /* Adjust as needed */
+  width: 90px; /* Adjust as needed */
   transition: width 0.3s ease;
 }
-
+.icon-expanded {
+  color: white !important; 
+}
+.icon-collapsed {
+  color: black !important; 
+}
 .sidebar-content {
   overflow-x: hidden;
 }
 
 .sidebar-toggle {
   cursor: pointer;
-  text-align: center;
-  padding: 10px;
+  padding-top:8px;
+  padding-left: 5px;
+
 }
+.sidebar-toggle.collapsed{
+  /* Remove all padding */
+   color:black !important;
+   padding-left: 0px;
+    
+}
+
+
 .logo{
   display: flex;
-  flex-direction: row;
+  width:100%;
+  position: relative;
 }
 
 /* Add styles for icons and labels as needed */
