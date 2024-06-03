@@ -30,7 +30,9 @@ import Notifications from "./components/NotificationPlugin";
 import MaterialDashboard from "./material-dashboard";
 
 import Chartist from "chartist";
-
+import Quasar from 'quasar'
+import '@quasar/extras/material-icons/material-icons.css'
+import 'quasar/dist/quasar.min.css'
 // configure router
 const router = new VueRouter({
   routes, // short for routes: routes
@@ -44,6 +46,8 @@ Vue.use(MaterialDashboard);
 Vue.use(GlobalComponents);
 Vue.use(GlobalDirectives);
 Vue.use(Notifications);
+// Vue.use(Quasar, quasarUserOptions)
+Vue.use(Quasar);
 
 /* eslint-disable no-new */
 new Vue({

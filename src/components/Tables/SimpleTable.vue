@@ -1,67 +1,77 @@
 <template>
   <div>
-    <md-table v-model="users" :table-header-color="tableHeaderColor">
+    <md-table v-model="localDataItems" :table-header-color="tableHeaderColor">
       <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="Name">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Country">{{ item.country }}</md-table-cell>
-        <md-table-cell md-label="City">{{ item.city }}</md-table-cell>
-        <md-table-cell md-label="Salary">{{ item.salary }}</md-table-cell>
+        <md-table-cell v-for="column in columns" :key="column.label" :md-label="column.label">
+          {{ item[column.field] }}
+        </md-table-cell>
+        <md-table-cell md-label="Actions">
+          <q-btn
+  v-for="action in actions"
+  :key="action.label"
+  :color="action.color"
+  :icon="action.icon"
+  @click="action.method(item)"
+  :dense="true"
+  flat="true"
+  style="margin: 2px"
+  round 
+/>
+        </md-table-cell>
       </md-table-row>
     </md-table>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "simple-table",
+
   props: {
     tableHeaderColor: {
       type: String,
       default: "",
     },
+    columns: {
+      type: Array,
+      required: true,
+      validator(value) {
+        return value.every(col => 'label' in col && 'field' in col);
+      }
+    },
+    dataItems: {
+      type: Array,
+      required: true
+    },
+    actions: {
+      type: Array,
+      default: () => [],
+      validator(value) {
+        return value.every(action => 'label' in action && 'method' in action && 'icon' in action && 'color' in action);
+      }
+    }
   },
   data() {
     return {
-      selected: [],
-      users: [
-        {
-          name: "Dakota Rice",
-          salary: "$36,738",
-          country: "Niger",
-          city: "Oud-Turnhout",
-        },
-        {
-          name: "Minerva Hooper",
-          salary: "$23,738",
-          country: "Curaçao",
-          city: "Sinaai-Waas",
-        },
-        {
-          name: "Sage Rodriguez",
-          salary: "$56,142",
-          country: "Netherlands",
-          city: "Overland Park",
-        },
-        {
-          name: "Philip Chaney",
-          salary: "$38,735",
-          country: "Korea, South",
-          city: "Gloucester",
-        },
-        {
-          name: "Doris Greene",
-          salary: "$63,542",
-          country: "Malawi",
-          city: "Feldkirchen in Kārnten",
-        },
-        {
-          name: "Mason Porter",
-          salary: "$78,615",
-          country: "Chile",
-          city: "Gloucester",
-        },
-      ],
+      localDataItems: [...this.dataItems]
     };
   },
+  watch: {
+    dataItems: {
+      handler(newDataItems) {
+        this.localDataItems = [...newDataItems];
+      },
+      deep: true
+    }
+  }
 };
 </script>
+
+<style>
+.md-icon-button {
+  border-radius: 50%;
+  padding: 8px;
+  color: white;
+}
+</style>
