@@ -1,14 +1,11 @@
 <template>
   <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
     <notifications></notifications>
-      
 
-  
-         <side-bar
+    <side-bar
       :sidebar-item-color="sidebarBackground"
       :sidebar-background-image="sidebarBackgroundImage"
     >
-        
       <!-- <mobile-menu slot="content"></mobile-menu> -->
       <sidebar-link to="/dashboard">
         <md-icon>dashboard</md-icon>
@@ -43,12 +40,8 @@
         <p>Upgrade to PRO</p>
       </sidebar-link> -->
     </side-bar>
-   
 
-  
-
-
-    <div :class="{'main-panel': true, 'collapsed': !isExpanded}">
+    <div :class="{ 'main-panel': true, collapsed: !isExpanded }">
       <top-navbar></top-navbar>
 
       <fixed-plugin
@@ -71,7 +64,6 @@ import DashboardContent from "./Content.vue";
 import MobileMenu from "@/pages/Layout/MobileMenu.vue";
 import FixedPlugin from "./Extra/FixedPlugin.vue";
 
-
 export default {
   components: {
     TopNavbar,
@@ -84,34 +76,28 @@ export default {
     return {
       sidebarBackground: "green",
       sidebarBackgroundImage: require("@/assets/img/sidebar-2.jpg"),
-      isExpanded:true
+      isExpanded: true,
     };
   },
-    watch: {
-    '$sidebar.isExpanded': function(newVal) {
+  watch: {
+    "$sidebar.isExpanded": function (newVal) {
       this.isExpanded = newVal;
-    }
+    },
   },
 
- 
-  methods: {
-       
-     
-  }
+  methods: {},
 };
 </script>
 <style scoped>
-.main-panel.collapsed{
+.main-panel.collapsed {
   /* Styles when isExpanded is true */
-width: calc(100% - 90px) !important;
+  width: calc(100% - 90px) !important;
 }
 
 @media only screen and (max-width: 768px) {
-  .main-panel.collapsed{
-  /* Styles when isExpanded is true */
-width: calc(100% - 90px) !important;
-}
+  .main-panel.collapsed {
+    /* Styles when isExpanded is true */
+    width: calc(100% - 90px) !important;
+  }
 }
 </style>
-
-

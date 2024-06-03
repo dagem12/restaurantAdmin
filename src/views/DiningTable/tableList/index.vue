@@ -1,5 +1,3 @@
 <template>
-    <div>
-        dining table list
-    </div>
+  <div>dining table list</div>
 </template>

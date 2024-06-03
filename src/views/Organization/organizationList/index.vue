@@ -1,5 +1,3 @@
 <template>
-    <div>
-        Oranization List
-    </div>
+  <div>Oranization List</div>
 </template>

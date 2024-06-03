@@ -26,11 +26,9 @@
             </md-autocomplete>
           </div>
           <md-list>
-             <md-list-item  @click="toggleFullscreen" href="#/">
+            <md-list-item @click="toggleFullscreen" href="#/">
               <i v-if="isFullscreen" class="material-icons">crop_free</i>
-         <i v-if="!isFullscreen" class="material-icons">
-zoom_out_map
-         </i>
+              <i v-if="!isFullscreen" class="material-icons"> zoom_out_map </i>
             </md-list-item>
             <md-list-item href="#/">
               <i class="material-icons">dashboard</i>
@@ -98,7 +96,7 @@ export default {
   data() {
     return {
       selectedEmployee: null,
-       isFullscreen: false,
+      isFullscreen: false,
       employees: [
         "Jim Halpert",
         "Dwight Schrute",
@@ -123,7 +121,7 @@ export default {
         this.exitFullscreen();
       }
     },
- enterFullscreen() {
+    enterFullscreen() {
       const element = document.documentElement; // Fullscreen for entire page
       if (element.requestFullscreen) {
         element.requestFullscreen();

@@ -1,5 +1,5 @@
 <template>
-  <li :class="{'md-list-item': true, 'collapsed': !isExpanded}">
+  <li :class="{ 'md-list-item': true, collapsed: !isExpanded }">
     <router-link
       class="md-list-item-router md-list-item-container md-button-clean"
       @click="hideSidebar"
@@ -35,17 +35,17 @@ export default {
     tag: {
       type: String,
       default: "router-link",
-    }
+    },
   },
   data() {
     return {
-      isExpanded:true
-    }
+      isExpanded: true,
+    };
   },
   watch: {
-    '$sidebar.isExpanded': function(newVal) {
+    "$sidebar.isExpanded": function (newVal) {
       this.isExpanded = newVal;
-    }
+    },
   },
   methods: {
     hideSidebar() {
@@ -61,8 +61,9 @@ export default {
 };
 </script>
 <style>
-.md-list-item.collapsed{
+.md-list-item.collapsed {
   /* Styles when isExpanded is true */
-  width:90px;
+  width: 90px;
   padding: 5px;
-}</style>
+}
+</style>

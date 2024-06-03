@@ -1,5 +1,3 @@
 <template>
-    <div>
-        Menu Catalog List
-    </div>
+  <div>Menu Catalog List</div>
 </template>

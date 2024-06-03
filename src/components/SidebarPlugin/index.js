@@ -9,8 +9,8 @@ const SidebarStore = {
     this.showSidebar = value;
   },
   expand() {
-    this.isExpanded = !this.isExpanded
-  }
+    this.isExpanded = !this.isExpanded;
+  },
 };
 
 const SidebarPlugin = {
@@ -30,7 +30,7 @@ const SidebarPlugin = {
     });
     Vue.component("side-bar", Sidebar);
     Vue.component("sidebar-link", SidebarLink);
-    Vue.component("dashboard-layout", DashboardLayout)
+    Vue.component("dashboard-layout", DashboardLayout);
   },
 };
 

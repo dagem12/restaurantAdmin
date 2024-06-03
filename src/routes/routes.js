@@ -12,7 +12,6 @@ import MenuList from "@/views/Menu/menuList";
 import ShopList from "@/views/Shop/shopList";
 import OrganizationList from "@/views/Organization/organizationList";
 
-
 const routes = [
   {
     path: "/",
@@ -58,8 +57,7 @@ const routes = [
         path: "menu-list",
         name: "Menu List",
         component: MenuList,
-      }
-
+      },
     ],
   },
 ];

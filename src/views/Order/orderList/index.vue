@@ -1,5 +1,3 @@
 <template>
-    <div>
-        Order - List
-    </div>
+  <div>Order - List</div>
 </template>

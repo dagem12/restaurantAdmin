@@ -30,9 +30,9 @@ import Notifications from "./components/NotificationPlugin";
 import MaterialDashboard from "./material-dashboard";
 
 import Chartist from "chartist";
-import Quasar from 'quasar'
-import '@quasar/extras/material-icons/material-icons.css'
-import 'quasar/dist/quasar.min.css'
+import Quasar from "quasar";
+import "@quasar/extras/material-icons/material-icons.css";
+import "quasar/dist/quasar.min.css";
 // configure router
 const router = new VueRouter({
   routes, // short for routes: routes

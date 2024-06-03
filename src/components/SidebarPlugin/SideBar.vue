@@ -1,5 +1,4 @@
 <template>
-  
   <div
     class="sidebar"
     :data-color="sidebarItemColor"
@@ -8,48 +7,50 @@
   >
     <div :class="sidebarClass">
       <div class="logo">
-     <div>
-       <a href="#" class="simple-text logo-mini">
-        <div class="logo-img">
-          <img :src="imgLogo" alt="" />
+        <div>
+          <a href="#" class="simple-text logo-mini">
+            <div class="logo-img">
+              <img :src="imgLogo" alt="" />
+            </div>
+          </a>
         </div>
-      </a>
-     </div>
 
-      <div  v-if="isExpanded">
-        <a
-        
-        target="_blank"
-        class="simple-text logo-normal"
-       
-      >
-        {{ title }}
-      </a>
-      </div>
-       <div :class="{'sidebar-toggle': true, 'collapsed': !isExpanded}" @click="toggleSidebar">
-          <md-icon  :class="{'icon-expanded': isExpanded, 'icon-collapsed': !isExpanded}" >menu_open</md-icon>
-       </div>
-    </div>
-   
-    <div class="sidebar-wrapper">
-      <slot name="content"></slot>
-      <md-list class="nav">
-        <!--By default vue-router adds an active class to each route link. This way the links are colored when clicked-->
-        <slot>
-          <sidebar-link
-            v-for="(link, index) in sidebarLinks"
-            :key="link.name + index"
-            :to="link.path"
-            :link="link"
-            
+        <div v-if="isExpanded">
+          <a target="_blank" class="simple-text logo-normal">
+            {{ title }}
+          </a>
+        </div>
+        <div
+          :class="{ 'sidebar-toggle': true, collapsed: !isExpanded }"
+          @click="toggleSidebar"
+        >
+          <md-icon
+            :class="{
+              'icon-expanded': isExpanded,
+              'icon-collapsed': !isExpanded,
+            }"
+            >menu_open</md-icon
           >
-          </sidebar-link>
-        </slot>
-      </md-list>
+        </div>
+      </div>
+
+      <div class="sidebar-wrapper">
+        <slot name="content"></slot>
+        <md-list class="nav">
+          <!--By default vue-router adds an active class to each route link. This way the links are colored when clicked-->
+          <slot>
+            <sidebar-link
+              v-for="(link, index) in sidebarLinks"
+              :key="link.name + index"
+              :to="link.path"
+              :link="link"
+            >
+            </sidebar-link>
+          </slot>
+        </md-list>
+      </div>
     </div>
-   
   </div>
-   </div>
 </template>
 <script>
 import SidebarLink from "./SidebarLink.vue";
@@ -60,10 +61,10 @@ export default {
   },
   data() {
     return {
-      isExpanded: true
-    }
+      isExpanded: true,
+    };
   },
-   
+
   props: {
     title: {
       type: String,
@@ -105,10 +106,10 @@ export default {
         backgroundImage: `url(${this.sidebarBackgroundImage})`,
       };
     },
-     sidebarClass() {
+    sidebarClass() {
       return {
-        'sidebar-expanded': this.isExpanded,
-        'sidebar-collapsed': !this.isExpanded,
+        "sidebar-expanded": this.isExpanded,
+        "sidebar-collapsed": !this.isExpanded,
       };
     },
   },
@@ -117,8 +118,7 @@ export default {
       this.isExpanded = !this.isExpanded;
       this.$sidebar.expand();
     },
- 
-  }
+  },
 };
 </script>
 <style scoped>
@@ -129,8 +129,8 @@ export default {
 }
 @media only screen and (max-width: 768px) {
   .sidebar-wrapper {
-   width: auto; /* Allow sidebar to adjust based on content */
-  transition: width 0.3s ease;
+    width: auto; /* Allow sidebar to adjust based on content */
+    transition: width 0.3s ease;
   }
 }
 .sidebar-expanded {
@@ -143,10 +143,10 @@ export default {
   transition: width 0.3s ease;
 }
 .icon-expanded {
-  color: white !important; 
+  color: white !important;
 }
 .icon-collapsed {
-  color: black !important; 
+  color: black !important;
 }
 .sidebar-content {
   overflow-x: hidden;
@@ -154,21 +154,18 @@ export default {
 
 .sidebar-toggle {
   cursor: pointer;
-  padding-top:8px;
+  padding-top: 8px;
   padding-left: 5px;
-
 }
-.sidebar-toggle.collapsed{
+.sidebar-toggle.collapsed {
   /* Remove all padding */
-   color:black !important;
-   padding-left: 0px;
-    
+  color: black !important;
+  padding-left: 0px;
 }
 
-
-.logo{
+.logo {
   display: flex;
-  width:100%;
+  width: 100%;
   position: relative;
 }
 
