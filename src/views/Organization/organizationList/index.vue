@@ -1,5 +1,5 @@
 <template>
     <div>
-        Order - List
+        Oranization List
     </div>
 </template>

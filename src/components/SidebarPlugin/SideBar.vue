@@ -1,11 +1,13 @@
 <template>
+  
   <div
     class="sidebar"
     :data-color="sidebarItemColor"
     :data-image="sidebarBackgroundImage"
     :style="sidebarStyle"
   >
-    <div class="logo">
+    <div :class="sidebarClass">
+      <div class="logo">
       <a href="#" class="simple-text logo-mini">
         <div class="logo-img">
           <img :src="imgLogo" alt="" />
@@ -16,10 +18,15 @@
         href="https://www.creative-tim.com/product/vue-material-dashboard"
         target="_blank"
         class="simple-text logo-normal"
+        v-if="isExpanded"
       >
         {{ title }}
       </a>
+       <div class="sidebar-toggle" @click="toggleSidebar">
+          <md-icon>menu_open</md-icon>
+       </div>
     </div>
+   
     <div class="sidebar-wrapper">
       <slot name="content"></slot>
       <md-list class="nav">
@@ -30,12 +37,15 @@
             :key="link.name + index"
             :to="link.path"
             :link="link"
+            
           >
           </sidebar-link>
         </slot>
       </md-list>
     </div>
+   
   </div>
+   </div>
 </template>
 <script>
 import SidebarLink from "./SidebarLink.vue";
@@ -44,10 +54,16 @@ export default {
   components: {
     SidebarLink,
   },
+  data() {
+    return {
+      isExpanded: true
+    }
+  },
+   
   props: {
     title: {
       type: String,
-      default: "Vue MD",
+      default: "Restaurant",
     },
     sidebarBackgroundImage: {
       type: String,
@@ -85,13 +101,51 @@ export default {
         backgroundImage: `url(${this.sidebarBackgroundImage})`,
       };
     },
+     sidebarClass() {
+      return {
+        'sidebar-expanded': this.isExpanded,
+        'sidebar-collapsed': !this.isExpanded,
+      };
+    },
   },
+  methods: {
+    toggleSidebar() {
+      this.isExpanded = !this.isExpanded;
+      this.$sidebar.expand();
+    },
+ 
+  }
 };
 </script>
-<style>
+<style scoped>
 @media screen and (min-width: 991px) {
   .nav-mobile-menu {
     display: none;
   }
 }
+.sidebar-expanded {
+  width: 250px; /* Adjust as needed */
+  transition: width 0.3s ease;
+}
+
+.sidebar-collapsed {
+  width: 80px; /* Adjust as needed */
+  transition: width 0.3s ease;
+}
+
+.sidebar-content {
+  overflow-x: hidden;
+}
+
+.sidebar-toggle {
+  cursor: pointer;
+  text-align: center;
+  padding: 10px;
+}
+.logo{
+  display: flex;
+  flex-direction: row;
+}
+
+/* Add styles for icons and labels as needed */
 </style>

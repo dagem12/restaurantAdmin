@@ -1,5 +1,5 @@
 <template>
     <div>
-        Order - List
+        Shop List
     </div>
 </template>

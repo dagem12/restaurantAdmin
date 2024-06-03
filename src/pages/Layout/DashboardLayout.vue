@@ -1,45 +1,52 @@
 <template>
   <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
     <notifications></notifications>
+      
 
-    <side-bar
+  
+         <side-bar
       :sidebar-item-color="sidebarBackground"
       :sidebar-background-image="sidebarBackgroundImage"
     >
+        
       <mobile-menu slot="content"></mobile-menu>
       <sidebar-link to="/dashboard">
         <md-icon>dashboard</md-icon>
-        <p>Dashboard</p>
+        <p v-if="isExpanded">Dashboard</p>
       </sidebar-link>
-      <sidebar-link to="/user">
-        <md-icon>person</md-icon>
-        <p>User Profile</p>
+      <sidebar-link to="/organization">
+        <md-icon>corporate_fare</md-icon>
+        <p v-if="isExpanded">Organization</p>
       </sidebar-link>
-      <sidebar-link to="/table">
-        <md-icon>content_paste</md-icon>
-        <p>Table list</p>
+      <sidebar-link to="/shop">
+        <md-icon>store</md-icon>
+        <p v-if="isExpanded">Shop</p>
       </sidebar-link>
-      <sidebar-link to="/typography">
-        <md-icon>library_books</md-icon>
-        <p>Typography</p>
+      <sidebar-link to="/dining-table">
+        <md-icon>dinner_dining</md-icon>
+        <p v-if="isExpanded">Dining Table</p>
       </sidebar-link>
-      <sidebar-link to="/icons">
-        <md-icon>bubble_chart</md-icon>
-        <p>Icons</p>
+      <sidebar-link to="/menu-catalog">
+        <md-icon>menu_book</md-icon>
+        <p v-if="isExpanded">Menu Catalog</p>
       </sidebar-link>
-      <sidebar-link to="/maps">
-        <md-icon>location_on</md-icon>
-        <p>Maps</p>
+      <sidebar-link to="/menu-list">
+        <md-icon>summarize</md-icon>
+        <p v-if="isExpanded">Menu List</p>
       </sidebar-link>
-      <sidebar-link to="/notifications">
-        <md-icon>notifications</md-icon>
-        <p>Notifications</p>
+      <sidebar-link to="/order">
+        <md-icon>list_alt</md-icon>
+        <p v-if="isExpanded">Product Order</p>
       </sidebar-link>
-      <sidebar-link to="/upgrade" class="active-pro">
+      <!-- <sidebar-link to="/upgrade" class="active-pro">
         <md-icon>unarchive</md-icon>
         <p>Upgrade to PRO</p>
-      </sidebar-link>
+      </sidebar-link> -->
     </side-bar>
+   
+
+  
+
 
     <div class="main-panel">
       <top-navbar></top-navbar>
@@ -64,6 +71,7 @@ import DashboardContent from "./Content.vue";
 import MobileMenu from "@/pages/Layout/MobileMenu.vue";
 import FixedPlugin from "./Extra/FixedPlugin.vue";
 
+
 export default {
   components: {
     TopNavbar,
@@ -76,7 +84,21 @@ export default {
     return {
       sidebarBackground: "green",
       sidebarBackgroundImage: require("@/assets/img/sidebar-2.jpg"),
+      isExpanded:this.$sidebar.isExpanded
     };
   },
+    watch: {
+    '$sidebar.isExpanded': function(newVal) {
+      this.isExpanded = newVal;
+    }
+  },
+
+ 
+  methods: {
+       
+     
+  }
 };
 </script>
+
+

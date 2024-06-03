@@ -5,9 +5,13 @@ import UserProfile from "@/pages/UserProfile.vue";
 import TableList from "@/pages/TableList.vue";
 import Typography from "@/pages/Typography.vue";
 import Icons from "@/pages/Icons.vue";
-import Maps from "@/pages/Maps.vue";
-import Notifications from "@/pages/Notifications.vue";
-import UpgradeToPRO from "@/pages/UpgradeToPRO.vue";
+import OrderList from "@/views/Order/orderList";
+import DiningTableList from "@/views/DiningTable/tableList";
+import MenuCatalogList from "@/views/Menu/menuCatalog";
+import MenuList from "@/views/Menu/menuList";
+import ShopList from "@/views/Shop/shopList";
+import OrganizationList from "@/views/Organization/organizationList";
+
 
 const routes = [
   {
@@ -26,38 +30,36 @@ const routes = [
         component: UserProfile,
       },
       {
-        path: "table",
-        name: "Table List",
-        component: TableList,
+        path: "organization",
+        name: "Organization List",
+        component: OrganizationList,
       },
       {
-        path: "typography",
-        name: "Typography",
-        component: Typography,
+        path: "shop",
+        name: "Shop List",
+        component: ShopList,
       },
       {
-        path: "icons",
-        name: "Icons",
-        component: Icons,
+        path: "order",
+        name: "Order List",
+        component: OrderList,
       },
       {
-        path: "maps",
-        name: "Maps",
-        meta: {
-          hideFooter: true,
-        },
-        component: Maps,
+        path: "dining-table",
+        name: "Dining Table",
+        component: DiningTableList,
       },
       {
-        path: "notifications",
-        name: "Notifications",
-        component: Notifications,
+        path: "menu-catalog",
+        name: "Menu Catalog",
+        component: MenuCatalogList,
       },
       {
-        path: "upgrade",
-        name: "Upgrade to PRO",
-        component: UpgradeToPRO,
-      },
+        path: "menu-list",
+        name: "Menu List",
+        component: MenuList,
+      }
+
     ],
   },
 ];

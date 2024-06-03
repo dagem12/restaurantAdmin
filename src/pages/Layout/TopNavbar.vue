@@ -26,6 +26,12 @@
             </md-autocomplete>
           </div>
           <md-list>
+             <md-list-item  @click="toggleFullscreen" href="#/">
+              <i v-if="isFullscreen" class="material-icons">crop_free</i>
+         <i v-if="!isFullscreen" class="material-icons">
+zoom_out_map
+         </i>
+            </md-list-item>
             <md-list-item href="#/">
               <i class="material-icons">dashboard</i>
               <p class="hidden-lg hidden-md">Dashboard</p>
@@ -92,6 +98,7 @@ export default {
   data() {
     return {
       selectedEmployee: null,
+       isFullscreen: false,
       employees: [
         "Jim Halpert",
         "Dwight Schrute",
@@ -107,6 +114,33 @@ export default {
   methods: {
     toggleSidebar() {
       this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
+    },
+    toggleFullscreen() {
+      this.isFullscreen = !this.isFullscreen;
+      if (this.isFullscreen) {
+        this.enterFullscreen();
+      } else {
+        this.exitFullscreen();
+      }
+    },
+ enterFullscreen() {
+      const element = document.documentElement; // Fullscreen for entire page
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+      } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+      }
+    },
+    exitFullscreen() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
     },
   },
 };

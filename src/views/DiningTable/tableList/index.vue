@@ -1,5 +1,5 @@
 <template>
     <div>
-        Order - List
+        dining table list
     </div>
 </template>
