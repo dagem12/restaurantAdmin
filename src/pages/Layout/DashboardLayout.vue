@@ -9,7 +9,7 @@
       :sidebar-background-image="sidebarBackgroundImage"
     >
         
-      <mobile-menu slot="content"></mobile-menu>
+      <!-- <mobile-menu slot="content"></mobile-menu> -->
       <sidebar-link to="/dashboard">
         <md-icon>dashboard</md-icon>
         <p v-if="isExpanded">Dashboard</p>
@@ -48,7 +48,7 @@
   
 
 
-    <div class="main-panel">
+    <div :class="{'main-panel': true, 'collapsed': !isExpanded}">
       <top-navbar></top-navbar>
 
       <fixed-plugin
@@ -77,14 +77,14 @@ export default {
     TopNavbar,
     DashboardContent,
     ContentFooter,
-    MobileMenu,
+    // MobileMenu,
     FixedPlugin,
   },
   data() {
     return {
       sidebarBackground: "green",
       sidebarBackgroundImage: require("@/assets/img/sidebar-2.jpg"),
-      isExpanded:this.$sidebar.isExpanded
+      isExpanded:true
     };
   },
     watch: {
@@ -100,5 +100,18 @@ export default {
   }
 };
 </script>
+<style scoped>
+.main-panel.collapsed{
+  /* Styles when isExpanded is true */
+width: calc(100% - 90px) !important;
+}
+
+@media only screen and (max-width: 768px) {
+  .main-panel.collapsed{
+  /* Styles when isExpanded is true */
+width: calc(100% - 90px) !important;
+}
+}
+</style>
 
 

@@ -63,6 +63,6 @@ export default {
 <style>
 .md-list-item.collapsed{
   /* Styles when isExpanded is true */
-  width:80px;
+  width:90px;
   padding: 5px;
 }</style>
