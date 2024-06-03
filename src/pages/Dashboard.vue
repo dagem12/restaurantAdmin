@@ -91,18 +91,104 @@
 						</div>
 					</div>
        </div>
+       <div
+        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
+      >
+       <img class="image box-shadow" src="../assets/img/table.png" alt="">
+      </div>
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
       >
-        <md-card>
-          <md-card-header data-background-color="orange">
-            <h4 class="title">Employees Stats</h4>
-            <p class="category">New employees on 15th September, 2016</p>
-          </md-card-header>
-          <md-card-content>
-            <ordered-table table-header-color="orange"></ordered-table>
-          </md-card-content>
-        </md-card>
+      <div class="card">
+							<div class="card-header border-0 pb-0 d-sm-flex d-block">
+								<div>
+									<h4 class="card-title mb-1">Orders Summary</h4>
+									<small class="mb-0">Lorem ipsum dolor sit amet, consectetur</small>
+								</div>
+								<div class="card-action card-tabs mt-3 mt-sm-0">
+									<ul class="nav nav-tabs" role="tablist">
+										<li class="nav-item">
+											<a class="nav-link" data-toggle="tab" href="#user" role="tab" aria-selected="false">
+												Monthly
+											</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" data-toggle="tab" href="#bounce" role="tab" aria-selected="false">
+												Weekly
+											</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link active" data-toggle="tab" href="#session-duration" role="tab" aria-selected="true">
+												Today
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="card-body orders-summary">
+								<div class="d-flex order-manage p-3 align-items-center mb-4">
+									<a href="javascript:void(0);" class="btn fs-22 py-1 btn-success px-4 mr-3">25</a>
+									<h4 class="mb-0">New Orders <i class="fa fa-circle text-success ml-1 fs-15"></i></h4>
+									<a href="javascript:void(0);" class="ml-auto text-primary font-w500">Manage orders <i class="ti-angle-right ml-1"></i></a>
+								</div>
+								<div class="row">
+									<div class="col-sm-4 mb-4">
+										<div class="border px-3 py-3 rounded-xl">
+											<h2 class="fs-32 font-w600 counter">25</h2>
+											<p class="fs-16 mb-0">On Delivery</p>
+										</div>
+									</div>
+									<div class="col-sm-4 mb-4">
+										<div class="border px-3 py-3 rounded-xl">
+											<h2 class="fs-32 font-w600 counter">60</h2>
+											<p class="fs-16 mb-0">Delivered</p>
+										</div>
+									</div>
+									<div class="col-sm-4 mb-4">
+										<div class="border px-3 py-3 rounded-xl">
+											<h2 class="fs-32 font-w600 counter">7</h2>
+											<p class="fs-16 mb-0">Canceled</p>
+										</div>
+									</div>
+								</div>
+								<div class="widget-timeline-icon">
+									<div class="row align-items-center mx-0">
+										<div class="col-xl-3 col-lg-4 col-xxl-4 col-sm-4 px-0 my-2 text-center text-sm-left">
+											 <span class="donut" data-peity="{ &quot;fill&quot;: [&quot;rgb(62, 73, 84)&quot;, &quot;rgba(255, 109, 76, 1)&quot;,&quot;rgba(43, 193, 85, 1)&quot;]}" style="display: none;">2,5,3</span><svg class="peity" height="140" width="140"><path d="M 70 0 A 70 70 0 0 1 136.57395614066075 48.368810393753684 L 103.28697807033038 59.18440519687684 A 35 35 0 0 0 70 35" data-value="2" fill="rgb(62, 73, 84)"></path><path d="M 136.57395614066075 48.368810393753684 A 70 70 0 0 1 3.4260438593392593 91.63118960624632 L 36.71302192966963 80.81559480312316 A 35 35 0 0 0 103.28697807033038 59.18440519687684" data-value="5" fill="rgba(255, 109, 76, 1)"></path><path d="M 3.4260438593392593 91.63118960624632 A 70 70 0 0 1 69.99999999999999 0 L 70 35 A 35 35 0 0 0 36.71302192966963 80.81559480312316" data-value="3" fill="rgba(43, 193, 85, 1)"></path></svg>
+										</div>	
+										<div class="col-xl-9 col-lg-8 col-xxl-8 col-sm-8 px-0">
+											<div class="d-flex align-items-center mb-3">
+												<p class="mb-0 fs-14 mr-2 col-4 px-0">Immunities (24%)</p>
+												<div class="progress mb-0" style="height:8px; width:100%;">
+													<div class="progress-bar bg-warning progress-animated" style="width:85%; height:8px;" role="progressbar">
+														<span class="sr-only">60% Complete</span>
+													</div>
+												</div>	
+												<span class="pull-right ml-auto col-1 px-0 text-right">25</span>
+											</div>
+											<div class="d-flex align-items-center  mb-3">
+												<p class="mb-0 fs-14 mr-2 col-4 px-0">Heart Beat (41%)</p>
+												<div class="progress mb-0" style="height:8px; width:100%;">
+													<div class="progress-bar bg-success progress-animated" style="width:70%; height:8px;" role="progressbar">
+														<span class="sr-only">60% Complete</span>
+													</div>
+												</div>
+												<span class="pull-right ml-auto col-1 px-0 text-right">60</span>
+											</div>
+											<div class="d-flex align-items-center">
+												<p class="mb-0 fs-14 mr-2 col-4 px-0">Weigth (15%)</p>
+												<div class="progress mb-0" style="height:8px; width:100%;">
+													<div class="progress-bar bg-dark progress-animated" style="width:30%; height:8px;" role="progressbar">
+														<span class="sr-only">60% Complete</span>
+													</div>
+												</div>
+												<span class="pull-right ml-auto col-1 px-0 text-right">07</span>
+											</div>
+										</div>	
+									</div>	
+								</div>
+							</div>
+						</div>
       </div>
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
@@ -136,7 +222,7 @@ import {
   // ChartCard,
   NavTabsCard,
   NavTabsTable,
-  OrderedTable,
+  // OrderedTable,
 } from "@/components";
 
 export default {
@@ -145,7 +231,7 @@ export default {
     // ChartCard,
     NavTabsCard,
     NavTabsTable,
-    OrderedTable,
+    // OrderedTable,
   },
   data() {
     return {
@@ -249,8 +335,11 @@ export default {
     position: relative;
     border: 0px solid transparent;
     border-radius: 20px;
-    box-shadow: 0px 12px 23px 0px rgba(62, 73, 84, 0.04);
+   
     height: calc(100% - 30px);
+}
+.box-shadow{
+  box-shadow: 0px 12px 23px 0px rgba(62, 73, 84, 0.04);
 }
 
 .card-body {
@@ -329,4 +418,255 @@ small {
 .mr-3, .mx-3 {
     margin-right: 1rem !important;
 }
+.image{
+  width: 100%;
+  height: 400px;
+  object-fit: fill;
+  margin-bottom: 25px;
+}
+
+.card-header:first-child {
+    border-radius: calc(0.75rem - 1px) calc(0.75rem - 1px) 0 0;
+}
+.card-header {
+    border-color: #f0f1f5;
+    position: relative;
+    background: transparent;
+    padding: 1.5rem 1.875rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.pb-0, .py-0 {
+    padding-bottom: 0 !important;
+}
+@media (min-width: 576px) {
+    .d-sm-flex {
+        display: flex !important;
+    }
+}
+.d-block {
+    display: block !important;
+}
+.border-0 {
+    border: 0 !important;
+}
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+.card-header .card-title {
+    margin-bottom: 0px;
+}
+.card-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #000;
+    text-transform: capitalize;
+}
+.mb-1, .my-1 {
+    margin-bottom: 0.25rem !important;
+}
+.card-title {
+    margin-bottom: 0.75rem;
+}
+h4, .h4 {
+    font-size: 1.125rem;
+}
+.pb-0, .py-0 {
+    padding-bottom: 0 !important;
+}
+.d-block {
+    display: block !important;
+}
+@media (min-width: 576px) {
+    .d-sm-flex {
+        display: flex !important;
+    }
+}
+
+.border-0 {
+    border: 0 !important;
+}
+
+.card-tabs .nav-tabs {
+    border-bottom: 0px;
+    background: #f4f6fd;
+    padding: 5px;
+    border-radius: 6px;
+}
+.nav-tabs {
+    border-bottom: 1px solid #dee2e6;
+}
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+ul {
+    padding: 0;
+    margin: 0;
+}
+ol, ul, dl {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+.nav-tabs .nav-item {
+    margin-bottom: -1px;
+}
+li {
+    list-style: none;
+}
+
+.pb-0, .py-0 {
+    padding-bottom: 0 !important;
+}
+
+.border-0 {
+    border: 0 !important;
+}
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-tabs .nav-tabs .nav-link {
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-weight: 500;
+    font-size: 14px;
+    border: 0;
+}
+.nav-tabs .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+}
+.nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+}
+a {
+    color: #7e7e7e;
+}
+a {
+    color: #2f4cdd;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+h4, .h4 {
+    font-size: 1.125rem;
+}
+.d-flex {
+    display: flex !important;
+}
+.order-manage {
+    background: #e7faec;
+    border-radius: 12px;
+}
+.p-3 {
+    padding: 1rem !important;
+}
+.mb-4, .my-4 {
+    margin-bottom: 1.5rem !important;
+}
+.align-items-center {
+    align-items: center !important;
+}
+
+@media only screen and (max-width: 1400px) {
+    .btn {
+        padding: 0.625rem 1rem;
+        font-size: 0.813rem;
+    }
+}
+.btn {
+    padding: 0.938rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    font-size: 1rem;
+}
+.fs-22 {
+    font-size: 22px !important;
+    line-height: 1.5;
+}
+.pl-4, .px-4 {
+    padding-left: 1.5rem !important;
+}
+.pr-4, .px-4 {
+    padding-right: 1.5rem !important;
+}
+.pb-1, .py-1 {
+    padding-bottom: 0.25rem !important;
+}
+.pt-1, .py-1 {
+    padding-top: 0.25rem !important;
+}
+.mr-3, .mx-3 {
+    margin-right: 1rem !important;
+}
+.btn-success {
+    color: #fff;
+    background-color: #2bc155;
+    border-color: #2bc155;
+}
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #7e7e7e;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.75rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+a {
+    color: #7e7e7e;
+}
+a {
+    color: #2f4cdd;
+    text-decoration: none;
+    background-color: transparent;
+}
+.font-w500 {
+    font-weight: 500;
+}
+
+.text-primary {
+    color: #2f4cdd !important;
+}
+.ml-auto, .mx-auto {
+    margin-left: auto !important;
+}
+.fs-15 {
+    font-size: 14px !important;
+    line-height: 1.5;
+}
+.text-success {
+    color: #2bc155 !important;
+}
+.ml-1, .mx-1 {
+    margin-left: 0.25rem !important;
+}
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px / 1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 </style>
