@@ -1,13 +1,36 @@
 <template>
-  <div class="table">
-    <dynamic-table :tableHeaderColor="'green'" :columns="columns" :dataItems="dataItems" :actions="actions" />
+  <div class="content">
+    <div class="md-layout">
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
+        <md-card>
+          <md-card-header data-background-color="orange" class="header-with-button">
+            <div>
+              <h4 class="title">Shops</h4>
+              <p class="category">
+                Explore and manage your shops
+              </p>
+            </div>
+            <!-- Add Item button -->
+            <div class="add-item-button">
+              <md-button color="primary" @click="this.addItem">
+                <md-icon>add</md-icon>
+                <span>Add Item</span>
+              </md-button>
+            </div>
+          </md-card-header>
+          <md-card-content>
+            <dynamic-table table-header-color="red" :columns="columns" :data-items="dataItems" :actions="actions" />
+          </md-card-content>
+        </md-card>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 
 import DynamicTable from '../../../components/Tables/DynamicTable.vue';
 export default {
-  name: "Shop List",
+  name: "shopList",
   components: {
     DynamicTable
   },
@@ -20,11 +43,12 @@ export default {
         { label: 'Description', field: 'description' },
         { label: 'Enable', field: 'enable' },
         { label: 'CreateTime', field: 'createTime' },
-        { label: 'Admin', field: 'admin' },
+        { label: 'ShopKey', field: 'shopKey' },
+        { label: 'Address', field: 'address' },
       ],
       dataItems: [
-        { name: 'John Doe', code: 'ASSD$#', id: '1', description: 'best Organization', enable: 'true', createTime: '22-10-2024', Admin: 'Abbee' },
-        { name: 'John Doe', code: 'ASSD$#', id: '1', description: 'best Organization', enable: 'true', createTime: '22-10-2024', Admin: 'Abbee' },
+        { name: 'Et Shop', code: 'ASSD$#', id: '1', description: 'best Organization', enable: 'true', createTime: '22-10-2024', shopKey: 'SDJJ#@', address: 'addisAbaba' },
+        { name: 'Cheche Shop', code: 'ASSD$#', id: '2', description: 'best Organization', enable: 'true', createTime: '22-10-2024', shopKey: 'SDJ#$C', address: 'addisAbaba' },
       ],
       actions: [
         {
@@ -43,6 +67,21 @@ export default {
 
     };
   },
+  methods: {
+    editItem(item) {
+      console.log("Editing item:", item);
+    },
+    deleteItem(item) {
+      console.log("Deleting item:", item);
+    },
+    viewItem(item) {
+      console.log("Viewing item:", item);
+    },
+    addItem() {
+      console.log("Adding new item");
+      // Add your logic here to handle adding a new item
+    },
+  }
 
 };
 

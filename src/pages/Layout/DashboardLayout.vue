@@ -2,10 +2,7 @@
   <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
     <notifications></notifications>
 
-    <side-bar
-      :sidebar-item-color="sidebarBackground"
-      :sidebar-background-image="sidebarBackgroundImage"
-    >
+    <side-bar :sidebar-item-color="sidebarBackground" :sidebar-background-image="sidebarBackgroundImage">
       <!-- <mobile-menu slot="content"></mobile-menu> -->
       <sidebar-link to="/dashboard">
         <md-icon>dashboard</md-icon>
@@ -35,6 +32,10 @@
         <md-icon>list_alt</md-icon>
         <p v-if="isExpanded">Product Order</p>
       </sidebar-link>
+      <sidebar-link to="/users">
+        <md-icon>person</md-icon>
+        <p v-if="isExpanded">Users</p>
+      </sidebar-link>
       <!-- <sidebar-link to="/upgrade" class="active-pro">
         <md-icon>unarchive</md-icon>
         <p>Upgrade to PRO</p>
@@ -44,10 +45,7 @@
     <div :class="{ 'main-panel': true, collapsed: !isExpanded }">
       <top-navbar></top-navbar>
 
-      <fixed-plugin
-        :color.sync="sidebarBackground"
-        :image.sync="sidebarBackgroundImage"
-      >
+      <fixed-plugin :color.sync="sidebarBackground" :image.sync="sidebarBackgroundImage">
       </fixed-plugin>
 
       <dashboard-content> </dashboard-content>
@@ -92,6 +90,7 @@ export default {
 .main-panel.collapsed {
   /* Styles when isExpanded is true */
   width: calc(100% - 90px) !important;
+  position: relative;
 }
 
 @media only screen and (max-width: 768px) {

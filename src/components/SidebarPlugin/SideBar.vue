@@ -2,7 +2,7 @@
   <div class="sidebar" :data-color="sidebarItemColor" :data-image="sidebarBackgroundImage" :style="sidebarStyle">
     <div :class="sidebarClass">
       <div class="logo">
-        <div>
+        <div class="imags">
           <a href="#" class="simple-text logo-mini">
             <div class="logo-img">
               <img :src="imgLogo" alt="" />
@@ -15,11 +15,10 @@
             {{ title }}
           </a>
         </div>
-        <div :class="{ 'sidebar-toggle': true, collapsed: !isExpanded }" @click="toggleSidebar">
-          <md-icon :class="{
-            'icon-expanded': isExpanded,
-            'icon-collapsed': !isExpanded,
-          }">menu_open</md-icon>
+        <div :class="{ 'sidebar-toggle': true, 'collapsed': !isExpanded }" @click="toggleSidebar">
+          <md-icon>
+            menu_open
+          </md-icon>
         </div>
       </div>
 
@@ -120,17 +119,32 @@ export default {
   }
 }
 
+.sidebar-wrapper {
+  width: 100% !important;
+  /* Allow sidebar to adjust based on content */
+  transition: width 0.3s ease;
+}
+
 .sidebar-expanded {
   width: 250px;
   /* Adjust as needed */
   transition: width 0.3s ease;
+  background-color: white !important;
+  color: black !important;
 }
 
 .sidebar-collapsed {
   width: 90px;
   /* Adjust as needed */
   transition: width 0.3s ease;
+  background-color: white !important;
+  color: black !important;
 }
+
+.sidebar {
+  background-color: white !important;
+}
+
 
 .icon-expanded {
   color: white !important;
@@ -148,18 +162,29 @@ export default {
   cursor: pointer;
   padding-top: 8px;
   padding-left: 5px;
+
+}
+
+.imags {
+  justify-content: start;
+  margin-left: -30px;
 }
 
 .sidebar-toggle.collapsed {
   /* Remove all padding */
   color: black !important;
   padding-left: 0px;
+  position: absolute;
+  right: 0;
+
+  font-size: 20px;
 }
 
 .logo {
   display: flex;
   width: 100%;
   position: relative;
+  justify-content: space-evenly;
 }
 
 /* Add styles for icons and labels as needed */
