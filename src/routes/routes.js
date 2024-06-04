@@ -12,60 +12,90 @@ import MenuList from "@/views/Menu/menuList";
 import ShopList from "@/views/Shop/shopList";
 import OrganizationList from "@/views/Organization/organizationList";
 import UsersList from "@/views/User/usersList";
+import Login from "@/views/Login" 
+
+
 
 const routes = [
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+    meta: { requiresAuth: false}
+   
+  },
   {
     path: "/",
     component: DashboardLayout,
     redirect: "/dashboard",
+    meta: { requiresAuth: true,},
     children: [
       {
         path: "dashboard",
         name: "Dashboard",
         component: Dashboard,
+        meta: { requiresAuth: true,}
+   
       },
       {
         path: "user",
         name: "User Profile",
         component: UserProfile,
+        meta: { requiresAuth: true,}
+   
       },
       {
         path: "organization",
         name: "Organization List",
         component: OrganizationList,
+        meta: { requiresAuth: true,}
+   
       },
       {
         path: "shop",
         name: "Shop List",
         component: ShopList,
+        meta: { requiresAuth: true,}
+   
       },
       {
         path: "order",
         name: "Order List",
         component: OrderList,
+        meta: { requiresAuth: true,}
+   
       },
       {
         path: "dining-table",
         name: "Dining Table",
         component: DiningTableList,
+        meta: { requiresAuth: true,}
+   
       },
       {
         path: "menu-catalog",
         name: "Menu Catalog",
         component: MenuCatalogList,
+        meta: { requiresAuth: true,}
+   
       },
       {
         path: "menu-list",
         name: "Menu List",
         component: MenuList,
+        meta: { requiresAuth: true,}
       },
       {
         path: "users",
         name: "Users List",
         component: UsersList,
+        meta: { requiresAuth: true,}
       },
     ],
   },
 ];
+
+
+
 
 export default routes;

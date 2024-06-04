@@ -27,7 +27,7 @@
                   <h3 class="mb-0 text-black">
                     <span class="counter ml-0">56</span>
                   </h3>
-                  <p class="mb-0">Total Menus</p>
+                  <p class="mb-0 sub-title">Total Menus</p>
                   <small>4% (30 days)</small>
                 </div>
               </div>
@@ -61,7 +61,7 @@
                   <h3 class="mb-0 text-black">
                     <span class="counter ml-0">126</span>k
                   </h3>
-                  <p class="mb-0">Total Revenue</p>
+                  <p class="mb-0 sub-title">Total Revenue</p>
                   <small>4% (30 days)</small>
                 </div>
               </div>
@@ -107,7 +107,7 @@
                   <h3 class="mb-0 text-black">
                     <span class="counter ml-0">279</span>
                   </h3>
-                  <p class="mb-0">Total Orders</p>
+                  <p class="mb-0 sub-title">Total Orders</p>
                   <small>4% (30 days)</small>
                 </div>
               </div>
@@ -149,7 +149,7 @@
                   <h3 class="mb-0 text-black">
                     <span class="counter ml-0">65</span>
                   </h3>
-                  <p class="mb-0">Total Client</p>
+                  <p class="mb-0 sub-title">Total Client</p>
                   <small>4% (30 days)</small>
                 </div>
               </div>
@@ -529,7 +529,8 @@ export default {
   position: relative;
   border: 0px solid transparent;
   border-radius: 20px;
-
+  box-shadow: 0px 12px 23px 0px rgba(62, 73, 84, 0.04);
+   
   height: calc(100% - 30px);
 }
 .box-shadow {
@@ -1144,5 +1145,8 @@ p {
 .col-1 {
     flex: 0 0 8.3333333333%;
     max-width: 8.3333333333%;
+}
+.sub-title{
+  font-size: 14px !important;
 }
 </style>
