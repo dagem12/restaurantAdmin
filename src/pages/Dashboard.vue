@@ -205,7 +205,7 @@
                     role="tab"
                     aria-selected="true"
                   >
-                    Today
+                    Daily
                   </a>
                 </li>
               </ul>
@@ -228,95 +228,66 @@
               ></a>
             </div>
             <div class="row">
-              <div class="col-sm-4 mb-4">
+              <div class="col-sm-3 mb-4">
                 <div class="border px-3 py-3 rounded-xl">
-                  <h2 class="fs-32 font-w600 counter">25</h2>
-                  <p class="fs-16 mb-0">On Delivery</p>
+                  <h2 class="fs-20 font-w600 counter">25</h2>
+                  <p class="fs-12 mb-0">Open</p>
                 </div>
               </div>
-              <div class="col-sm-4 mb-4">
+              <div class="col-sm-3 mb-4">
                 <div class="border px-3 py-3 rounded-xl">
-                  <h2 class="fs-32 font-w600 counter">60</h2>
-                  <p class="fs-16 mb-0">Delivered</p>
+                  <h2 class="fs-20 font-w600 counter">25</h2>
+                  <p class="fs-12 mb-0">Preparing</p>
                 </div>
               </div>
-              <div class="col-sm-4 mb-4">
+
+              <div class="col-sm-3 mb-4">
                 <div class="border px-3 py-3 rounded-xl">
-                  <h2 class="fs-32 font-w600 counter">7</h2>
-                  <p class="fs-16 mb-0">Canceled</p>
+                  <h2 class="fs-20 font-w600 counter">60</h2>
+                  <p class="fs-12 mb-0">Delivered</p>
+                </div>
+              </div>
+              <div class="col-sm-3 mb-4">
+                <div class="border px-3 py-3 rounded-xl">
+                  <h2 class="fs-20 font-w600 counter">7</h2>
+                  <p class="fs-12 mb-0">Canceled</p>
                 </div>
               </div>
             </div>
             <div class="widget-timeline-icon">
+             
               <div class="row align-items-center mx-0">
                 <div
                   class="col-xl-3 col-lg-4 col-xxl-4 col-sm-4 px-0 my-2 text-center text-sm-left"
                 >
-                  <span
-                    class="donut"
-                    data-peity='{ "fill": ["rgb(62, 73, 84)", "rgba(255, 109, 76, 1)","rgba(43, 193, 85, 1)"]}'
-                    style="display: none"
-                    >2,5,3</span
-                  ><svg class="peity" height="140" width="140">
-                    <path
-                      d="M 70 0 A 70 70 0 0 1 136.57395614066075 48.368810393753684 L 103.28697807033038 59.18440519687684 A 35 35 0 0 0 70 35"
-                      data-value="2"
-                      fill="rgb(62, 73, 84)"
-                    ></path>
-                    <path
-                      d="M 136.57395614066075 48.368810393753684 A 70 70 0 0 1 3.4260438593392593 91.63118960624632 L 36.71302192966963 80.81559480312316 A 35 35 0 0 0 103.28697807033038 59.18440519687684"
-                      data-value="5"
-                      fill="rgba(255, 109, 76, 1)"
-                    ></path>
-                    <path
-                      d="M 3.4260438593392593 91.63118960624632 A 70 70 0 0 1 69.99999999999999 0 L 70 35 A 35 35 0 0 0 36.71302192966963 80.81559480312316"
-                      data-value="3"
-                      fill="rgba(43, 193, 85, 1)"
-                    ></path>
-                  </svg>
+        
+                <PieChart></PieChart>
                 </div>
                 <div class="col-xl-9 col-lg-8 col-xxl-8 col-sm-8 px-0">
                   <div class="d-flex align-items-center mb-3">
-                    <p class="mb-0 fs-14 mr-2 col-4 px-0">Immunities (24%)</p>
-                    <div class="progress mb-0" style="height: 8px; width: 100%">
-                      <div
-                        class="progress-bar bg-warning progress-animated"
-                        style="width: 85%; height: 8px"
-                        role="progressbar"
-                      >
-                        <span class="sr-only">60% Complete</span>
-                      </div>
-                    </div>
+                    <p class="mb-0 fs-14 mr-2 col-4 px-0">Open (24%)</p>
+                    <q-linear-progress stripe rounded size="20px" value=0.24 style="color:rgb(145,204,117)!important;" class="q-mt-sm" />
                     <span class="pull-right ml-auto col-1 px-0 text-right"
                       >25</span
                     >
                   </div>
                   <div class="d-flex align-items-center mb-3">
-                    <p class="mb-0 fs-14 mr-2 col-4 px-0">Heart Beat (41%)</p>
-                    <div class="progress mb-0" style="height: 8px; width: 100%">
-                      <div
-                        class="progress-bar bg-success progress-animated"
-                        style="width: 70%; height: 8px"
-                        role="progressbar"
-                      >
-                        <span class="sr-only">60% Complete</span>
-                      </div>
-                    </div>
+                    <p class="mb-0 fs-14 mr-2 col-4 px-0">Preparing (41%)</p>
+                    <q-linear-progress stripe rounded size="20px" value=0.41 style="color: rgb(84,112,198)!important;" class="q-mt-sm" />
                     <span class="pull-right ml-auto col-1 px-0 text-right"
                       >60</span
                     >
                   </div>
                   <div class="d-flex align-items-center">
-                    <p class="mb-0 fs-14 mr-2 col-4 px-0">Weigth (15%)</p>
-                    <div class="progress mb-0" style="height: 8px; width: 100%">
-                      <div
-                        class="progress-bar bg-dark progress-animated"
-                        style="width: 30%; height: 8px"
-                        role="progressbar"
-                      >
-                        <span class="sr-only">60% Complete</span>
-                      </div>
-                    </div>
+                    <p class="mb-0 fs-14 mr-2 col-4 px-0">Delivered (15%)</p>
+                    <q-linear-progress stripe rounded size="20px" value=0.15 style="color: rgb(250,200,88) !important;" class="q-mt-sm" />
+                    <span class="pull-right ml-auto col-1 px-0 text-right"
+                      >07</span
+                    >
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <p class="mb-0 fs-14 mr-2 col-4 px-0">Delivered (5%)</p>
+                    <q-linear-progress stripe rounded size="20px" value=0.05 style="color: rgb(238,102,102)!important;" class="q-mt-sm" />
                     <span class="pull-right ml-auto col-1 px-0 text-right"
                       >07</span
                     >
@@ -330,45 +301,132 @@
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
       >
-        <nav-tabs-card>
-          <template slot="content">
-            <span class="md-nav-tabs-title">Tasks:</span>
-            <md-tabs class="md-success" md-alignment="left">
-              <md-tab id="tab-home" md-label="Bugs" md-icon="bug_report">
-                <nav-tabs-table></nav-tabs-table>
-              </md-tab>
+         <MostSells/>
+      </div>
 
-              <md-tab id="tab-pages" md-label="Website" md-icon="code">
-                <nav-tabs-table></nav-tabs-table>
-              </md-tab>
-
-              <md-tab id="tab-posts" md-label="server" md-icon="cloud">
-                <nav-tabs-table></nav-tabs-table>
-              </md-tab>
-            </md-tabs>
-          </template>
-        </nav-tabs-card>
+      <div
+        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
+      >
+        <div class="card">
+          <div class="card-header border-0 pb-0 d-sm-flex d-block">
+            <div>
+              <h4 class="card-title mb-1">Customer Map</h4>
+              <small class="mb-0"
+                >Lorem ipsum dolor sit amet, consectetur</small
+              >
+            </div>
+            <div class="card-action card-tabs mt-3 mt-sm-0">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    data-toggle="tab"
+                    href="#user"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    Monthly
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    data-toggle="tab"
+                    href="#bounce"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    Weekly
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    data-toggle="tab"
+                    href="#session-duration"
+                    role="tab"
+                    aria-selected="true"
+                  >
+                    Daily
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="card-body orders-summary">
+              <Revenue/>
+          </div>
+        </div>
+      </div>
+      <div
+        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
+      >
+      <div class="card">
+          <div class="card-header border-0 pb-0 d-sm-flex d-block">
+            <div>
+              <h4 class="card-title mb-1">Revenue</h4>
+              <small class="mb-0"
+                >Lorem ipsum dolor sit amet, consectetur</small
+              >
+            </div>
+            <div class="card-action card-tabs mt-3 mt-sm-0">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    data-toggle="tab"
+                    href="#user"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    Monthly
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    data-toggle="tab"
+                    href="#bounce"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    Weekly
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    data-toggle="tab"
+                    href="#session-duration"
+                    role="tab"
+                    aria-selected="true"
+                  >
+                    Daily
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="card-body orders-summary">
+            <Revenue/>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {
-  // StatsCard,
-  // ChartCard,
-  NavTabsCard,
-  NavTabsTable,
-  // OrderedTable,
-} from "@/components";
+
+import PieChart from '@/components/Dashboard/pie-chart/index.vue'
+import MostSells from '@/components/Dashboard/most-trend/index.vue'
+import Revenue from '@/components/Dashboard/revenue/index.vue'
 
 export default {
   components: {
-    // StatsCard,
-    // ChartCard,
-    NavTabsCard,
-    NavTabsTable,
-    // OrderedTable,
+    MostSells,
+    PieChart,
+    Revenue
   },
   data() {
     return {
@@ -580,14 +638,15 @@ small {
 .py-0 {
   padding-bottom: 0 !important;
 }
+.d-block {
+  display: block !important;
+}
 @media (min-width: 576px) {
   .d-sm-flex {
     display: flex !important;
   }
 }
-.d-block {
-  display: block !important;
-}
+
 .border-0 {
   border: 0 !important;
 }
@@ -728,19 +787,19 @@ h4,
 .align-items-center {
   align-items: center !important;
 }
-
-@media only screen and (max-width: 1400px) {
-  .btn {
-    padding: 0.625rem 1rem;
-    font-size: 0.813rem;
-  }
-}
 .btn {
   padding: 0.938rem 1.5rem;
   border-radius: 0.375rem;
   font-weight: 500;
   font-size: 1rem;
 }
+@media only screen and (max-width: 1400px) {
+  .btn {
+    padding: 0.625rem 1rem;
+    font-size: 0.813rem;
+  }
+}
+
 .fs-22 {
   font-size: 22px !important;
   line-height: 1.5;
@@ -823,5 +882,267 @@ a {
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.mb-4,
+.my-4 {
+  margin-bottom: 1.5rem !important;
+}
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12,
+.col,
+.col-auto,
+.col-sm-1,
+.col-sm-2,
+.col-sm-3,
+.col-sm-4,
+.col-sm-5,
+.col-sm-6,
+.col-sm-7,
+.col-sm-8,
+.col-sm-9,
+.col-sm-10,
+.col-sm-11,
+.col-sm-12,
+.col-sm,
+.col-sm-auto,
+.col-md-1,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-md-10,
+.col-md-11,
+.col-md-12,
+.col-md,
+.col-md-auto,
+.col-lg-1,
+.col-lg-2,
+.col-lg-3,
+.col-lg-4,
+.col-lg-5,
+.col-lg-6,
+.col-lg-7,
+.col-lg-8,
+.col-lg-9,
+.col-lg-10,
+.col-lg-11,
+.col-lg-12,
+.col-lg,
+.col-lg-auto,
+.col-xl-1,
+.col-xl-2,
+.col-xl-3,
+.col-xl-4,
+.col-xl-5,
+.col-xl-6,
+.col-xl-7,
+.col-xl-8,
+.col-xl-9,
+.col-xl-10,
+.col-xl-11,
+.col-xl-12,
+.col-xl,
+.col-xl-auto,
+.col-xxl-1,
+.col-xxl-2,
+.col-xxl-3,
+.col-xxl-4,
+.col-xxl-5,
+.col-xxl-6,
+.col-xxl-7,
+.col-xxl-8,
+.col-xxl-9,
+.col-xxl-10,
+.col-xxl-11,
+.col-xxl-12,
+.col-xxl,
+.col-xxl-auto {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+@media (min-width: 576px) {
+  .col-sm-4 {
+    flex: 0 0 33.3333333333%;
+    max-width: 33.3333333333%;
+  }
+}
+
+.rounded-xl {
+  border-radius: 12px !important;
+}
+.pl-3,
+.px-3 {
+  padding-left: 1rem !important;
+}
+.pb-3,
+.py-3 {
+  padding-bottom: 1rem !important;
+}
+.pr-3,
+.px-3 {
+  padding-right: 1rem !important;
+}
+.pt-3,
+.py-3 {
+  padding-top: 1rem !important;
+}
+.border {
+  border: 1px solid #eeeeee !important;
+}
+.font-w600 {
+  font-weight: 600;
+}
+.fs-20 {
+  font-size: 20px !important;
+  line-height: 1.25;
+}
+.fs-12 {
+  font-size: 12px !important;
+  line-height: 1.25;
+}
+h2,
+.h2 {
+  font-size: 1.875rem;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #3d4465;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  unicode-bidi: isolate;
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1600px) {
+    .col-xxl-8 {
+        flex: 0 0 66.6666666667%;
+        max-width: 66.6666666667%;
+    }
+}
+.pl-0, .px-0 {
+    padding-left: 0 !important;
+}
+.pr-0, .px-0 {
+    padding-right: 0 !important;
+}
+@media (min-width: 1200px) {
+    .col-xl-9 {
+        flex: 0 0 75%;
+        max-width: 75%;
+    }
+}
+@media (min-width: 992px) {
+    .col-lg-8 {
+        flex: 0 0 66.6666666667%;
+        max-width: 66.6666666667%;
+    }
+}
+@media (min-width: 576px) {
+    .col-sm-8 {
+        flex: 0 0 66.6666666667%;
+        max-width: 66.6666666667%;
+    }
+}
+
+.mb-3, .my-3 {
+    margin-bottom: 1rem !important;
+}
+.align-items-center {
+    align-items: center !important;
+}
+.d-flex {
+    display: flex !important;
+}
+.mt-3, .my-3 {
+    margin-top: 1rem !important;
+}
+.fs-14 {
+    font-size: 14px !important;
+    line-height: 1.5;
+}
+.pl-0, .px-0 {
+    padding-left: 0 !important;
+}
+.pr-0, .px-0 {
+    padding-right: 0 !important;
+}
+.mr-2, .mx-2 {
+    margin-right: 0.5rem !important;
+}
+.mb-0, .my-0 {
+    margin-bottom: 0 !important;
+}
+.col-4 {
+    flex: 0 0 33.3333333333%;
+    max-width: 33.3333333333%;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.ml-auto, .mx-auto {
+    margin-left: auto !important;
+}
+.pl-0, .px-0 {
+    padding-left: 0 !important;
+}
+.pr-0, .px-0 {
+    padding-right: 0 !important;
+}
+.col-1 {
+    flex: 0 0 8.3333333333%;
+    max-width: 8.3333333333%;
 }
 </style>
