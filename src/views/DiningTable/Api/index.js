@@ -1,9 +1,9 @@
 import axios from 'axios';
 import buildPaginationQueryOpts from '../../../utils/sorts';
 
-const baseApiUrl = 'api/product-orders';
+const baseApiUrl = 'api/dining-tables';
 
-export default class ProductOrderService {
+export default class DiningTableService {
     find(id) {
         return new Promise((resolve, reject) => {
             axios
@@ -17,49 +17,10 @@ export default class ProductOrderService {
         });
     }
 
-    totalOrders() {
-        return new Promise((resolve, reject) => {
-            axios
-                .get('/api/total-orders')
-                .then(res => {
-                    resolve(res.data);
-                })
-                .catch(err => {
-                    reject(err);
-                });
-        });
-    }
-
-    totalPayments() {
-        return new Promise((resolve, reject) => {
-            axios
-                .get('/api/total-payments')
-                .then(res => {
-                    resolve(res.data);
-                })
-                .catch(err => {
-                    reject(err);
-                });
-        });
-    }
-
     retrieve(paginationQuery) {
         return new Promise((resolve, reject) => {
             axios
-                .get(`${baseApiUrl}?${buildPaginationQueryOpts(paginationQuery)}`)
-                .then(res => {
-                    resolve(res);
-                })
-                .catch(err => {
-                    reject(err);
-                });
-        });
-    }
-
-    topDish(paginationQuery) {
-        return new Promise((resolve, reject) => {
-            axios
-                .get(`api/top-dish?${buildPaginationQueryOpts(paginationQuery)}`)
+                .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
                 .then(res => {
                     resolve(res);
                 })
