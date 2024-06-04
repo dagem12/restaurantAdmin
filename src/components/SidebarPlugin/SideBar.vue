@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="sidebar"
-    :data-color="sidebarItemColor"
-    :data-image="sidebarBackgroundImage"
-    :style="sidebarStyle"
-  >
+  <div class="sidebar" :data-color="sidebarItemColor" :data-image="sidebarBackgroundImage" :style="sidebarStyle">
     <div :class="sidebarClass">
       <div class="logo">
         <div>
@@ -20,17 +15,11 @@
             {{ title }}
           </a>
         </div>
-        <div
-          :class="{ 'sidebar-toggle': true, collapsed: !isExpanded }"
-          @click="toggleSidebar"
-        >
-          <md-icon
-            :class="{
-              'icon-expanded': isExpanded,
-              'icon-collapsed': !isExpanded,
-            }"
-            >menu_open</md-icon
-          >
+        <div :class="{ 'sidebar-toggle': true, collapsed: !isExpanded }" @click="toggleSidebar">
+          <md-icon :class="{
+            'icon-expanded': isExpanded,
+            'icon-collapsed': !isExpanded,
+          }">menu_open</md-icon>
         </div>
       </div>
 
@@ -39,12 +28,7 @@
         <md-list class="nav">
           <!--By default vue-router adds an active class to each route link. This way the links are colored when clicked-->
           <slot>
-            <sidebar-link
-              v-for="(link, index) in sidebarLinks"
-              :key="link.name + index"
-              :to="link.path"
-              :link="link"
-            >
+            <sidebar-link v-for="(link, index) in sidebarLinks" :key="link.name + index" :to="link.path" :link="link">
             </sidebar-link>
           </slot>
         </md-list>
@@ -127,27 +111,35 @@ export default {
     display: none;
   }
 }
+
 @media only screen and (max-width: 768px) {
   .sidebar-wrapper {
-    width: auto; /* Allow sidebar to adjust based on content */
+    width: auto;
+    /* Allow sidebar to adjust based on content */
     transition: width 0.3s ease;
   }
 }
+
 .sidebar-expanded {
-  width: 250px; /* Adjust as needed */
+  width: 250px;
+  /* Adjust as needed */
   transition: width 0.3s ease;
 }
 
 .sidebar-collapsed {
-  width: 90px; /* Adjust as needed */
+  width: 90px;
+  /* Adjust as needed */
   transition: width 0.3s ease;
 }
+
 .icon-expanded {
   color: white !important;
 }
+
 .icon-collapsed {
   color: black !important;
 }
+
 .sidebar-content {
   overflow-x: hidden;
 }
@@ -157,6 +149,7 @@ export default {
   padding-top: 8px;
   padding-left: 5px;
 }
+
 .sidebar-toggle.collapsed {
   /* Remove all padding */
   color: black !important;
