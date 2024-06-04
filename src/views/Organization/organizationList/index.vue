@@ -1,15 +1,36 @@
 <template>
-  <div class="table">
-    <dynamic-table :tableHeaderColor="'green'" :columns="columns" :dataItems="dataItems" :actions="actions" />
+  <div class="content">
+    <div class="md-layout">
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
+        <md-card>
+          <md-card-header data-background-color="orange" class="header-with-button">
+            <div>
+              <h4 class="title">Organization</h4>
+              <p class="category">
+                Explore and manage your organizations
+              </p>
+            </div>
+            <!-- Add Item button -->
+            <div class="add-item-button">
+              <md-button color="primary" @click="this.addItem">
+                <md-icon>add</md-icon>
+                <span>Add Item</span>
+              </md-button>
+            </div>
+          </md-card-header>
+          <md-card-content>
+            <dynamic-table table-header-color="red" :columns="columns" :data-items="dataItems" :actions="actions" />
+          </md-card-content>
+        </md-card>
+      </div>
+    </div>
   </div>
-
-
 </template>
 <script>
 
 import DynamicTable from '../../../components/Tables/DynamicTable.vue';
 export default {
-  name: "Organization List",
+  name: "organizationList",
   components: {
     DynamicTable
   },
@@ -25,8 +46,8 @@ export default {
         { label: 'Admin', field: 'admin' },
       ],
       dataItems: [
-        { name: 'Et Restaurant', code: 'ASSD$#', id: '1', description: 'best Organization', enable: 'true', createTime: '22-10-2024', Admin: 'Abbee' },
-        { name: 'Cheche Restaurant', code: 'ASSD$#', id: '2', description: 'best Organization', enable: 'true', createTime: '22-10-2024', Admin: 'Abbee' },
+        { name: 'Et Restaurant', code: 'ASSD$#', id: '1', description: 'best Organization', enable: 'true', createTime: '22-10-2024', admin: 'Abbee' },
+        { name: 'Cheche Restaurant', code: 'ASSD$#', id: '2', description: 'best Organization', enable: 'true', createTime: '22-10-2024', admin: 'Abbee' },
       ],
       actions: [
         {
@@ -45,6 +66,21 @@ export default {
 
     };
   },
+  methods: {
+    editItem(item) {
+      console.log("Editing item:", item);
+    },
+    deleteItem(item) {
+      console.log("Deleting item:", item);
+    },
+    viewItem(item) {
+      console.log("Viewing item:", item);
+    },
+    addItem() {
+      console.log("Adding new item");
+      // Add your logic here to handle adding a new item
+    },
+  }
 
 };
 

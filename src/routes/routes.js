@@ -11,6 +11,7 @@ import MenuCatalogList from "@/views/Menu/menuCatalog";
 import MenuList from "@/views/Menu/menuList";
 import ShopList from "@/views/Shop/shopList";
 import OrganizationList from "@/views/Organization/organizationList";
+import UsersList from "@/views/User/usersList";
 
 const routes = [
   {
@@ -57,6 +58,11 @@ const routes = [
         path: "menu-list",
         name: "Menu List",
         component: MenuList,
+      },
+      {
+        path: "users",
+        name: "Users List",
+        component: UsersList,
       },
     ],
   },
