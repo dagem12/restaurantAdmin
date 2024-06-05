@@ -1,12 +1,15 @@
 import axios from '@/axios/axios';
-import buildPaginationQueryOpts from "../../../utils/sorts";
+import buildPaginationQueryOpts from '@/utils/sorts';
 
 
 export default class OrganizationService {
+  constructor(){
+
+  }
   find(id) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`organizations/${id}`)
+        .get(`/organizations/${id}`)
         .then((res) => {
           resolve(res.data);
         })
@@ -18,9 +21,11 @@ export default class OrganizationService {
 
   retrieve(paginationQuery) {
     return new Promise((resolve, reject) => {
+      console.log("out side service")
       axios
-        .get(`organizations?${buildPaginationQueryOpts(paginationQuery)}`)
+        .get(`/organizations?${buildPaginationQueryOpts(paginationQuery)}`)
         .then((res) => {
+          console.log("res ",res)
           resolve(res);
         })
         .catch((err) => {
@@ -32,7 +37,7 @@ export default class OrganizationService {
   delete(id) {
     return new Promise((resolve, reject) => {
       axios
-        .delete(`organizations/${id}`)
+        .delete(`/organizations/${id}`)
         .then((res) => {
           resolve(res);
         })
@@ -45,7 +50,7 @@ export default class OrganizationService {
   create(entity) {
     return new Promise((resolve, reject) => {
       axios
-        .post(`organizations`, entity)
+        .post(`/organizations`, entity)
         .then((res) => {
           resolve(res.data);
         })
@@ -58,7 +63,7 @@ export default class OrganizationService {
   update(entity) {
     return new Promise((resolve, reject) => {
       axios
-        .put(`organizations/${entity.id}`, entity)
+        .put(`/organizations/${entity.id}`, entity)
         .then((res) => {
           resolve(res.data);
         })
@@ -71,7 +76,7 @@ export default class OrganizationService {
   partialUpdate(entity) {
     return new Promise((resolve, reject) => {
       axios
-        .patch(`organizations/${entity.id}`, entity)
+        .patch(`/organizations/${entity.id}`, entity)
         .then((res) => {
           resolve(res.data);
         })

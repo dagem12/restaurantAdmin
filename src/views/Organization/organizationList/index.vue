@@ -37,12 +37,16 @@ export default {
   },
   data() {
     return {
-      organizations: [],
-      totalItems: 0,
-      queryCount: 0,
-      isFetching: false,
+      removeId: null,
+      itemsPerPage: 20,
+      queryCount: null,
       page: 1,
-      itemsPerPage: 10,
+      previousPage: 1,
+      propOrder: 'id',
+      reverse: false,
+      totalItems: 0,
+      organizations: [],
+      isFetching: false,
       organizationService: new OrganizationService(),
       columns: [
         { label: "Id", field: "id" },
@@ -51,7 +55,7 @@ export default {
         { label: "Description", field: "description" },
         { label: "Enable", field: "enable" },
         { label: "CreateTime", field: "createTime" },
-        { label: "Admin", field: "admin" },
+       
       ],
       dataItems: [
         {
@@ -82,7 +86,7 @@ export default {
         },
         {
           label: "Delete",
-          method: this.deleteItem,
+          method: this.removeOrganization,
           icon: "delete",
           color: "red",
         },
@@ -93,12 +97,16 @@ export default {
     this.retrieveAllOrganizations();
   },
   methods: {
-
+    clear() {
+      this.page = 1;
+      this.retrieveAllOrganizations();
+    },
     retrieveAllOrganizations() {
       this.isFetching = true;
       const paginationQuery = {
         page: this.page - 1,
         size: this.itemsPerPage,
+        sort: this.sort(),
       };
       this.organizationService.retrieve(paginationQuery)
         .then(
@@ -110,27 +118,66 @@ export default {
           },
           err => {
             this.isFetching = false;
+            
           }
         );
     },
-
-    editItem(item) {
-      console.log("Editing item:", item);
+    handleSyncList() {
+      this.clear();
     },
-    deleteItem(item) {
-      console.log("Deleting item:", item);
+    prepareRemove(instance) {
+      this.removeId = instance.id;
+      if (this.$refs.removeEntity) {
+        this.$refs.removeEntity.show();
+      }
     },
-    viewItem(item) {
-      console.log("Viewing item:", item);
+    removeOrganization() {
+      this.organizationService.delete(this.removeId)
+        .then(() => {
+          const message = this.$t('anywhereApp.organization.deleted', { param: this.removeId });
+          this.$bvToast.toast(message.toString(), {
+            toaster: 'b-toaster-top-center',
+            title: 'Info',
+            variant: 'danger',
+            solid: true,
+            autoHideDelay: 5000,
+          });
+          this.removeId = null;
+          this.retrieveAllOrganizations();
+          this. showAddItemDialog();
+        })
+        .catch(error => {
+          
+        });
     },
-    addItem() {
-      console.log("Adding new item");
-      // Add your logic here to handle adding a new item
+    sort() {
+      const result = [this.propOrder + ',' + (this.reverse ? 'desc' : 'asc')];
+      if (this.propOrder !== 'id') {
+        result.push('id');
+      }
+      return result;
+    },
+    loadPage(page) {
+      if (page !== this.previousPage) {
+        this.previousPage = page;
+        this.transition();
+      }
+    },
+    transition() {
+      this.retrieveAllOrganizations();
+    },
+    changeOrder(propOrder) {
+      this.propOrder = propOrder;
+      this.reverse = !this.reverse;
+      this.transition();
     },
     showAddItemDialog() {
       // Show the MenuForm dialog
       this.$refs.menuFormDialog.showDialog = true;
-    }
+    },
+    editItem(item) {
+      console.log("Editing item:", item);
+    },
   },
 };
 </script>
