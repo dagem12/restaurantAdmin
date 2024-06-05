@@ -1,47 +1,102 @@
 <template>
-  <div class="body">
-    <div class="container" id="container">
-      <div class="form-container sign-in">
-        <form>
-          <h1>Sign In</h1>
-          <!-- <div class="social-icons">
-                   <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                   <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                   <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                   <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+    <div class="body">
+        <div class="container" id="container">
+       
+       <div class="form-container sign-in">
+        <form @submit.prevent="doLogin">
+    <h1>Sign In</h1>
+   
+    <input type="text" placeholder="User Name" v-model="login">
+    <input type="password" placeholder="Password" v-model="password">
+    <a href="#">Forget Your Password?</a>
+    <button type="submit">Sign In</button>
+  </form>
+
+       </div>
+       <div class="toggle-container">
+           <div class="toggle">
+              
+               <div class="toggle-panel toggle-right">
+                   <h5>Elevating the Dining Experience</h5>
+                   <p>Streamlines the menu management process to save time and effort</p>
+                  
                </div>
-               <span>or use your email password</span> -->
-          <input type="text" placeholder="User Name" />
-          <input type="password" placeholder="Password" />
-          <a href="#">Forget Your Password?</a>
-          <button>Sign In</button>
-        </form>
-      </div>
-      <div class="toggle-container">
-        <div class="toggle">
-          <div class="toggle-panel toggle-right">
-            <h5>Elevating the Dining Experience</h5>
-            <p>
-              Streamlines the menu management process to save time and effort
-            </p>
-            <button class="hidden" id="register">Sign Up</button>
-          </div>
-        </div>
-      </div>
+           </div>
+       </div>
+   </div>
     </div>
-  </div>
-</template>
-<script>
+   
+
+  </template>
+  <script>
+  
+  import axios from '../../axios/axios';
+import AccountService from './api/account.service';
+
 export default {
-  name: "Shop List",
-  components: {},
+    name:"Login",
+  watch: {
+   
+  },
   data() {
-    return {};
+    return {
+      accountService: new AccountService(),
+      authenticationError: null,
+      login: null,
+      password: null,
+      rememberMe: null,
+    };
+  },
+  mounted() {
+    console.log("data",this.$store.state)
+    if (this.authenticated) {
+      this.$router.push('/');
+    }
+  },
+  methods: {
+    doLogin() {
+      const data = { username: this.login, password: this.password, rememberMe: this.rememberMe };
+      axios
+        .post('/authenticate', data)
+        .then(result => {
+          const bearerToken = result.headers.authorization;
+          if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
+            const jwt = bearerToken.slice(7);
+            if (this.rememberMe) {
+              localStorage.setItem('jhi-authenticationToken', jwt);
+              sessionStorage.removeItem('jhi-authenticationToken');
+            } else {
+              sessionStorage.setItem('jhi-authenticationToken', jwt);
+              localStorage.removeItem('jhi-authenticationToken');
+            }
+          }
+          this.authenticationError = false;
+        
+          this.accountService.retrieveAccount().then(res=>{
+            this.$router.push('/dashboard');
+          }).catch(err=>{
+
+          });
+       
+         
+         
+        })
+        .catch(() => {
+          this.authenticationError = true;
+        });
+    },
+    authenticated() {
+       return this.$store.getters.authenticated;
+    },
   },
 };
-</script>
-<style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
+
+  
+  </script>
+  <style scoped>
+ @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+
 
 .body {
   background-color: rgb(251, 251, 251);

@@ -20,6 +20,7 @@ import App from "./App";
 
 // router setup
 import router from "./routes/index";
+import store from './store/index'
 
 // Plugins
 import GlobalComponents from "./globalComponents";
@@ -49,8 +50,10 @@ Vue.use(Quasar,Notify );
 new Vue({
   el: "#app",
   render: (h) => h(App),
+  store,
   router,
   data: {
     Chartist: Chartist,
   },
+  
 });
