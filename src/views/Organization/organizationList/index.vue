@@ -10,7 +10,7 @@
             </div>
             <!-- Add Item button -->
             <div class="add-item-button">
-              <md-button color="primary" @click="this.addItem">
+              <md-button color="primary" @click="this.showAddItemDialog">
                 <md-icon>add</md-icon>
                 <span>Add Item</span>
               </md-button>
@@ -22,15 +22,18 @@
         </md-card>
       </div>
     </div>
+    <MenuForm ref="menuFormDialog" />
   </div>
 </template>
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
-import OrganizationService from '../Api/index.js';
+import OrganizationService from "../api/organization.service.js";
+import MenuForm from "../components/MenuForm.vue";
 export default {
   name: "organizationList",
   components: {
     DynamicTable,
+    MenuForm
   },
   data() {
     return {
@@ -124,6 +127,10 @@ export default {
       console.log("Adding new item");
       // Add your logic here to handle adding a new item
     },
+    showAddItemDialog() {
+      // Show the MenuForm dialog
+      this.$refs.menuFormDialog.showDialog = true;
+    }
   },
 };
 </script>

@@ -1,43 +1,33 @@
 <template>
   <div style="margin-top: 20px;">
-  <div class="content">
-    <div class="md-layout">
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
-      >
-        <md-card>
-          <md-card-header
-            data-background-color="orange"
-            class="header-with-button"
-          >
-            <div>
-              <h4 class="title">Menus</h4>
-              <p class="category">Explore and manage your restaurant's menu items</p>
-            </div>
-            <!-- Add Item button -->
-            <div class="add-item-button">
-              <md-button color="primary" @click="showAddItemDialog">
-                <md-icon>add</md-icon>
-                <span>Add Item</span>
-              </md-button>
-            </div>
-          </md-card-header>
-          <md-card-content>
-            <dynamic-table
-              table-header-color="red"
-              :columns="columns"
-              :data-items="dataItems"
-              :actions="actions"
-            />
-          </md-card-content>
-        </md-card>
+    <div class="content">
+      <div class="md-layout">
+        <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
+          <md-card>
+            <md-card-header data-background-color="orange" class="header-with-button">
+              <div>
+                <h4 class="title">Menus</h4>
+                <p class="category">Explore and manage your restaurant's menu items</p>
+              </div>
+              <!-- Add Item button -->
+              <div class="add-item-button">
+                <md-button color="primary" @click="showAddItemDialog">
+                  <md-icon>add</md-icon>
+                  <span>Add Item</span>
+                </md-button>
+              </div>
+            </md-card-header>
+            <md-card-content>
+              <dynamic-table table-header-color="red" :columns="columns" :data-items="dataItems" :actions="actions" />
+            </md-card-content>
+          </md-card>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- MenuForm dialog -->
-  <MenuForm ref="menuFormDialog" />
-</div>
+    <!-- MenuForm dialog -->
+    <MenuForm ref="menuFormDialog" />
+  </div>
 </template>
 
 <script>
