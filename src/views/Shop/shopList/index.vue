@@ -10,23 +10,19 @@
             </div>
             <!-- Add Item button -->
             <div class="add-item-button">
-              <md-button color="primary" @click="addItem">
+              <md-button color="primary" @click="this.showAddItemDialog">
                 <md-icon>add</md-icon>
                 <span>Add Item</span>
               </md-button>
             </div>
           </md-card-header>
           <md-card-content>
-            <dynamic-table
-              table-header-color="red"
-              :columns="columns"
-              :data-items="shops"
-              :actions="actions"
-            />
+            <dynamic-table table-header-color="red" :columns="columns" :data-items="shops" :actions="actions" />
           </md-card-content>
         </md-card>
       </div>
     </div>
+    <MenuForm ref="menuFormDialog" />
   </div>
 </template>
 
@@ -34,12 +30,14 @@
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import { mapActions, mapState } from 'vuex';
 import ShopService from '../Api/index';
+import MenuForm from "../components/MenuForm.vue";
 
 
 export default {
   name: "shopList",
   components: {
     DynamicTable,
+    MenuForm
   },
   data() {
     return {
@@ -77,7 +75,7 @@ export default {
       totalItems: 0,
       shops: [],
       isFetching: false,
-      shopService:new ShopService()
+      shopService: new ShopService()
     };
   },
   mounted() {
@@ -119,10 +117,10 @@ export default {
           err => {
             console.log(err)
             this.isFetching = false;
-           
+
           }
         );
-        console.log("data data")
+      console.log("data data")
     },
     handleSyncList() {
       this.clear();
@@ -149,7 +147,7 @@ export default {
           this.closeDialog();
         })
         .catch(error => {
-         
+
         });
     },
     sort() {
@@ -178,6 +176,11 @@ export default {
         this.$refs.removeEntity.hide();
       }
     },
+    showAddItemDialog() {
+      // Show the MenuForm dialog
+      this.$refs.menuFormDialog.showDialog = true;
+    }
+
   },
 };
 </script>
