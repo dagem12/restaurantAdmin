@@ -5,11 +5,8 @@
         <h3 class="md-title">{{ $route.name }}</h3>
       </div>
       <div class="md-toolbar-section-end">
-        <md-button
-          class="md-just-icon md-simple md-toolbar-toggle"
-          :class="{ toggled: $sidebar.showSidebar }"
-          @click="toggleSidebar"
-        >
+        <md-button class="md-just-icon md-simple md-toolbar-toggle" :class="{ toggled: $sidebar.showSidebar }"
+          @click="toggleSidebar">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -17,11 +14,7 @@
 
         <div class="md-collapse">
           <div class="md-autocomplete">
-            <md-autocomplete
-              class="search"
-              v-model="selectedEmployee"
-              :md-options="employees"
-            >
+            <md-autocomplete class="search" v-model="selectedEmployee" :md-options="employees">
               <label>Search...</label>
             </md-autocomplete>
           </div>
@@ -53,17 +46,10 @@
             </md-list-item> -->
 
             <li class="md-list-item">
-              <a
-                href="#/notifications"
-                class="md-list-item-router md-list-item-container md-button-clean dropdown"
-              >
+              <a href="#/notifications" class="md-list-item-router md-list-item-container md-button-clean dropdown">
                 <div class="md-list-item-content">
                   <drop-down>
-                    <md-button
-                      slot="title"
-                      class="md-button md-just-icon md-simple"
-                      data-toggle="dropdown"
-                    >
+                    <md-button slot="title" class="md-button md-just-icon md-simple" data-toggle="dropdown">
                       <md-icon>notifications</md-icon>
                       <span class="notification">5</span>
                       <p class="hidden-lg hidden-md">Notifications</p>
@@ -130,17 +116,46 @@ export default {
       } else if (element.msRequestFullscreen) {
         element.msRequestFullscreen();
       }
+
+      // Add event listener for fullscreen change
+      document.addEventListener('fullscreenchange', this.onFullscreenChange);
+      document.addEventListener('webkitfullscreenchange', this.onFullscreenChange);
+      document.addEventListener('msfullscreenchange', this.onFullscreenChange);
     },
     exitFullscreen() {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
+      if (
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.msFullscreenElement
+      ) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
       }
+
+      // Remove event listener for fullscreen change
+      document.removeEventListener('fullscreenchange', this.onFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', this.onFullscreenChange);
+      document.removeEventListener('msfullscreenchange', this.onFullscreenChange);
     },
+    onFullscreenChange() {
+      this.isFullscreen = !!(
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.msFullscreenElement
+      );
+    }
   },
+  beforeDestroy() {
+    document.removeEventListener('fullscreenchange', this.onFullscreenChange);
+    document.removeEventListener('webkitfullscreenchange', this.onFullscreenChange);
+    document.removeEventListener('msfullscreenchange', this.onFullscreenChange);
+  }
+
 };
 </script>
 

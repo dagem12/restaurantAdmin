@@ -1,14 +1,9 @@
 <template>
   <div class="content">
     <div class="md-layout">
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
-      >
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <md-card>
-          <md-card-header
-            data-background-color="orange"
-            class="header-with-button"
-          >
+          <md-card-header data-background-color="orange" class="header-with-button">
             <div>
               <h4 class="title">Organization</h4>
               <p class="category">Explore and manage your organizations</p>
@@ -22,12 +17,7 @@
             </div>
           </md-card-header>
           <md-card-content>
-            <dynamic-table
-              table-header-color="red"
-              :columns="columns"
-              :data-items="dataItems"
-              :actions="actions"
-            />
+            <dynamic-table table-header-color="red" :columns="columns" :data-items="dataItems" :actions="actions" />
           </md-card-content>
         </md-card>
       </div>
@@ -36,6 +26,7 @@
 </template>
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
+import OrganizationService from '../Api/index.js';
 export default {
   name: "organizationList",
   components: {
@@ -43,6 +34,12 @@ export default {
   },
   data() {
     return {
+      organizations: [],
+      totalItems: 0,
+      queryCount: 0,
+      isFetching: false,
+      page: 1,
+      itemsPerPage: 10,
       columns: [
         { label: "Id", field: "id" },
         { label: "Code", field: "code" },
@@ -89,6 +86,28 @@ export default {
     };
   },
   methods: {
+
+    retrieveAllOrganizations() {
+      this.isFetching = true;
+      const paginationQuery = {
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+      };
+      this.organizationService.retrieve(paginationQuery)
+        .then(
+          res => {
+            this.organizations = res.data;
+            this.totalItems = Number(res.headers['x-total-count']);
+            this.queryCount = this.totalItems;
+            this.isFetching = false;
+          },
+          err => {
+            this.isFetching = false;
+          }
+        );
+    },
+
     editItem(item) {
       console.log("Editing item:", item);
     },
