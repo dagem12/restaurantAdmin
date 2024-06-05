@@ -1,13 +1,12 @@
-import axios from "axios";
+import axios from '@/axios/axios';
 import buildPaginationQueryOpts from "../../../utils/sorts";
 
-const baseApiUrl = "api/organizations";
 
 export default class OrganizationService {
   find(id) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`${baseApiUrl}/${id}`)
+        .get(`organizations/${id}`)
         .then((res) => {
           resolve(res.data);
         })
@@ -20,7 +19,7 @@ export default class OrganizationService {
   retrieve(paginationQuery) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`${baseApiUrl}?${buildPaginationQueryOpts(paginationQuery)}`)
+        .get(`organizations?${buildPaginationQueryOpts(paginationQuery)}`)
         .then((res) => {
           resolve(res);
         })
@@ -33,7 +32,7 @@ export default class OrganizationService {
   delete(id) {
     return new Promise((resolve, reject) => {
       axios
-        .delete(`${baseApiUrl}/${id}`)
+        .delete(`organizations/${id}`)
         .then((res) => {
           resolve(res);
         })
@@ -46,7 +45,7 @@ export default class OrganizationService {
   create(entity) {
     return new Promise((resolve, reject) => {
       axios
-        .post(`${baseApiUrl}`, entity)
+        .post(`organizations`, entity)
         .then((res) => {
           resolve(res.data);
         })
@@ -59,7 +58,7 @@ export default class OrganizationService {
   update(entity) {
     return new Promise((resolve, reject) => {
       axios
-        .put(`${baseApiUrl}/${entity.id}`, entity)
+        .put(`organizations/${entity.id}`, entity)
         .then((res) => {
           resolve(res.data);
         })
@@ -72,7 +71,7 @@ export default class OrganizationService {
   partialUpdate(entity) {
     return new Promise((resolve, reject) => {
       axios
-        .patch(`${baseApiUrl}/${entity.id}`, entity)
+        .patch(`organizations/${entity.id}`, entity)
         .then((res) => {
           resolve(res.data);
         })

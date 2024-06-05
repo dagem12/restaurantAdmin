@@ -17,7 +17,7 @@
             </div>
           </md-card-header>
           <md-card-content>
-            <dynamic-table table-header-color="red" :columns="columns" :data-items="dataItems" :actions="actions" />
+            <dynamic-table table-header-color="red" :columns="columns" :data-items="organizations" :actions="actions" />
           </md-card-content>
         </md-card>
       </div>
@@ -40,6 +40,7 @@ export default {
       isFetching: false,
       page: 1,
       itemsPerPage: 10,
+      organizationService: new OrganizationService(),
       columns: [
         { label: "Id", field: "id" },
         { label: "Code", field: "code" },
@@ -85,6 +86,9 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.retrieveAllOrganizations();
+  },
   methods: {
 
     retrieveAllOrganizations() {
@@ -92,7 +96,6 @@ export default {
       const paginationQuery = {
         page: this.page - 1,
         size: this.itemsPerPage,
-        sort: this.sort(),
       };
       this.organizationService.retrieve(paginationQuery)
         .then(
