@@ -1,4 +1,5 @@
 <template>
+  <div style="margin-top: 20px;">
   <div class="content">
     <div class="md-layout">
       <div
@@ -11,13 +12,11 @@
           >
             <div>
               <h4 class="title">Menus</h4>
-              <p class="category">
-                Explore and manage your restaurant's menu items
-              </p>
+              <p class="category">Explore and manage your restaurant's menu items</p>
             </div>
             <!-- Add Item button -->
             <div class="add-item-button">
-              <md-button color="primary" @click="addItem">
+              <md-button color="primary" @click="showAddItemDialog">
                 <md-icon>add</md-icon>
                 <span>Add Item</span>
               </md-button>
@@ -35,60 +34,44 @@
       </div>
     </div>
   </div>
+
+  <!-- MenuForm dialog -->
+  <MenuForm ref="menuFormDialog" />
+</div>
 </template>
 
 <script>
 import DynamicTable from "@/components/Tables/DynamicTable.vue";
+import MenuForm from "../components/MenuForm.vue";
 
 export default {
   components: {
     DynamicTable,
+    MenuForm
   },
   data() {
     return {
       columns: [
         { label: "Name", field: "name" },
-        { label: "Country", field: "country" },
-        { label: "City", field: "city" },
-        { label: "Salary", field: "salary" },
+        { label: "Price", field: "price" },
+        { label: "Description", field: "description" }
       ],
       dataItems: [
         {
-          name: "Dakota Rice",
-          salary: "$36,738",
-          country: "Niger",
-          city: "Oud-Turnhout",
+          name: "Pasta",
+          price: "$12.99",
+          description: "Delicious pasta dish with homemade sauce."
         },
         {
-          name: "Minerva Hooper",
-          salary: "$23,738",
-          country: "Curaçao",
-          city: "Sinaai-Waas",
+          name: "Burger",
+          price: "$8.99",
+          description: "Classic beef burger with cheese and toppings."
         },
         {
-          name: "Sage Rodriguez",
-          salary: "$56,142",
-          country: "Netherlands",
-          city: "Overland Park",
-        },
-        {
-          name: "Philip Chaney",
-          salary: "$38,735",
-          country: "Korea, South",
-          city: "Gloucester",
-        },
-        {
-          name: "Doris Greene",
-          salary: "$63,542",
-          country: "Malawi",
-          city: "Feldkirchen in Kārnten",
-        },
-        {
-          name: "Mason Porter",
-          salary: "$78,615",
-          country: "Chile",
-          city: "Gloucester",
-        },
+          name: "Pizza",
+          price: "$10.99",
+          description: "Freshly baked pizza with assorted toppings."
+        }
       ],
       actions: [
         {
@@ -111,10 +94,10 @@ export default {
     viewItem(item) {
       console.log("Viewing item:", item);
     },
-    addItem() {
-      console.log("Adding new item");
-      // Add your logic here to handle adding a new item
-    },
+    showAddItemDialog() {
+      // Show the MenuForm dialog
+      this.$refs.menuFormDialog.showDialog = true;
+    }
   },
 };
 </script>

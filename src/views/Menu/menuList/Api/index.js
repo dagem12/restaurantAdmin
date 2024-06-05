@@ -4,81 +4,34 @@ import buildPaginationQueryOpts from "../../../../utils/sorts";
 const baseApiUrl = "api/products";
 
 export default class ProductService {
-  find(id) {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`${baseApiUrl}/${id}`)
-        .then((res) => {
-          resolve(res.data);
-        })
-        .catch((err) => {
-          reject(err);
+    constructor() {
+        this.api = axios.create({
+            baseURL: baseApiUrl
         });
-    });
-  }
+    };
 
-  retrieve(paginationQuery) {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
-        .then((res) => {
-          resolve(res);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
 
-  delete(id) {
-    return new Promise((resolve, reject) => {
-      axios
-        .delete(`${baseApiUrl}/${id}`)
-        .then((res) => {
-          resolve(res);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
+    find(id) {
+        return this.api.get(`/${id}`).then(res => res.data);
+    }
 
-  create(entity) {
-    return new Promise((resolve, reject) => {
-      axios
-        .post(`${baseApiUrl}`, entity)
-        .then((res) => {
-          resolve(res.data);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
+    retrieve(paginationQuery) {
+        return this.api.get(`?${buildPaginationQueryOpts(paginationQuery)}`).then(res => res.data);
+    }
 
-  update(entity) {
-    return new Promise((resolve, reject) => {
-      axios
-        .put(`${baseApiUrl}/${entity.id}`, entity)
-        .then((res) => {
-          resolve(res.data);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
+    delete(id) {
+        return this.api.delete(`/${id}`).then(res => res.data);
+    }
 
-  partialUpdate(entity) {
-    return new Promise((resolve, reject) => {
-      axios
-        .patch(`${baseApiUrl}/${entity.id}`, entity)
-        .then((res) => {
-          resolve(res.data);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
+    create(entity) {
+        return this.api.post('', entity).then(res => res.data);
+    }
+
+    update(entity) {
+        return this.api.put(`/${entity.id}`, entity).then(res => res.data);
+    }
+
+    partialUpdate(entity) {
+        return this.api.patch(`/${entity.id}`, entity).then(res => res.data);
+    }
 }
