@@ -1,9 +1,13 @@
-import axios from 'axios';
-import buildPaginationQueryOpts from '../../../utils/sorts';
+import axios from '@/axios/axios';
+import buildPaginationQueryOpts from '@/utils/sorts';
 
-const baseApiUrl = 'api/shops';
+
+const baseApiUrl = '/shops';
 
 export default class ShopService {
+    constructor( ) {
+  
+      }
     find(id) {
         return new Promise((resolve, reject) => {
             axios
@@ -20,7 +24,7 @@ export default class ShopService {
     retrieve(paginationQuery) {
         return new Promise((resolve, reject) => {
             axios
-                .get(`${baseApiUrl}?${buildPaginationQueryOpts(paginationQuery)}`)
+                .get(`/shops?${buildPaginationQueryOpts(paginationQuery)}`)
                 .then(res => {
                     resolve(res);
                 })
