@@ -18,10 +18,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import App from "./App";
 
-
 // router setup
 import router from "./routes/index";
-
 
 // Plugins
 import GlobalComponents from "./globalComponents";
@@ -37,9 +35,7 @@ import "@quasar/extras/material-icons/material-icons.css";
 import "quasar/dist/quasar.min.css";
 // configure router
 
-
 Vue.prototype.$Chartist = Chartist;
-
 
 Vue.use(MaterialDashboard);
 Vue.use(GlobalComponents);

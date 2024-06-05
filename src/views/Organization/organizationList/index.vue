@@ -1,14 +1,17 @@
 <template>
   <div class="content">
     <div class="md-layout">
-      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
+      <div
+        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
+      >
         <md-card>
-          <md-card-header data-background-color="orange" class="header-with-button">
+          <md-card-header
+            data-background-color="orange"
+            class="header-with-button"
+          >
             <div>
               <h4 class="title">Organization</h4>
-              <p class="category">
-                Explore and manage your organizations
-              </p>
+              <p class="category">Explore and manage your organizations</p>
             </div>
             <!-- Add Item button -->
             <div class="add-item-button">
@@ -19,7 +22,12 @@
             </div>
           </md-card-header>
           <md-card-content>
-            <dynamic-table table-header-color="red" :columns="columns" :data-items="dataItems" :actions="actions" />
+            <dynamic-table
+              table-header-color="red"
+              :columns="columns"
+              :data-items="dataItems"
+              :actions="actions"
+            />
           </md-card-content>
         </md-card>
       </div>
@@ -27,43 +35,57 @@
   </div>
 </template>
 <script>
-
-import DynamicTable from '../../../components/Tables/DynamicTable.vue';
+import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 export default {
   name: "organizationList",
   components: {
-    DynamicTable
+    DynamicTable,
   },
   data() {
     return {
       columns: [
-        { label: 'Id', field: 'id' },
-        { label: 'Code', field: 'code' },
-        { label: 'Name', field: 'name' },
-        { label: 'Description', field: 'description' },
-        { label: 'Enable', field: 'enable' },
-        { label: 'CreateTime', field: 'createTime' },
-        { label: 'Admin', field: 'admin' },
+        { label: "Id", field: "id" },
+        { label: "Code", field: "code" },
+        { label: "Name", field: "name" },
+        { label: "Description", field: "description" },
+        { label: "Enable", field: "enable" },
+        { label: "CreateTime", field: "createTime" },
+        { label: "Admin", field: "admin" },
       ],
       dataItems: [
-        { name: 'Et Restaurant', code: 'ASSD$#', id: '1', description: 'best Organization', enable: 'true', createTime: '22-10-2024', admin: 'Abbee' },
-        { name: 'Cheche Restaurant', code: 'ASSD$#', id: '2', description: 'best Organization', enable: 'true', createTime: '22-10-2024', admin: 'Abbee' },
+        {
+          name: "Et Restaurant",
+          code: "ASSD$#",
+          id: "1",
+          description: "best Organization",
+          enable: "true",
+          createTime: "22-10-2024",
+          admin: "Abbee",
+        },
+        {
+          name: "Cheche Restaurant",
+          code: "ASSD$#",
+          id: "2",
+          description: "best Organization",
+          enable: "true",
+          createTime: "22-10-2024",
+          admin: "Abbee",
+        },
       ],
       actions: [
         {
-          label: 'Edit',
+          label: "Edit",
           method: this.editItem,
-          icon: 'edit',
-          color: 'blue',
+          icon: "edit",
+          color: "blue",
         },
         {
-          label: 'Delete',
+          label: "Delete",
           method: this.deleteItem,
-          icon: 'delete',
-          color: 'red',
+          icon: "delete",
+          color: "red",
         },
       ],
-
     };
   },
   methods: {
@@ -80,10 +102,8 @@ export default {
       console.log("Adding new item");
       // Add your logic here to handle adding a new item
     },
-  }
-
+  },
 };
-
 </script>
 <style>
 .table {

@@ -1,14 +1,17 @@
 <template>
   <div class="content">
     <div class="md-layout">
-      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
+      <div
+        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
+      >
         <md-card>
-          <md-card-header data-background-color="orange" class="header-with-button">
+          <md-card-header
+            data-background-color="orange"
+            class="header-with-button"
+          >
             <div>
               <h4 class="title">Dining Tables</h4>
-              <p class="category">
-                Explore and manage your Dining Tables
-              </p>
+              <p class="category">Explore and manage your Dining Tables</p>
             </div>
             <!-- Add Item button -->
             <div class="add-item-button">
@@ -19,7 +22,12 @@
             </div>
           </md-card-header>
           <md-card-content>
-            <dynamic-table table-header-color="red" :columns="columns" :data-items="dataItems" :actions="actions" />
+            <dynamic-table
+              table-header-color="red"
+              :columns="columns"
+              :data-items="dataItems"
+              :actions="actions"
+            />
           </md-card-content>
         </md-card>
       </div>
@@ -27,46 +35,61 @@
   </div>
 </template>
 <script>
-
-import DynamicTable from '../../../components/Tables/DynamicTable.vue';
+import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 // import { Component, Vue, Inject } from 'vue-property-decorator';
 // import Vue2Filters from 'vue2-filters';
 
-import DiningTableService from '../Api/index.js';
+import DiningTableService from "../Api/index.js";
 // import QRCode from 'qrcode';
 
 export default {
   name: "diningTableList",
   components: {
-    DynamicTable
+    DynamicTable,
   },
   data() {
     return {
       columns: [
-        { label: 'Id', field: 'id' },
-        { label: 'Code', field: 'code' },
-        { label: 'Name', field: 'name' },
-        { label: 'Description', field: 'description' },
-        { label: 'CreateTime', field: 'createTime' },
-        { label: 'Enable', field: 'enable' },
-        { label: 'CreateBy', field: 'createBy' },
+        { label: "Id", field: "id" },
+        { label: "Code", field: "code" },
+        { label: "Name", field: "name" },
+        { label: "Description", field: "description" },
+        { label: "CreateTime", field: "createTime" },
+        { label: "Enable", field: "enable" },
+        { label: "CreateBy", field: "createBy" },
       ],
       dataItems: [
-        { name: '1', code: 'ASSD$#', id: '1', enable: 'true', description: 'best TABLKE', createTime: '22-10-2024', createBy: 'Abebeb' },
-        { name: '2', code: 'ASSD$#', id: '2', enable: 'true', description: 'best TABLKE', createTime: '22-10-2024', createBy: 'Abebe' },
+        {
+          name: "1",
+          code: "ASSD$#",
+          id: "1",
+          enable: "true",
+          description: "best TABLKE",
+          createTime: "22-10-2024",
+          createBy: "Abebeb",
+        },
+        {
+          name: "2",
+          code: "ASSD$#",
+          id: "2",
+          enable: "true",
+          description: "best TABLKE",
+          createTime: "22-10-2024",
+          createBy: "Abebe",
+        },
       ],
       actions: [
         {
-          label: 'Edit',
+          label: "Edit",
           method: this.editItem,
-          icon: 'edit',
-          color: 'blue',
+          icon: "edit",
+          color: "blue",
         },
         {
-          label: 'Delete',
+          label: "Delete",
           method: this.deleteItem,
-          icon: 'delete',
-          color: 'red',
+          icon: "delete",
+          color: "red",
         },
       ],
 
@@ -75,12 +98,11 @@ export default {
       queryCount: null,
       page: 1,
       previousPage: 1,
-      propOrder: 'id',
+      propOrder: "id",
       reverse: false,
       totalItems: 0,
       diningTables: [],
-      isFetching: false
-
+      isFetching: false,
     };
   },
   // mounted() {
@@ -109,15 +131,15 @@ export default {
         const qrText = `${shopKey}/${tableId}`;
         const qrCodeImage = await QRCode.toDataURL(qrText);
 
-        const downloadLink = document.createElement('a');
+        const downloadLink = document.createElement("a");
         downloadLink.href = qrCodeImage;
-        downloadLink.download = 'qr_code.png';
+        downloadLink.download = "qr_code.png";
 
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
       } catch (error) {
-        console.error('Error generating QR code:', error);
+        console.error("Error generating QR code:", error);
       }
     },
     retrieveAllDiningTables() {
@@ -128,13 +150,13 @@ export default {
         sort: this.sort(),
       };
       DiningTableService.retrieve(paginationQuery).then(
-        res => {
+        (res) => {
           this.diningTables = res.data;
-          this.totalItems = Number(res.headers['x-total-count']);
+          this.totalItems = Number(res.headers["x-total-count"]);
           this.queryCount = this.totalItems;
           this.isFetching = false;
         },
-        err => {
+        (err) => {
           this.isFetching = false;
           alertService().showHttpError(this, err.response);
         }
@@ -150,14 +172,15 @@ export default {
       }
     },
     removeDiningTable() {
-      DiningTableService
-        .delete(this.removeId)
+      DiningTableService.delete(this.removeId)
         .then(() => {
-          const message = this.$t('anywhereApp.diningTable.deleted', { param: this.removeId });
+          const message = this.$t("anywhereApp.diningTable.deleted", {
+            param: this.removeId,
+          });
           this.$bvToast.toast(message.toString(), {
-            toaster: 'b-toaster-top-center',
-            title: 'Info',
-            variant: 'danger',
+            toaster: "b-toaster-top-center",
+            title: "Info",
+            variant: "danger",
             solid: true,
             autoHideDelay: 5000,
           });
@@ -165,14 +188,14 @@ export default {
           this.retrieveAllDiningTables();
           this.closeDialog();
         })
-        .catch(error => {
+        .catch((error) => {
           alertService().showHttpError(this, error.response);
         });
     },
     sort() {
-      const result = [this.propOrder + ',' + (this.reverse ? 'desc' : 'asc')];
-      if (this.propOrder !== 'id') {
-        result.push('id');
+      const result = [this.propOrder + "," + (this.reverse ? "desc" : "asc")];
+      if (this.propOrder !== "id") {
+        result.push("id");
       }
       return result;
     },
@@ -195,10 +218,8 @@ export default {
         this.$refs.removeEntity.hide();
       }
     },
-  }
-
+  },
 };
-
 </script>
 <style>
 .table {
