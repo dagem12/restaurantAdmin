@@ -255,39 +255,65 @@
               </div>
             </div>
             <div class="widget-timeline-icon">
-             
               <div class="row align-items-center mx-0">
                 <div
                   class="col-xl-3 col-lg-4 col-xxl-4 col-sm-4 px-0 my-2 text-center text-sm-left"
                 >
-        
-                <PieChart></PieChart>
+                  <PieChart></PieChart>
                 </div>
                 <div class="col-xl-9 col-lg-8 col-xxl-8 col-sm-8 px-0">
                   <div class="d-flex align-items-center mb-3">
                     <p class="mb-0 fs-14 mr-2 col-4 px-0">Open (24%)</p>
-                    <q-linear-progress stripe rounded size="20px" value=0.24 style="color:rgb(145,204,117)!important;" class="q-mt-sm" />
+                    <q-linear-progress
+                      stripe
+                      rounded
+                      size="20px"
+                      value="0.24"
+                      style="color: rgb(145, 204, 117) !important"
+                      class="q-mt-sm"
+                    />
                     <span class="pull-right ml-auto col-1 px-0 text-right"
                       >25</span
                     >
                   </div>
                   <div class="d-flex align-items-center mb-3">
                     <p class="mb-0 fs-14 mr-2 col-4 px-0">Preparing (41%)</p>
-                    <q-linear-progress stripe rounded size="20px" value=0.41 style="color: rgb(84,112,198)!important;" class="q-mt-sm" />
+                    <q-linear-progress
+                      stripe
+                      rounded
+                      size="20px"
+                      value="0.41"
+                      style="color: rgb(84, 112, 198) !important"
+                      class="q-mt-sm"
+                    />
                     <span class="pull-right ml-auto col-1 px-0 text-right"
                       >60</span
                     >
                   </div>
                   <div class="d-flex align-items-center">
                     <p class="mb-0 fs-14 mr-2 col-4 px-0">Delivered (15%)</p>
-                    <q-linear-progress stripe rounded size="20px" value=0.15 style="color: rgb(250,200,88) !important;" class="q-mt-sm" />
+                    <q-linear-progress
+                      stripe
+                      rounded
+                      size="20px"
+                      value="0.15"
+                      style="color: rgb(250, 200, 88) !important"
+                      class="q-mt-sm"
+                    />
                     <span class="pull-right ml-auto col-1 px-0 text-right"
                       >07</span
                     >
                   </div>
                   <div class="d-flex align-items-center">
                     <p class="mb-0 fs-14 mr-2 col-4 px-0">Delivered (5%)</p>
-                    <q-linear-progress stripe rounded size="20px" value=0.05 style="color: rgb(238,102,102)!important;" class="q-mt-sm" />
+                    <q-linear-progress
+                      stripe
+                      rounded
+                      size="20px"
+                      value="0.05"
+                      style="color: rgb(238, 102, 102) !important"
+                      class="q-mt-sm"
+                    />
                     <span class="pull-right ml-auto col-1 px-0 text-right"
                       >07</span
                     >
@@ -301,7 +327,7 @@
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
       >
-         <MostSells/>
+        <MostSells />
       </div>
 
       <div
@@ -354,14 +380,14 @@
             </div>
           </div>
           <div class="card-body orders-summary">
-              <Revenue/>
+            <Revenue />
           </div>
         </div>
       </div>
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
       >
-      <div class="card">
+        <div class="card">
           <div class="card-header border-0 pb-0 d-sm-flex d-block">
             <div>
               <h4 class="card-title mb-1">Revenue</h4>
@@ -408,7 +434,7 @@
             </div>
           </div>
           <div class="card-body orders-summary">
-            <Revenue/>
+            <Revenue />
           </div>
         </div>
       </div>
@@ -417,16 +443,15 @@
 </template>
 
 <script>
-
-import PieChart from '@/components/Dashboard/pie-chart/index.vue'
-import MostSells from '@/components/Dashboard/most-trend/index.vue'
-import Revenue from '@/components/Dashboard/revenue/index.vue'
+import PieChart from "@/components/Dashboard/pie-chart/index.vue";
+import MostSells from "@/components/Dashboard/most-trend/index.vue";
+import Revenue from "@/components/Dashboard/revenue/index.vue";
 
 export default {
   components: {
     MostSells,
     PieChart,
-    Revenue
+    Revenue,
   },
   data() {
     return {
@@ -530,9 +555,10 @@ export default {
   border: 0px solid transparent;
   border-radius: 20px;
   box-shadow: 0px 12px 23px 0px rgba(62, 73, 84, 0.04);
-   
+
   height: calc(100% - 30px);
 }
+
 .box-shadow {
   box-shadow: 0px 12px 23px 0px rgba(62, 73, 84, 0.04);
 }
@@ -549,10 +575,12 @@ export default {
   padding: 0px 0;
   align-items: center;
 }
+
 .media {
   display: flex;
   align-items: flex-start;
 }
+
 .widget-stat .media > span {
   height: 85px;
   width: 85px;
@@ -577,6 +605,7 @@ export default {
   background: #f4f6fd;
   border-color: #f4f6fd;
 }
+
 .text-primary {
   color: #2f4cdd !important;
 }
@@ -591,23 +620,28 @@ export default {
   margin: 0;
   line-height: 1.2;
 }
+
 .text-black {
   color: #000 !important;
 }
+
 .mb-0,
 .my-0 {
   margin-bottom: 0 !important;
 }
+
 .widget-stat .media .media-body p {
   font-weight: 500;
   font-size: 16px;
   line-height: 1.5;
 }
+
 small,
 .small {
   font-size: 80%;
   font-weight: 400;
 }
+
 small {
   font-size: 80%;
 }
@@ -616,6 +650,7 @@ small {
 .mx-3 {
   margin-right: 1rem !important;
 }
+
 .image {
   width: 100%;
   height: 400px;
@@ -626,6 +661,7 @@ small {
 .card-header:first-child {
   border-radius: calc(0.75rem - 1px) calc(0.75rem - 1px) 0 0;
 }
+
 .card-header {
   border-color: #f0f1f5;
   position: relative;
@@ -635,13 +671,16 @@ small {
   justify-content: space-between;
   align-items: center;
 }
+
 .pb-0,
 .py-0 {
   padding-bottom: 0 !important;
 }
+
 .d-block {
   display: block !important;
 }
+
 @media (min-width: 576px) {
   .d-sm-flex {
     display: flex !important;
@@ -651,39 +690,48 @@ small {
 .border-0 {
   border: 0 !important;
 }
+
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
   background-color: rgba(0, 0, 0, 0.03);
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
+
 .card-header .card-title {
   margin-bottom: 0px;
 }
+
 .card-title {
   font-size: 20px;
   font-weight: 500;
   color: #000;
   text-transform: capitalize;
 }
+
 .mb-1,
 .my-1 {
   margin-bottom: 0.25rem !important;
 }
+
 .card-title {
   margin-bottom: 0.75rem;
 }
+
 h4,
 .h4 {
   font-size: 1.125rem;
 }
+
 .pb-0,
 .py-0 {
   padding-bottom: 0 !important;
 }
+
 .d-block {
   display: block !important;
 }
+
 @media (min-width: 576px) {
   .d-sm-flex {
     display: flex !important;
@@ -700,9 +748,11 @@ h4,
   padding: 5px;
   border-radius: 6px;
 }
+
 .nav-tabs {
   border-bottom: 1px solid #dee2e6;
 }
+
 .nav {
   display: flex;
   flex-wrap: wrap;
@@ -710,19 +760,23 @@ h4,
   margin-bottom: 0;
   list-style: none;
 }
+
 ul {
   padding: 0;
   margin: 0;
 }
+
 ol,
 ul,
 dl {
   margin-top: 0;
   margin-bottom: 1rem;
 }
+
 .nav-tabs .nav-item {
   margin-bottom: -1px;
 }
+
 li {
   list-style: none;
 }
@@ -735,6 +789,7 @@ li {
 .border-0 {
   border: 0 !important;
 }
+
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
@@ -749,18 +804,22 @@ li {
   font-size: 14px;
   border: 0;
 }
+
 .nav-tabs .nav-link {
   border: 1px solid transparent;
   border-top-left-radius: 0.75rem;
   border-top-right-radius: 0.75rem;
 }
+
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
 }
+
 a {
   color: #7e7e7e;
 }
+
 a {
   color: #2f4cdd;
   text-decoration: none;
@@ -771,29 +830,36 @@ h4,
 .h4 {
   font-size: 1.125rem;
 }
+
 .d-flex {
   display: flex !important;
 }
+
 .order-manage {
   background: #e7faec;
   border-radius: 12px;
 }
+
 .p-3 {
   padding: 1rem !important;
 }
+
 .mb-4,
 .my-4 {
   margin-bottom: 1.5rem !important;
 }
+
 .align-items-center {
   align-items: center !important;
 }
+
 .btn {
   padding: 0.938rem 1.5rem;
   border-radius: 0.375rem;
   font-weight: 500;
   font-size: 1rem;
 }
+
 @media only screen and (max-width: 1400px) {
   .btn {
     padding: 0.625rem 1rem;
@@ -805,31 +871,38 @@ h4,
   font-size: 22px !important;
   line-height: 1.5;
 }
+
 .pl-4,
 .px-4 {
   padding-left: 1.5rem !important;
 }
+
 .pr-4,
 .px-4 {
   padding-right: 1.5rem !important;
 }
+
 .pb-1,
 .py-1 {
   padding-bottom: 0.25rem !important;
 }
+
 .pt-1,
 .py-1 {
   padding-top: 0.25rem !important;
 }
+
 .mr-3,
 .mx-3 {
   margin-right: 1rem !important;
 }
+
 .btn-success {
   color: #fff;
   background-color: #2bc155;
   border-color: #2bc155;
 }
+
 .btn {
   display: inline-block;
   font-weight: 400;
@@ -846,14 +919,17 @@ h4,
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
 a {
   color: #7e7e7e;
 }
+
 a {
   color: #2f4cdd;
   text-decoration: none;
   background-color: transparent;
 }
+
 .font-w500 {
   font-weight: 500;
 }
@@ -861,21 +937,26 @@ a {
 .text-primary {
   color: #2f4cdd !important;
 }
+
 .ml-auto,
 .mx-auto {
   margin-left: auto !important;
 }
+
 .fs-15 {
   font-size: 14px !important;
   line-height: 1.5;
 }
+
 .text-success {
   color: #2bc155 !important;
 }
+
 .ml-1,
 .mx-1 {
   margin-left: 0.25rem !important;
 }
+
 .fa {
   display: inline-block;
   font: normal normal normal 14px / 1 FontAwesome;
@@ -896,6 +977,7 @@ a {
 .my-4 {
   margin-bottom: 1.5rem !important;
 }
+
 .col-1,
 .col-2,
 .col-3,
@@ -985,6 +1067,7 @@ a {
   padding-right: 15px;
   padding-left: 15px;
 }
+
 @media (min-width: 576px) {
   .col-sm-4 {
     flex: 0 0 33.3333333333%;
@@ -995,40 +1078,50 @@ a {
 .rounded-xl {
   border-radius: 12px !important;
 }
+
 .pl-3,
 .px-3 {
   padding-left: 1rem !important;
 }
+
 .pb-3,
 .py-3 {
   padding-bottom: 1rem !important;
 }
+
 .pr-3,
 .px-3 {
   padding-right: 1rem !important;
 }
+
 .pt-3,
 .py-3 {
   padding-top: 1rem !important;
 }
+
 .border {
   border: 1px solid #eeeeee !important;
 }
+
 .font-w600 {
   font-weight: 600;
 }
+
 .fs-20 {
   font-size: 20px !important;
   line-height: 1.25;
 }
+
 .fs-12 {
   font-size: 12px !important;
   line-height: 1.25;
 }
+
 h2,
 .h2 {
   font-size: 1.875rem;
 }
+
 h1,
 h2,
 h3,
@@ -1046,6 +1139,7 @@ h6,
   line-height: 1.2;
   color: #3d4465;
 }
+
 h1,
 h2,
 h3,
@@ -1066,87 +1160,116 @@ p {
 }
 
 @media only screen and (min-width: 1200px) and (max-width: 1600px) {
-    .col-xxl-8 {
-        flex: 0 0 66.6666666667%;
-        max-width: 66.6666666667%;
-    }
-}
-.pl-0, .px-0 {
-    padding-left: 0 !important;
-}
-.pr-0, .px-0 {
-    padding-right: 0 !important;
-}
-@media (min-width: 1200px) {
-    .col-xl-9 {
-        flex: 0 0 75%;
-        max-width: 75%;
-    }
-}
-@media (min-width: 992px) {
-    .col-lg-8 {
-        flex: 0 0 66.6666666667%;
-        max-width: 66.6666666667%;
-    }
-}
-@media (min-width: 576px) {
-    .col-sm-8 {
-        flex: 0 0 66.6666666667%;
-        max-width: 66.6666666667%;
-    }
+  .col-xxl-8 {
+    flex: 0 0 66.6666666667%;
+    max-width: 66.6666666667%;
+  }
 }
 
-.mb-3, .my-3 {
-    margin-bottom: 1rem !important;
+.pl-0,
+.px-0 {
+  padding-left: 0 !important;
 }
+
+.pr-0,
+.px-0 {
+  padding-right: 0 !important;
+}
+
+@media (min-width: 1200px) {
+  .col-xl-9 {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+}
+
+@media (min-width: 992px) {
+  .col-lg-8 {
+    flex: 0 0 66.6666666667%;
+    max-width: 66.6666666667%;
+  }
+}
+
+@media (min-width: 576px) {
+  .col-sm-8 {
+    flex: 0 0 66.6666666667%;
+    max-width: 66.6666666667%;
+  }
+}
+
+.mb-3,
+.my-3 {
+  margin-bottom: 1rem !important;
+}
+
 .align-items-center {
-    align-items: center !important;
+  align-items: center !important;
 }
+
 .d-flex {
-    display: flex !important;
+  display: flex !important;
 }
-.mt-3, .my-3 {
-    margin-top: 1rem !important;
+
+.mt-3,
+.my-3 {
+  margin-top: 1rem !important;
 }
+
 .fs-14 {
-    font-size: 14px !important;
-    line-height: 1.5;
+  font-size: 14px !important;
+  line-height: 1.5;
 }
-.pl-0, .px-0 {
-    padding-left: 0 !important;
+
+.pl-0,
+.px-0 {
+  padding-left: 0 !important;
 }
-.pr-0, .px-0 {
-    padding-right: 0 !important;
+
+.pr-0,
+.px-0 {
+  padding-right: 0 !important;
 }
-.mr-2, .mx-2 {
-    margin-right: 0.5rem !important;
+
+.mr-2,
+.mx-2 {
+  margin-right: 0.5rem !important;
 }
-.mb-0, .my-0 {
-    margin-bottom: 0 !important;
+
+.mb-0,
+.my-0 {
+  margin-bottom: 0 !important;
 }
+
 .col-4 {
-    flex: 0 0 33.3333333333%;
-    max-width: 33.3333333333%;
+  flex: 0 0 33.3333333333%;
+  max-width: 33.3333333333%;
 }
 
 .text-right {
-    text-align: right !important;
+  text-align: right !important;
 }
 
-.ml-auto, .mx-auto {
-    margin-left: auto !important;
+.ml-auto,
+.mx-auto {
+  margin-left: auto !important;
 }
-.pl-0, .px-0 {
-    padding-left: 0 !important;
+
+.pl-0,
+.px-0 {
+  padding-left: 0 !important;
 }
-.pr-0, .px-0 {
-    padding-right: 0 !important;
+
+.pr-0,
+.px-0 {
+  padding-right: 0 !important;
 }
+
 .col-1 {
-    flex: 0 0 8.3333333333%;
-    max-width: 8.3333333333%;
+  flex: 0 0 8.3333333333%;
+  max-width: 8.3333333333%;
 }
-.sub-title{
+
+.sub-title {
   font-size: 14px !important;
 }
 </style>

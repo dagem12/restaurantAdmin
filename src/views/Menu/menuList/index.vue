@@ -1,9 +1,14 @@
 <template>
   <div class="content">
     <div class="md-layout">
-      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
+      <div
+        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
+      >
         <md-card>
-          <md-card-header data-background-color="orange" class="header-with-button">
+          <md-card-header
+            data-background-color="orange"
+            class="header-with-button"
+          >
             <div>
               <h4 class="title">Menus</h4>
               <p class="category">
@@ -19,7 +24,12 @@
             </div>
           </md-card-header>
           <md-card-content>
-            <dynamic-table table-header-color="red" :columns="columns" :data-items="dataItems" :actions="actions" />
+            <dynamic-table
+              table-header-color="red"
+              :columns="columns"
+              :data-items="dataItems"
+              :actions="actions"
+            />
           </md-card-content>
         </md-card>
       </div>

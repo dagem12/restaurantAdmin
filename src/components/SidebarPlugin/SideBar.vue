@@ -1,5 +1,10 @@
 <template>
-  <div class="sidebar" :data-color="sidebarItemColor" :data-image="sidebarBackgroundImage" :style="sidebarStyle">
+  <div
+    class="sidebar"
+    :data-color="sidebarItemColor"
+    :data-image="sidebarBackgroundImage"
+    :style="sidebarStyle"
+  >
     <div :class="sidebarClass">
       <div class="logo">
         <div class="imags">
@@ -15,10 +20,11 @@
             {{ title }}
           </a>
         </div>
-        <div :class="{ 'sidebar-toggle': true, 'collapsed': !isExpanded }" @click="toggleSidebar">
-          <md-icon>
-            menu_open
-          </md-icon>
+        <div
+          :class="{ 'sidebar-toggle': true, collapsed: !isExpanded }"
+          @click="toggleSidebar"
+        >
+          <md-icon> menu_open </md-icon>
         </div>
       </div>
 
@@ -27,7 +33,12 @@
         <md-list class="nav">
           <!--By default vue-router adds an active class to each route link. This way the links are colored when clicked-->
           <slot>
-            <sidebar-link v-for="(link, index) in sidebarLinks" :key="link.name + index" :to="link.path" :link="link">
+            <sidebar-link
+              v-for="(link, index) in sidebarLinks"
+              :key="link.name + index"
+              :to="link.path"
+              :link="link"
+            >
             </sidebar-link>
           </slot>
         </md-list>
@@ -129,7 +140,7 @@ export default {
   width: 250px;
   /* Adjust as needed */
   transition: width 0.3s ease;
-  background-color: white !important;
+
   color: black !important;
 }
 
@@ -137,14 +148,9 @@ export default {
   width: 90px;
   /* Adjust as needed */
   transition: width 0.3s ease;
-  background-color: white !important;
+
   color: black !important;
 }
-
-.sidebar {
-  background-color: white !important;
-}
-
 
 .icon-expanded {
   color: white !important;
@@ -162,7 +168,6 @@ export default {
   cursor: pointer;
   padding-top: 8px;
   padding-left: 5px;
-
 }
 
 .imags {
