@@ -428,6 +428,9 @@ export default {
     PieChart,
     Revenue
   },
+  mounted(){
+    console.log("user,", this.$store.getters)
+  },
   data() {
     return {
       dailySalesChart: {

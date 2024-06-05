@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import routes from './routes'
+import store from '../store/index'
 
 
 
@@ -29,20 +30,20 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  // if (requiresAuth) {
-  //   next("/login");
-  // } else if (
-  //   (to.path === "/login" || to.path === "/register") //&&
-  //   // store.state.user.authenticated
-  // ) {
-    
-  //   next("/");
-  // } else {
-  
-  //   next();
-  // }
+  console.log("Require Auth",requiresAuth)
+  console.log("Require Auth",store.getters.authenticated)
+  if (requiresAuth && ! store.getters.authenticated) {
+    next("/login");
+  } else if (
+    (to.path === "/login" || to.path === "/register") &&
+    store.getters.authenticated
+  ) {
+    next("/");
+  } else {
+    next();
+  }
 
-  next()
+  // next()
 })
 
 
