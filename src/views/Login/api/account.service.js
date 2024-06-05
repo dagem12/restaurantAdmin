@@ -3,10 +3,10 @@ import store from '../../../store';
 
 
 export default class AccountService {
-  constructor( translationService, router) {
+  constructor( ) {
   
-    this.translationService = translationService;
-    this.router = router;
+
+
     this.init();
   }
 
