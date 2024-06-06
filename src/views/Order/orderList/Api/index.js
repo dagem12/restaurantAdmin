@@ -1,17 +1,18 @@
-import axios from "axios";
-import buildPaginationQueryOpts from "../../../utils/sorts";
+import axios from '@/axios/axios';
 
-const baseApiUrl = "api/product-orders";
+import buildPaginationQueryOpts from '@/utils/sorts';
 
-export default class ProductOrderService {
+const baseApiUrl = '/product-orders';
+
+class ProductOrderService {
   find(id) {
     return new Promise((resolve, reject) => {
       axios
         .get(`${baseApiUrl}/${id}`)
-        .then((res) => {
+        .then(res => {
           resolve(res.data);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -20,11 +21,11 @@ export default class ProductOrderService {
   totalOrders() {
     return new Promise((resolve, reject) => {
       axios
-        .get("/api/total-orders")
-        .then((res) => {
+        .get(`/api/total-orders`)
+        .then(res => {
           resolve(res.data);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -33,11 +34,11 @@ export default class ProductOrderService {
   totalPayments() {
     return new Promise((resolve, reject) => {
       axios
-        .get("/api/total-payments")
-        .then((res) => {
+        .get(`/api/total-payments`)
+        .then(res => {
           resolve(res.data);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -46,11 +47,11 @@ export default class ProductOrderService {
   retrieve(paginationQuery) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`${baseApiUrl}?${buildPaginationQueryOpts(paginationQuery)}`)
-        .then((res) => {
+        .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -59,11 +60,11 @@ export default class ProductOrderService {
   topDish(paginationQuery) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`api/top-dish?${buildPaginationQueryOpts(paginationQuery)}`)
-        .then((res) => {
+        .get('api/top-dish' + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -73,10 +74,10 @@ export default class ProductOrderService {
     return new Promise((resolve, reject) => {
       axios
         .delete(`${baseApiUrl}/${id}`)
-        .then((res) => {
+        .then(res => {
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -86,10 +87,10 @@ export default class ProductOrderService {
     return new Promise((resolve, reject) => {
       axios
         .post(`${baseApiUrl}`, entity)
-        .then((res) => {
+        .then(res => {
           resolve(res.data);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -99,10 +100,10 @@ export default class ProductOrderService {
     return new Promise((resolve, reject) => {
       axios
         .put(`${baseApiUrl}/${entity.id}`, entity)
-        .then((res) => {
+        .then(res => {
           resolve(res.data);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -112,12 +113,14 @@ export default class ProductOrderService {
     return new Promise((resolve, reject) => {
       axios
         .patch(`${baseApiUrl}/${entity.id}`, entity)
-        .then((res) => {
+        .then(res => {
           resolve(res.data);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
   }
 }
+
+export default ProductOrderService;

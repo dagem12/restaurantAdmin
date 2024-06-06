@@ -7,7 +7,8 @@
           :key="column.label"
           :md-label="column.label"
         >
-          {{ item[column.field] }}
+
+          {{column.isRelation? (item[column.field]?.name?item[column.field]?.name:item[column.field]?.value): item[column.field]}}
         </md-table-cell>
         <md-table-cell md-label="Actions">
           <q-btn

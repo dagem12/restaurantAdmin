@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="md-layout">
+    <div class="md-layout" ref="box">
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <md-card>
           <md-card-header data-background-color="orange" class="header-with-button">
@@ -29,6 +29,7 @@
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import OrganizationService from "../api/organization.service.js";
 import MenuForm from "../components/MenuForm.vue";
+import { gsap } from 'gsap';
 export default {
   name: "organizationList",
   components: {
@@ -95,6 +96,10 @@ export default {
   },
   mounted() {
     this.retrieveAllOrganizations();
+    const box = this.$refs.box;
+
+// Using GSAP to animate the row
+gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
     clear() {

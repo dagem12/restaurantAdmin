@@ -1,8 +1,9 @@
 <template>
   <div class="content">
-    <div class="md-layout">
+    <div class="md-layout"   ref="dashboardbox">
       <div
         class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
+      
       >
         <div class="col-xl-3 col-xxl-3 col-lg-6 col-md-6 col-sm-6">
           <div class="widget-stat card">
@@ -36,7 +37,7 @@
         </div>
       </div>
       <div
-        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
+        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25" 
       >
         <div class="col-xl-3 col-xxl-3 col-lg-6 col-md-6 col-sm-6">
           <div class="widget-stat card">
@@ -158,7 +159,7 @@
         </div>
       </div>
       <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
+        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100" 
       >
         <img class="image box-shadow" src="../assets/img/table.png" alt="" />
       </div>
@@ -446,7 +447,7 @@
 import PieChart from "@/components/Dashboard/pie-chart/index.vue";
 import MostSells from "@/components/Dashboard/most-trend/index.vue";
 import Revenue from "@/components/Dashboard/revenue/index.vue";
-
+import { gsap } from 'gsap';
 export default {
   components: {
     MostSells,
@@ -454,7 +455,11 @@ export default {
     Revenue,
   },
   mounted(){
-    console.log("user,", this.$store.getters)
+   
+    const dashboardbox = this.$refs.dashboardbox;
+
+// Using GSAP to animate the row
+gsap.from(dashboardbox, { duration: 1, opacity: 0, y: 1000, ease: "power1.out" });
   },
   data() {
     return {
