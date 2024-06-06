@@ -10,7 +10,7 @@
             </div>
             <!-- Add Item button -->
             <div class="add-item-button">
-              <md-button color="primary" @click="this.addItem">
+              <md-button color="primary" @click="this.showAddItemDialog">
                 <md-icon>add</md-icon>
                 <span>Add Item</span>
               </md-button>
@@ -22,18 +22,21 @@
         </md-card>
       </div>
     </div>
+    <MenuForm ref="menuFormDialog" />
   </div>
 </template>
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import DiningTableService from "../Api/index.js";
-import QRCode from 'qrcode';
+import MenuForm from "../components/MenuForm.vue";
+// import QRCode from 'qrcode';
 // import QRCode from 'qrcode';
 
 export default {
   name: "diningTableList",
   components: {
     DynamicTable,
+    MenuForm
   },
   data() {
     return {
@@ -84,22 +87,22 @@ export default {
       this.page = 1;
       this.retrieveAllDiningTables();
     },
-    async generateQR(tableId, shopKey) {
-      try {
-        const qrText = `${shopKey}/${tableId}`;
-        const qrCodeImage = await QRCode.toDataURL(qrText);
+    // async generateQR(tableId, shopKey) {
+    //   try {
+    //     const qrText = `${shopKey}/${tableId}`;
+    //     const qrCodeImage = await QRCode.toDataURL(qrText);
 
-        const downloadLink = document.createElement('a');
-        downloadLink.href = qrCodeImage;
-        downloadLink.download = 'qr_code.png';
+    //     const downloadLink = document.createElement('a');
+    //     downloadLink.href = qrCodeImage;
+    //     downloadLink.download = 'qr_code.png';
 
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-      } catch (error) {
-        console.error('Error generating QR code:', error);
-      }
-    },
+    //     document.body.appendChild(downloadLink);
+    //     downloadLink.click();
+    //     document.body.removeChild(downloadLink);
+    //   } catch (error) {
+    //     console.error('Error generating QR code:', error);
+    //   }
+    // },
     retrieveAllDiningTables() {
       this.isFetching = true;
       const paginationQuery = {
@@ -188,6 +191,10 @@ export default {
     addItem() {
       console.log("Adding new item");
       // Add your logic here to handle adding a new item
+    },
+    showAddItemDialog() {
+      // Show the MenuForm dialog
+      this.$refs.menuFormDialog.showDialog = true;
     },
   },
 };
