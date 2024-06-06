@@ -18,7 +18,7 @@
               </div>
             </md-card-header>
             <md-card-content>
-              <dynamic-table table-header-color="red" :columns="columns" :data-items="dataItems" :actions="actions" />
+              <dynamic-table table-header-color="red" :columns="columns" :data-items="products" :actions="actions" />
             </md-card-content>
           </md-card>
         </div>
@@ -33,6 +33,7 @@
 <script>
 import DynamicTable from "@/components/Tables/DynamicTable.vue";
 import MenuForm from "../components/MenuForm.vue";
+import ProductService from "./Api/index"
 
 export default {
   components: {
@@ -72,9 +73,104 @@ export default {
         },
         { label: "Edit", method: this.editItem, icon: "edit", color: "amber" },
       ],
+      productService:new ProductService(),
+      removeId: null,
+      itemsPerPage: 20,
+      queryCount: null,
+      page: 1,
+      previousPage: 1,
+      propOrder: 'id',
+      reverse: false,
+      totalItems: 0,
+      products: [],
+      isFetching: false,
     };
   },
+  mounted() {
+      this.retrieveAllProducts();
+    },
   methods: {
+   
+    clear() {
+      this.page = 1;
+      this.retrieveAllProducts();
+    },
+    retrieveAllProducts() {
+      this.isFetching = true;
+      const paginationQuery = {
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+      };
+      this.productService
+        .retrieve(paginationQuery)
+        .then(res => {
+          this.products = res.data;
+          this.totalItems = Number(res.headers['x-total-count']);
+          this.queryCount = this.totalItems;
+          this.isFetching = false;
+        })
+        .catch(err => {
+          this.isFetching = false;
+         
+        });
+    },
+    handleSyncList() {
+      this.clear();
+    },
+    prepareRemove(instance) {
+      this.removeId = instance.id;
+      if (this.$refs.removeEntity) {
+        this.$refs.removeEntity.show();
+      }
+    },
+    removeProduct() {
+      this.productService
+        .delete(this.removeId)
+        .then(() => {
+          const message = this.$t('anywhereApp.product.deleted', { param: this.removeId });
+          this.$bvToast.toast(message.toString(), {
+            toaster: 'b-toaster-top-center',
+            title: 'Info',
+            variant: 'danger',
+            solid: true,
+            autoHideDelay: 5000,
+          });
+          this.removeId = null;
+          this.retrieveAllProducts();
+          this.closeDialog();
+        })
+        .catch(error => {
+         
+        });
+    },
+    sort() {
+      const result = [this.propOrder + ',' + (this.reverse ? 'desc' : 'asc')];
+      if (this.propOrder !== 'id') {
+        result.push('id');
+      }
+      return result;
+    },
+    loadPage(page) {
+      if (page !== this.previousPage) {
+        this.previousPage = page;
+        this.transition();
+      }
+    },
+    transition() {
+      this.retrieveAllProducts();
+    },
+    changeOrder(propOrder) {
+      this.propOrder = propOrder;
+      this.reverse = !this.reverse;
+      this.transition();
+    },
+    closeDialog() {
+      if (this.$refs.removeEntity) {
+        this.$refs.removeEntity.hide();
+      }
+    },
+   
     editItem(item) {
       console.log("Editing item:", item);
     },
@@ -88,7 +184,9 @@ export default {
       // Show the MenuForm dialog
       this.$refs.menuFormDialog.showDialog = true;
     }
+  
   },
+
 };
 </script>
 
