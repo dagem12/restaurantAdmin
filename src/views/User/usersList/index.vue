@@ -1,45 +1,38 @@
 <template>
   <div class="content">
     <div class="md-layout">
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
-      >
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <md-card>
-          <md-card-header
-            data-background-color="orange"
-            class="header-with-button"
-          >
+          <md-card-header data-background-color="orange" class="header-with-button">
             <div>
               <h4 class="title">Users</h4>
               <p class="category">Explore and manage your users</p>
             </div>
             <!-- Add Item button -->
             <div class="add-item-button">
-              <md-button color="primary" @click="this.addItem">
+              <md-button color="primary" @click="this.showAddItemDialog">
                 <md-icon>add</md-icon>
                 <span>Add Item</span>
               </md-button>
             </div>
           </md-card-header>
           <md-card-content>
-            <dynamic-table
-              table-header-color="red"
-              :columns="columns"
-              :data-items="dataItems"
-              :actions="actions"
-            />
+            <dynamic-table table-header-color="red" :columns="columns" :data-items="dataItems" :actions="actions" />
           </md-card-content>
         </md-card>
       </div>
     </div>
+    <MenuForm ref="menuFormDialog" />
   </div>
 </template>
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
+import MenuForm from "../components/MenuForm.vue";
 export default {
   name: "usersList",
   components: {
     DynamicTable,
+    MenuForm
   },
   data() {
     return {
@@ -95,6 +88,10 @@ export default {
     addItem() {
       console.log("Adding new item");
       // Add your logic here to handle adding a new item
+    },
+    showAddItemDialog() {
+      // Show the MenuForm dialog
+      this.$refs.menuFormDialog.showDialog = true;
     },
   },
 };
