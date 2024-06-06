@@ -1,49 +1,42 @@
 <template>
   <div class="content">
     <div class="md-layout">
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
-      >
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <md-card>
-          <md-card-header
-            data-background-color="orange"
-            class="header-with-button"
-          >
+          <md-card-header data-background-color="orange" class="header-with-button">
             <div>
               <h4 class="title">Dining Tables</h4>
               <p class="category">Explore and manage your Dining Tables</p>
             </div>
             <!-- Add Item button -->
             <div class="add-item-button">
-              <md-button color="primary" @click="this.addItem">
+              <md-button color="primary" @click="this.showAddItemDialog">
                 <md-icon>add</md-icon>
                 <span>Add Item</span>
               </md-button>
             </div>
           </md-card-header>
           <md-card-content>
-            <dynamic-table
-              table-header-color="red"
-              :columns="columns"
-              :data-items="diningTables"
-              :actions="actions"
-            />
+            <dynamic-table table-header-color="red" :columns="columns" :data-items="diningTables" :actions="actions" />
           </md-card-content>
         </md-card>
       </div>
     </div>
+    <MenuForm ref="menuFormDialog" />
   </div>
 </template>
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import DiningTableService from "../Api/index.js";
-import QRCode from 'qrcode';
+import MenuForm from "../components/MenuForm.vue";
+// import QRCode from 'qrcode';
 // import QRCode from 'qrcode';
 
 export default {
   name: "diningTableList",
   components: {
     DynamicTable,
+    MenuForm
   },
   data() {
     return {
@@ -56,7 +49,7 @@ export default {
         { label: "Enable", field: "enable" },
         { label: "CreateBy", field: "createBy" },
       ],
-    
+
       actions: [
         {
           label: "Edit",
@@ -82,34 +75,34 @@ export default {
       totalItems: 0,
       diningTables: [],
       isFetching: false,
-      diningTableService:new DiningTableService()
+      diningTableService: new DiningTableService()
     };
   },
   mounted() {
     this.retrieveAllDiningTables();
   },
   methods: {
-    
+
     clear() {
       this.page = 1;
       this.retrieveAllDiningTables();
     },
-    async generateQR(tableId, shopKey) {
-      try {
-        const qrText = `${shopKey}/${tableId}`;
-        const qrCodeImage = await QRCode.toDataURL(qrText);
+    // async generateQR(tableId, shopKey) {
+    //   try {
+    //     const qrText = `${shopKey}/${tableId}`;
+    //     const qrCodeImage = await QRCode.toDataURL(qrText);
 
-        const downloadLink = document.createElement('a');
-        downloadLink.href = qrCodeImage;
-        downloadLink.download = 'qr_code.png';
+    //     const downloadLink = document.createElement('a');
+    //     downloadLink.href = qrCodeImage;
+    //     downloadLink.download = 'qr_code.png';
 
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-      } catch (error) {
-        console.error('Error generating QR code:', error);
-      }
-    },
+    //     document.body.appendChild(downloadLink);
+    //     downloadLink.click();
+    //     document.body.removeChild(downloadLink);
+    //   } catch (error) {
+    //     console.error('Error generating QR code:', error);
+    //   }
+    // },
     retrieveAllDiningTables() {
       this.isFetching = true;
       const paginationQuery = {
@@ -128,7 +121,7 @@ export default {
         })
         .catch(err => {
           this.isFetching = false;
-        
+
         });
     },
     handleSyncList() {
@@ -157,7 +150,7 @@ export default {
           this.closeDialog();
         })
         .catch(error => {
-         
+
         });
     },
     sort() {
@@ -198,6 +191,10 @@ export default {
     addItem() {
       console.log("Adding new item");
       // Add your logic here to handle adding a new item
+    },
+    showAddItemDialog() {
+      // Show the MenuForm dialog
+      this.$refs.menuFormDialog.showDialog = true;
     },
   },
 };

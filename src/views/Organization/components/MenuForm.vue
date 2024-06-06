@@ -12,8 +12,8 @@
 
         <q-input v-model="organizationItem.description" label="Description" type="textarea" class="q-mb-md" />
 
-        <q-input v-model="organizationItem.merchantId" label="Merchant Id" type="number" class="q-mb-md" />
-        <q-input v-model="organizationItem.merchantCode" label="Merchant Code" type="number" class="q-mb-md" />
+        <q-input v-model="organizationItem.merchantId" label="Merchant Id" class="q-mb-md" />
+        <q-input v-model="organizationItem.merchantCode" label="Merchant Code" class="q-mb-md" />
         <q-toggle v-model="organizationItem.orderService" label="Order Service" class="q-mb-md" />
         <q-select v-model="organizationItem.admin" label="Admin" class="q-mb-md" />
       </q-card-section>
