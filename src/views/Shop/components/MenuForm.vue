@@ -12,7 +12,7 @@
 
         <q-input v-model="shopItem.description" label="Description" type="textarea" class="q-mb-md" />
         <q-select v-model="shopItem.contact" :options="contactOptions" label="Contact" class="q-mb-md" />
-        <q-select v-model="shopItem.tenant" :options="tenantOptions" label="Tenant" class="q-mb-md" />
+        <q-select v-model="shopItem.tenant" :options="tenantOptions" label="Tenant" type="select" class="q-mb-md" />
         <q-toggle v-model="shopItem.enable" label="Enable" type="number" class="q-mb-md" />
         <q-input v-model="shopItem.address" label="Address" type="text" class="q-mb-md" />
         <q-toggle v-model="shopItem.orderService" label="Order Service" class="q-mb-md" />

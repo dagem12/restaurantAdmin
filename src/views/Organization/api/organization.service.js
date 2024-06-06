@@ -3,7 +3,7 @@ import buildPaginationQueryOpts from '@/utils/sorts';
 
 
 export default class OrganizationService {
-  constructor(){
+  constructor() {
 
   }
   find(id) {
@@ -25,7 +25,7 @@ export default class OrganizationService {
       axios
         .get(`/organizations?${buildPaginationQueryOpts(paginationQuery)}`)
         .then((res) => {
-          console.log("res ",res)
+          console.log("res ", res)
           resolve(res);
         })
         .catch((err) => {

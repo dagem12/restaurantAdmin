@@ -1,46 +1,40 @@
 <template>
   <div class="content">
     <div class="md-layout">
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
-      >
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <md-card>
-          <md-card-header
-            data-background-color="orange"
-            class="header-with-button"
-          >
+          <md-card-header data-background-color="orange" class="header-with-button">
             <div>
               <h4 class="title">Menu Catalog</h4>
               <p class="category">Explore and manage your menu catalogs</p>
             </div>
             <!-- Add Item button -->
             <div class="add-item-button">
-              <md-button color="primary" @click="this.addItem">
+              <md-button color="primary" @click="this.showAddItemDialog">
                 <md-icon>add</md-icon>
                 <span>Add Item</span>
               </md-button>
             </div>
           </md-card-header>
           <md-card-content>
-            <dynamic-table
-              table-header-color="red"
-              :columns="columns"
-              :data-items="productCatalogs"
-              :actions="actions"
-            />
+            <dynamic-table table-header-color="red" :columns="columns" :data-items="productCatalogs"
+              :actions="actions" />
           </md-card-content>
         </md-card>
       </div>
     </div>
+    <MenuForm ref="menuFormDialog" />
   </div>
 </template>
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
-import ProductCatalogService from "./Api/index"
+import ProductCatalogService from "./Api/index";
+import MenuForm from "../components/MenuCatalogForm.vue";
 export default {
   name: "menuCatalogList",
   components: {
     DynamicTable,
+    MenuForm
   },
   data() {
     return {
@@ -79,14 +73,14 @@ export default {
       totalItems: 0,
       productCatalogs: [],
       isFetching: false,
-      productCatalogService:new ProductCatalogService()
+      productCatalogService: new ProductCatalogService()
     };
   },
   mounted() {
-      this.retrieveAllProductCatalogs();
-    },
+    this.retrieveAllProductCatalogs();
+  },
   methods: {
-    
+
     clear() {
       this.page = 1;
       this.retrieveAllProductCatalogs();
@@ -98,7 +92,7 @@ export default {
         size: this.itemsPerPage,
         sort: this.sort(),
       };
-     this.productCatalogService
+      this.productCatalogService
         .retrieve(paginationQuery)
         .then(res => {
           this.productCatalogs = res.data;
@@ -108,7 +102,7 @@ export default {
         })
         .catch(err => {
           this.isFetching = false;
-        
+
         });
     },
     handleSyncList() {
@@ -137,7 +131,7 @@ export default {
           this.closeDialog();
         })
         .catch(error => {
-          
+
         });
     },
     sort() {
@@ -178,6 +172,10 @@ export default {
     addItem() {
       console.log("Adding new item");
       // Add your logic here to handle adding a new item
+    },
+    showAddItemDialog() {
+      // Show the MenuForm dialog
+      this.$refs.menuFormDialog.showDialog = true;
     },
   },
 };
