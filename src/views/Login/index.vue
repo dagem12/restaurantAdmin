@@ -1,9 +1,9 @@
 <template>
     <div class="body">
-        <div class="container" id="container">
+        <div class="container" id="container"  ref="box">
        
-       <div class="form-container sign-in">
-        <form @submit.prevent="doLogin">
+       <div class="form-container sign-in" >
+        <form @submit.prevent="doLogin" >
     <h1>Sign In</h1>
    
     <input type="text" placeholder="User Name" v-model="login">
@@ -32,7 +32,7 @@
   
   import axios from '../../axios/axios';
 import AccountService from './api/account.service';
-
+import { gsap } from 'gsap';
 export default {
     name:"Login",
   watch: {
@@ -49,9 +49,15 @@ export default {
   },
   mounted() {
     console.log("data",this.$store.state)
+
+    const box = this.$refs.box;
+
+// Using GSAP to animate the element
+gsap.from(box, { duration: 1, x: -1000, opacity: 0, ease: "power1.out" });
     if (this.authenticated) {
       this.$router.push('/');
     }
+   
   },
   methods: {
     doLogin() {

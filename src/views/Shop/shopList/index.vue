@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="md-layout">
+    <div class="md-layout" ref="diningbox">
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <md-card>
           <md-card-header data-background-color="orange" class="header-with-button">
@@ -31,7 +31,7 @@ import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import { mapActions, mapState } from 'vuex';
 import ShopService from '../Api/index';
 import MenuForm from "../components/MenuForm.vue";
-
+import { gsap } from 'gsap';
 
 export default {
   name: "shopList",
@@ -80,6 +80,10 @@ export default {
   },
   mounted() {
     this.retrieveAllShops();
+    const diningbox = this.$refs.diningbox;
+
+// Using GSAP to animate the row
+gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
     addItem() {

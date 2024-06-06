@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="md-layout">
+    <div class="md-layout" ref="box">
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
       >
@@ -38,6 +38,7 @@
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import DiningTableService from "../Api/index.js";
 import QRCode from 'qrcode';
+import { gsap } from 'gsap';
 // import QRCode from 'qrcode';
 
 export default {
@@ -87,6 +88,10 @@ export default {
   },
   mounted() {
     this.retrieveAllDiningTables();
+    const box = this.$refs.box;
+
+// Using GSAP to animate the row
+gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
     
