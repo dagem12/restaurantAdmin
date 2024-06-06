@@ -1,17 +1,17 @@
-import axios from "axios";
-import buildPaginationQueryOpts from "../../../utils/sorts";
+import axios from '@/axios/axios';
+import buildPaginationQueryOpts from '@/utils/sorts';
 
-const baseApiUrl = "api/dining-tables";
+const baseApiUrl = '/dining-tables';
 
-export default class DiningTableService {
+class DiningTableService {
   find(id) {
     return new Promise((resolve, reject) => {
       axios
         .get(`${baseApiUrl}/${id}`)
-        .then((res) => {
+        .then(res => {
           resolve(res.data);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -21,10 +21,10 @@ export default class DiningTableService {
     return new Promise((resolve, reject) => {
       axios
         .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
-        .then((res) => {
+        .then(res => {
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -34,10 +34,10 @@ export default class DiningTableService {
     return new Promise((resolve, reject) => {
       axios
         .delete(`${baseApiUrl}/${id}`)
-        .then((res) => {
+        .then(res => {
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -47,10 +47,10 @@ export default class DiningTableService {
     return new Promise((resolve, reject) => {
       axios
         .post(`${baseApiUrl}`, entity)
-        .then((res) => {
+        .then(res => {
           resolve(res.data);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -60,10 +60,10 @@ export default class DiningTableService {
     return new Promise((resolve, reject) => {
       axios
         .put(`${baseApiUrl}/${entity.id}`, entity)
-        .then((res) => {
+        .then(res => {
           resolve(res.data);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -73,12 +73,14 @@ export default class DiningTableService {
     return new Promise((resolve, reject) => {
       axios
         .patch(`${baseApiUrl}/${entity.id}`, entity)
-        .then((res) => {
+        .then(res => {
           resolve(res.data);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
   }
 }
+
+export default DiningTableService;

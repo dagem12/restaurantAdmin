@@ -17,7 +17,7 @@
             </div>
           </md-card-header>
           <md-card-content>
-            <dynamic-table table-header-color="red" :columns="columns" :data-items="dataItems" :actions="actions" />
+            <dynamic-table table-header-color="red" :columns="columns" :data-items="diningTables" :actions="actions" />
           </md-card-content>
         </md-card>
       </div>
@@ -26,10 +26,8 @@
 </template>
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
-// import { Component, Vue, Inject } from 'vue-property-decorator';
-// import Vue2Filters from 'vue2-filters';
-
 import DiningTableService from "../Api/index.js";
+import QRCode from 'qrcode';
 // import QRCode from 'qrcode';
 
 export default {
@@ -48,26 +46,7 @@ export default {
         { label: "Enable", field: "enable" },
         { label: "CreateBy", field: "createBy" },
       ],
-      dataItems: [
-        {
-          name: "1",
-          code: "ASSD$#",
-          id: "1",
-          enable: "true",
-          description: "best TABLKE",
-          createTime: "22-10-2024",
-          createBy: "Abebeb",
-        },
-        {
-          name: "2",
-          code: "ASSD$#",
-          id: "2",
-          enable: "true",
-          description: "best TABLKE",
-          createTime: "22-10-2024",
-          createBy: "Abebe",
-        },
-      ],
+
       actions: [
         {
           label: "Edit",
@@ -93,25 +72,14 @@ export default {
       totalItems: 0,
       diningTables: [],
       isFetching: false,
+      diningTableService: new DiningTableService()
     };
   },
-  // mounted() {
-  //   this.retrieveAllDiningTables();
-  // },
+  mounted() {
+    this.retrieveAllDiningTables();
+  },
   methods: {
-    editItem(item) {
-      console.log("Editing item:", item);
-    },
-    deleteItem(item) {
-      console.log("Deleting item:", item);
-    },
-    viewItem(item) {
-      console.log("Viewing item:", item);
-    },
-    addItem() {
-      console.log("Adding new item");
-      // Add your logic here to handle adding a new item
-    },
+
     clear() {
       this.page = 1;
       this.retrieveAllDiningTables();
@@ -121,15 +89,15 @@ export default {
         const qrText = `${shopKey}/${tableId}`;
         const qrCodeImage = await QRCode.toDataURL(qrText);
 
-        const downloadLink = document.createElement("a");
+        const downloadLink = document.createElement('a');
         downloadLink.href = qrCodeImage;
-        downloadLink.download = "qr_code.png";
+        downloadLink.download = 'qr_code.png';
 
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
       } catch (error) {
-        console.error("Error generating QR code:", error);
+        console.error('Error generating QR code:', error);
       }
     },
     retrieveAllDiningTables() {
@@ -139,18 +107,19 @@ export default {
         size: this.itemsPerPage,
         sort: this.sort(),
       };
-      DiningTableService.retrieve(paginationQuery).then(
-        (res) => {
+      this.diningTableService
+        .retrieve(paginationQuery)
+        .then(res => {
           this.diningTables = res.data;
-          this.totalItems = Number(res.headers["x-total-count"]);
+          this.totalItems = Number(res.headers['x-total-count']);
           this.queryCount = this.totalItems;
           this.isFetching = false;
-        },
-        (err) => {
+          console.log("dining tables", this.diningTables)
+        })
+        .catch(err => {
           this.isFetching = false;
-          alertService().showHttpError(this, err.response);
-        }
-      );
+
+        });
     },
     handleSyncList() {
       this.clear();
@@ -162,15 +131,14 @@ export default {
       }
     },
     removeDiningTable() {
-      DiningTableService.delete(this.removeId)
+      this.diningTableService
+        .delete(this.removeId)
         .then(() => {
-          const message = this.$t("anywhereApp.diningTable.deleted", {
-            param: this.removeId,
-          });
+          const message = this.$t('anywhereApp.diningTable.deleted', { param: this.removeId });
           this.$bvToast.toast(message.toString(), {
-            toaster: "b-toaster-top-center",
-            title: "Info",
-            variant: "danger",
+            toaster: 'b-toaster-top-center',
+            title: 'Info',
+            variant: 'danger',
             solid: true,
             autoHideDelay: 5000,
           });
@@ -178,14 +146,14 @@ export default {
           this.retrieveAllDiningTables();
           this.closeDialog();
         })
-        .catch((error) => {
-          alertService().showHttpError(this, error.response);
+        .catch(error => {
+
         });
     },
     sort() {
-      const result = [this.propOrder + "," + (this.reverse ? "desc" : "asc")];
-      if (this.propOrder !== "id") {
-        result.push("id");
+      const result = [this.propOrder + ',' + (this.reverse ? 'desc' : 'asc')];
+      if (this.propOrder !== 'id') {
+        result.push('id');
       }
       return result;
     },
@@ -207,6 +175,19 @@ export default {
       if (this.$refs.removeEntity) {
         this.$refs.removeEntity.hide();
       }
+    },
+    editItem(item) {
+      console.log("Editing item:", item);
+    },
+    deleteItem(item) {
+      console.log("Deleting item:", item);
+    },
+    viewItem(item) {
+      console.log("Viewing item:", item);
+    },
+    addItem() {
+      console.log("Adding new item");
+      // Add your logic here to handle adding a new item
     },
   },
 };
