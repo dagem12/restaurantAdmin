@@ -1,14 +1,9 @@
 <template>
-  <div class="content" >
+  <div class="content">
     <div class="md-layout" ref="box">
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
-      >
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <md-card>
-          <md-card-header
-            data-background-color="orange"
-            class="header-with-button"
-          >
+          <md-card-header data-background-color="orange" class="header-with-button">
             <div>
               <h4 class="title">Orders</h4>
               <p class="category">
@@ -17,19 +12,14 @@
             </div>
             <!-- Add Item button -->
             <div class="add-item-button">
-              <md-button color="primary" @click="this.addItem">
+              <!-- <md-button color="primary" @click="this.addItem">
                 <md-icon>add</md-icon>
                 <span>Add Item</span>
-              </md-button>
+              </md-button> -->
             </div>
           </md-card-header>
           <md-card-content>
-            <dynamic-table
-              table-header-color="red"
-              :columns="columns"
-              :data-items="productOrders"
-              :actions="actions"
-            />
+            <dynamic-table table-header-color="red" :columns="columns" :data-items="productOrders" :actions="actions" />
           </md-card-content>
         </md-card>
       </div>
@@ -48,12 +38,12 @@ export default {
   data() {
     return {
       columns: [
-        { label: "Id", field: "id",isRelation:false },
-        { label: "Code", field: "code",isRelation:false },
-        { label: "Name", field: "name", isRelation:false },
-        { label: "Status", field: "status",isRelation:true  },
-        { label: "CreateTime", field: "createTime", isRelation:false  },
-        { label: "DiningTable", field: "diningTable", isRelation:true },
+        { label: "Id", field: "id", isRelation: false },
+        { label: "Code", field: "code", isRelation: false },
+        { label: "Name", field: "name", isRelation: false },
+        { label: "Status", field: "status", isRelation: true },
+        { label: "CreateTime", field: "createTime", isRelation: false },
+        { label: "DiningTable", field: "diningTable", isRelation: true },
       ],
       dataItems: [
         {
@@ -96,7 +86,7 @@ export default {
         },
       ],
       productOrderService: new ProductOrderService(),
-     
+
       removeId: null,
       itemsPerPage: 20,
       queryCount: null,
@@ -109,12 +99,12 @@ export default {
       isFetching: false
     };
   },
- mounted() {
+  mounted() {
     this.retrieveAllProductOrders();
     const box = this.$refs.box;
 
-// Using GSAP to animate the row
-gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
+    // Using GSAP to animate the row
+    gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
     clear() {
@@ -138,7 +128,7 @@ gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
         })
         .catch(err => {
           this.isFetching = false;
-          
+
         });
     },
     handleSyncList() {
@@ -169,7 +159,7 @@ gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
           this.closeDialog();
         })
         .catch(error => {
-         
+
         });
     },
     sort() {
@@ -211,7 +201,7 @@ gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
       // Add your logic here to handle adding a new item
     },
   }
-  };
+};
 </script>
 <style>
 .table {
