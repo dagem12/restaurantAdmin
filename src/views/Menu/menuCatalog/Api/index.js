@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from "@/axios/axios";
 
 import buildPaginationQueryOpts from "../../../../utils/sorts";
 
-const baseApiUrl = "api/product-catalogs";
+const baseApiUrl = "/product-catalogs";
 
 export default class ProductCatalogService {
   find(id) {
