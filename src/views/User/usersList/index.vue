@@ -22,20 +22,35 @@
         </md-card>
       </div>
     </div>
-    <MenuForm ref="menuFormDialog" />
+    <MenuForm :organizations="organizations" :authorities="authorities" :shops="shops" ref="menuFormDialog" />
   </div>
 </template>
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import MenuForm from "../components/MenuForm.vue";
+import OrganizationService from "../../Organization/api/organization.service.js";
+import ShopService from "../../Shop/Api/index.js";
+import UserService from "../Api/index.js";
+import AccountService from "../../Login/api/account.service.js";
+
 export default {
   name: "usersList",
   components: {
     DynamicTable,
     MenuForm
   },
+
+
   data() {
     return {
+      organizations: [],
+      authorities: [],
+      shops: [],
+      organizationService: new OrganizationService(),
+      accountService: new AccountService(),
+      hasAnyAuthorityValues: {},
+      shopService: new ShopService(),
+      userService: new UserService(),
       columns: [
         { label: "Id", field: "id" },
         { label: "Login", field: "login" },
@@ -75,7 +90,82 @@ export default {
       ],
     };
   },
+  watch: {
+    organizations: {
+      handler(newVal) {
+        if (!newVal) {
+          this.initRelationships();
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  watch: {
+    shops: {
+      handler(newVal) {
+        if (!newVal) {
+          this.initRelationships();
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  watch: {
+    authorities: {
+      handler(newVal) {
+        if (!newVal) {
+          this.initAuthorities();
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  mounted() {
+    this.initRelationships();
+    this.initAuthorities();
+  },
   methods: {
+    initAuthorities() {
+      this.userService
+        .retrieveAuthorities()
+        .then(_res => {
+          console.log("authore", this.authorities)
+          this.authorities = _res.data
+          console.log("authore", this.authorities)
+        });
+    },
+    // initAuthorities() {
+    //   this.userService
+    //     .retrieveAuthorities()
+    //     .then(_res => {
+    //       console.log("kayole", _res.data, this.hasAnyAuthority('ROLE_ADMIN'));
+    //       _res.data.forEach(element => {
+    //         if (this.hasAnyAuthority('ROLE_ADMIN')) {
+    //           console.log("kayyyy", this.authorities)
+    //           if (element != 'ROLE_ADMIN') { this.authorities.push(element); }
+
+    //         } else if (this.hasAnyAuthority(Authority.ORGANIZATION_ADMIN)) {
+    //           if (element != 'ROLE_ORGANIZATION_ADMIN' && element != 'ROLE_ADMIN') {
+    //             this.authorities.push(element);
+    //           }
+    //         }
+    //       });
+    //     });
+    // },
+    // hasAnyAuthority(authorities) {
+    //   this.accountService
+    //     .hasAnyAuthorityAndCheckAuth(authorities)
+    //     .then(value => {
+    //       console.log("I called", value);
+    //       if (this.hasAnyAuthorityValues[authorities] !== value) {
+    //         this.hasAnyAuthorityValues = { ...this.hasAnyAuthorityValues, [authorities]: value };
+    //       }
+    //     });
+    //   return this.hasAnyAuthorityValues[authorities] ?? false;
+    // },
     editItem(item) {
       console.log("Editing item:", item);
     },
@@ -91,8 +181,21 @@ export default {
     },
     showAddItemDialog() {
       // Show the MenuForm dialog
+      console.log("mishiole", this.authorities)
       this.$refs.menuFormDialog.showDialog = true;
     },
+    initRelationships() {
+      this.organizationService
+        .retrieve()
+        .then(res => {
+          this.organizations = res.data;
+        });
+      this.shopService
+        .retrieve()
+        .then(res => {
+          this.shops = res.data;
+        });
+    }
   },
 };
 </script>
