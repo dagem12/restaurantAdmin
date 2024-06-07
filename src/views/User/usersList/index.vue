@@ -32,6 +32,7 @@ import OrganizationService from "../../Organization/api/organization.service.js"
 import ShopService from "../../Shop/Api/index.js";
 import UserService from "../Api/index.js";
 import AccountService from "../../Login/api/account.service.js";
+import Authority from "../../../utils/authority";
 
 export default {
   name: "usersList",
@@ -49,6 +50,7 @@ export default {
       organizationService: new OrganizationService(),
       accountService: new AccountService(),
       hasAnyAuthorityValues: {},
+      authority: new Authority(),
       shopService: new ShopService(),
       userService: new UserService(),
       columns: [
@@ -128,26 +130,18 @@ export default {
     this.initAuthorities();
   },
   methods: {
-    // initAuthorities() {
-    //   this.userService
-    //     .retrieveAuthorities()
-    //     .then(_res => {
-    //       console.log("authore", this.authorities)
-    //       this.authorities = _res.data
-    //       console.log("authore", this.authorities)
-    //     });
-    // },
+
     initAuthorities() {
       this.userService
         .retrieveAuthorities()
         .then(_res => {
-         =
           _res.data.forEach(element => {
+            console.log("asddddddddddddddddddddddddddddd")
+            console.log("asdsadassa", this.hasAnyAuthority(this.authority.ORGANIZATION_ADMIN))
             if (this.hasAnyAuthority('ROLE_ADMIN')) {
-              console.log("kayyyy", this.authorities)
-              if (element != 'ROLE_ADMIN') { this.authorities.push(element); }
+              if (element != 'ROLE_ADMIN') this.authorities.push(element);
 
-            } else if (this.hasAnyAuthority(Authority.ORGANIZATION_ADMIN)) {
+            } else if (this.hasAnyAuthority(this.authority.ORGANIZATION_ADMIN)) {
               if (element != 'ROLE_ORGANIZATION_ADMIN' && element != 'ROLE_ADMIN') {
                 this.authorities.push(element);
               }
@@ -156,15 +150,9 @@ export default {
         });
     },
     hasAnyAuthority(authorities) {
-      this.accountService
-        .hasAuthorities(authorities)
-        .then(value => {
-          console.log("I called", value);
-          if (this.hasAnyAuthorityValues[authorities] !== value) {
-            this.hasAnyAuthorityValues = { ...this.hasAnyAuthorityValues, [authorities]: value };
-          }
-        });
-      return this.hasAnyAuthorityValues[authorities] ?? false;
+      return this.accountService.hasAuthorities(authorities)
+
+
     },
     editItem(item) {
       console.log("Editing item:", item);
