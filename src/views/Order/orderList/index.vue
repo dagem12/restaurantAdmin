@@ -6,7 +6,7 @@
       >
         <md-card>
           <md-card-header
-            data-background-color="orange"
+            data-background-color=""
             class="header-with-button"
           >
             <div>
@@ -216,5 +216,8 @@ gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
 <style>
 .table {
   padding: 1%;
+}
+.md-card-header{
+  background-color: #5335AB !important;
 }
 </style>

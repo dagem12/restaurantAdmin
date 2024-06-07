@@ -6,7 +6,7 @@
       >
         <md-card>
           <md-card-header
-            data-background-color="orange"
+            data-background-color=""
             class="header-with-button"
           >
             <div>
@@ -102,5 +102,8 @@ export default {
 <style>
 .table {
   padding: 1%;
+}
+.md-card-header{
+  background-color: #5335AB !important;
 }
 </style>

@@ -48,15 +48,16 @@ export default {
     };
   },
   mounted() {
-    console.log("data",this.$store.state)
-
+    console.log("auth",this.$store.getters)
+    if (this.$store.getters.authenticated) {
+      console.log("work")
+      this.$router.push('/');
+    }
     const box = this.$refs.box;
 
 // Using GSAP to animate the element
 gsap.from(box, { duration: 1, x: -1000, opacity: 0, ease: "power1.out" });
-    if (this.authenticated) {
-      this.$router.push('/');
-    }
+   
    
   },
   methods: {
@@ -66,20 +67,23 @@ gsap.from(box, { duration: 1, x: -1000, opacity: 0, ease: "power1.out" });
         .post('/authenticate', data)
         .then(result => {
           const bearerToken = result.headers.authorization;
+          
           if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
             const jwt = bearerToken.slice(7);
-            if (this.rememberMe) {
-              localStorage.setItem('jhi-authenticationToken', jwt);
-              sessionStorage.removeItem('jhi-authenticationToken');
-            } else {
-              sessionStorage.setItem('jhi-authenticationToken', jwt);
-              localStorage.removeItem('jhi-authenticationToken');
-            }
+
+            localStorage.setItem('jhi-authenticationToken', jwt);
+            // if (this.rememberMe) {
+            //   localStorage.setItem('jhi-authenticationToken', jwt);
+            //   sessionStorage.removeItem('jhi-authenticationToken');
+            // } else {
+            //   sessionStorage.setItem('jhi-authenticationToken', jwt);
+            //   localStorage.removeItem('jhi-authenticationToken');
+            // }
           }
           this.authenticationError = false;
         
           this.accountService.retrieveAccount().then(res=>{
-            this.$router.push('/dashboard');
+            this.$router.push('/');
           }).catch(err=>{
 
           });

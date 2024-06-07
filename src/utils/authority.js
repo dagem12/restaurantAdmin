@@ -1,0 +1,6 @@
+export class Authority {
+    ADMIN = 'ROLE_ADMIN';
+    ORGANIZATION_ADMIN = 'ROLE_ORGANIZATION_ADMIN';
+    SHOP_ADMIN = 'ROLE_SHOP_ADMIN';
+  }
+  

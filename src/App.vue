@@ -3,7 +3,12 @@
 </template>
 
 <script>
-export default {};
+import AccountService from './views/Login/api/account.service';
+export default {
+  mounted(){
+    new AccountService().retrieveAccount()
+  }
+};
 </script>
 <style>
 .custom-dialog {

@@ -4,7 +4,7 @@
       <div class="md-layout">
         <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
           <md-card>
-            <md-card-header data-background-color="orange" class="header-with-button">
+            <md-card-header data-background-color="" class="header-with-button">
               <div>
                 <h4 class="title">Menus</h4>
                 <p class="category">Explore and manage your restaurant's menu items</p>
@@ -199,5 +199,8 @@ export default {
 
 .add-item-button {
   margin-top: 10px;
+}
+.md-card-header{
+  background-color: #5335AB !important;
 }
 </style>
