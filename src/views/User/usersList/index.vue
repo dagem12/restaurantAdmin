@@ -53,6 +53,15 @@ export default {
       authority: new Authority(),
       shopService: new ShopService(),
       userService: new UserService(),
+      removeId: null,
+      itemsPerPage: 20,
+      queryCount: null,
+      page: 1,
+      previousPage: 1,
+      propOrder: 'id',
+      reverse: false,
+      totalItems: 0,
+      isFetching: false,
       columns: [
         { label: "Id", field: "id" },
         { label: "Login", field: "login" },
@@ -92,6 +101,11 @@ export default {
       ],
     };
   },
+
+  mounted() {
+    this.initRelationships();
+    this.initAuthorities();
+  },
   watch: {
     organizations: {
       handler(newVal) {
@@ -125,31 +139,22 @@ export default {
       deep: true
     }
   },
-  mounted() {
-    this.initRelationships();
-    this.initAuthorities();
-  },
   methods: {
 
     initAuthorities() {
-      this.userService
-        .retrieveAuthorities()
-        .then(_res => {
-          _res.data.forEach(element => {
+      if (this.hasAnyAuthority('ROLE_ADMIN')) {
+        this.authorities.push(this.authority.ORGANIZATION_ADMIN);
+        this.authorities.push(this.authority.SHOP_ADMIN);
 
-            if (this.hasAnyAuthority('ROLE_ADMIN')) {
-              this.authorities.push;
+      } else if (this.hasAnyAuthority(this.authority.ORGANIZATION_ADMIN)) {
+        this.authorities.push(this.authority.SHOP_ADMIN);
+      }
 
-            } else if (this.hasAnyAuthority(this.authority.ORGANIZATION_ADMIN)) {
-              if (element != 'ROLE_ORGANIZATION_ADMIN' && element != 'ROLE_ADMIN') {
-                this.authorities.push(element);
-              }
-            }
-          });
-        });
+
+
     },
     hasAnyAuthority(authorities) {
-      return this.accountService.hasAuthorities(authorities)
+      return this.accountService.hasAuthorities(authorities);
 
 
     },
@@ -173,16 +178,17 @@ export default {
     },
     initRelationships() {
       this.organizationService
-        .retrieve
+        .retrieve()
         .then(res => {
           this.organizations = res.data;
         });
+
       this.shopService
-        .retrieve
+        .retrieve()
         .then(res => {
           this.shops = res.data;
         });
-    }
+    },
   },
 };
 </script>

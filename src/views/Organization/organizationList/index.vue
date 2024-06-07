@@ -218,7 +218,8 @@ export default {
 .table {
   padding: 1%;
 }
-.md-card-header{
+
+.md-card-header {
   background-color: #5335AB !important;
 }
 </style>
