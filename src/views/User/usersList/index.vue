@@ -3,7 +3,7 @@
     <div class="md-layout">
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <md-card>
-          <md-card-header data-background-color="orange" class="header-with-button">
+          <md-card-header data-background-color="" class="header-with-button">
             <div>
               <h4 class="title">Users</h4>
               <p class="category">Explore and manage your users</p>
@@ -128,44 +128,44 @@ export default {
     this.initAuthorities();
   },
   methods: {
-    initAuthorities() {
-      this.userService
-        .retrieveAuthorities()
-        .then(_res => {
-          console.log("authore", this.authorities)
-          this.authorities = _res.data
-          console.log("authore", this.authorities)
-        });
-    },
     // initAuthorities() {
     //   this.userService
     //     .retrieveAuthorities()
     //     .then(_res => {
-    //       console.log("kayole", _res.data, this.hasAnyAuthority('ROLE_ADMIN'));
-    //       _res.data.forEach(element => {
-    //         if (this.hasAnyAuthority('ROLE_ADMIN')) {
-    //           console.log("kayyyy", this.authorities)
-    //           if (element != 'ROLE_ADMIN') { this.authorities.push(element); }
+    //       console.log("authore", this.authorities)
+    //       this.authorities = _res.data
+    //       console.log("authore", this.authorities)
+    //     });
+    // },
+    initAuthorities() {
+      this.userService
+        .retrieveAuthorities()
+        .then(_res => {
+         =
+          _res.data.forEach(element => {
+            if (this.hasAnyAuthority('ROLE_ADMIN')) {
+              console.log("kayyyy", this.authorities)
+              if (element != 'ROLE_ADMIN') { this.authorities.push(element); }
 
-    //         } else if (this.hasAnyAuthority(Authority.ORGANIZATION_ADMIN)) {
-    //           if (element != 'ROLE_ORGANIZATION_ADMIN' && element != 'ROLE_ADMIN') {
-    //             this.authorities.push(element);
-    //           }
-    //         }
-    //       });
-    //     });
-    // },
-    // hasAnyAuthority(authorities) {
-    //   this.accountService
-    //     .hasAnyAuthorityAndCheckAuth(authorities)
-    //     .then(value => {
-    //       console.log("I called", value);
-    //       if (this.hasAnyAuthorityValues[authorities] !== value) {
-    //         this.hasAnyAuthorityValues = { ...this.hasAnyAuthorityValues, [authorities]: value };
-    //       }
-    //     });
-    //   return this.hasAnyAuthorityValues[authorities] ?? false;
-    // },
+            } else if (this.hasAnyAuthority(Authority.ORGANIZATION_ADMIN)) {
+              if (element != 'ROLE_ORGANIZATION_ADMIN' && element != 'ROLE_ADMIN') {
+                this.authorities.push(element);
+              }
+            }
+          });
+        });
+    },
+    hasAnyAuthority(authorities) {
+      this.accountService
+        .hasAuthorities(authorities)
+        .then(value => {
+          console.log("I called", value);
+          if (this.hasAnyAuthorityValues[authorities] !== value) {
+            this.hasAnyAuthorityValues = { ...this.hasAnyAuthorityValues, [authorities]: value };
+          }
+        });
+      return this.hasAnyAuthorityValues[authorities] ?? false;
+    },
     editItem(item) {
       console.log("Editing item:", item);
     },
@@ -202,5 +202,9 @@ export default {
 <style>
 .table {
   padding: 1%;
+}
+
+.md-card-header {
+  background-color: #5335AB !important;
 }
 </style>

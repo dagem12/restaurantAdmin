@@ -13,6 +13,7 @@ import ShopList from "@/views/Shop/shopList";
 import OrganizationList from "@/views/Organization/organizationList";
 import UsersList from "@/views/User/usersList";
 import Login from "@/views/Login";
+import ForgotPassword from "@/views/ForgetPassword";
 import OrderDetail from "@/views/Order/orderDetail";
 
 const routes = [
@@ -20,6 +21,12 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+    meta: { requiresAuth: false },
+  },
+  {
+    path: "/forgotPassword",
+    name: "ForgotPassword",
+    component: ForgotPassword,
     meta: { requiresAuth: false },
   },
   {

@@ -1,5 +1,5 @@
 import { Module } from 'vuex';
-
+import AccountService from '../../../views/Login/api/account.service';
 const defaultAccountState = {
   logon: false,
   userIdentity: null,
@@ -19,7 +19,7 @@ export const accountStore = {
   },
   mutations: {
     authenticate(state) {
-      console.log("authenticate",state)
+     
       state.logon = true;
     },
     authenticated(state, identity) {
@@ -28,18 +28,29 @@ export const accountStore = {
       state.logon = false;
     },
     logout(state) {
-      console.log("logout",state)
-      // state.userIdentity = null;
-      // state.authenticated = false;
-      // state.logon = false;
+      
+      state.userIdentity = null;
+      state.authenticated = false;
+      state.logon = false;
+      localStorage.removeItem("jhi-authenticationToken")
     },
     setActiveProfiles(state, profile) {
-      console.log("setActiveProfiles",state)
+      
       state.activeProfiles = profile;
     },
     setRibbonOnProfiles(state, ribbon) {
-      console.log("setRibbonOnProfiles",state)
+  
       state.ribbonOnProfiles = ribbon;
     },
+
+    initializeApp() {
+      const storedToken = localStorage.getItem('authenticationToken') || sessionStorage.getItem('authenticationToken');
+      if (storedToken) {
+        // Assuming you have an API endpoint to fetch user data based on the token
+        new AccountService().retrieveAccount();
+      }
+    },
+  
+
   },
 };

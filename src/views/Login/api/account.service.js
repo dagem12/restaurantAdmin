@@ -1,5 +1,6 @@
-import axios from '@/axios/axios';
+import axios from '../../../axios/axios';
 import store from '../../../store';
+import router from '../../../routes';
 
 
 export default class AccountService {
@@ -41,27 +42,27 @@ export default class AccountService {
           if (account != null) {
             store.commit('authenticated', account);
             console.log("data inside account", store.getters)
-            if (this.store.getters.currentLanguage !== account.langKey) {
-              store.commit('currentLanguage', account.langKey);
-            }
+            // if (this.store.getters.currentLanguage !== account.langKey) {
+            //  store.commit('currentLanguage', account.langKey);
+            // }
             if (sessionStorage.getItem('requested-url')) {
               this.router.replace(sessionStorage.getItem('requested-url'));
               sessionStorage.removeItem('requested-url');
+            } else {
+              router.push('/');
             }
           } else {
-            console.log("Logout")
-            //  store.commit('logout');
             if (this.router.currentRoute.path !== '/') {
-              this.router.push('/');
+              router.push('/');
             }
             sessionStorage.removeItem('requested-url');
           }
 
           resolve(true);
         })
-        .catch(() => {
-          console.log("Logout")
-          store.commit('logout');
+        .catch((err) => {
+          console.log("Logout", err)
+          // store.commit('logout');
           resolve(false);
         });
     });
@@ -129,6 +130,7 @@ export default class AccountService {
   }
 
   get userAuthorities() {
+    console.log("user dddddddddd", store.getters.account?.authorities)
     return store.getters.account?.authorities;
   }
 
@@ -141,6 +143,17 @@ export default class AccountService {
       }
     }
     return Promise.resolve(false);
+  }
+
+  hasAuthorities(authorities) {
+    if (this.userAuthorities) {
+      if (this.userAuthorities.includes(authorities)) {
+        return true;
+      }
+
+    }
+    console.log(authorities)
+    return false;
   }
 
 }
