@@ -73,7 +73,7 @@ export default {
         },
         { label: "Edit", method: this.editItem, icon: "edit", color: "amber" },
       ],
-      productService:new ProductService(),
+      productService: new ProductService(),
       removeId: null,
       itemsPerPage: 20,
       queryCount: null,
@@ -87,10 +87,10 @@ export default {
     };
   },
   mounted() {
-      this.retrieveAllProducts();
-    },
+    this.retrieveAllProducts();
+  },
   methods: {
-   
+
     clear() {
       this.page = 1;
       this.retrieveAllProducts();
@@ -112,7 +112,7 @@ export default {
         })
         .catch(err => {
           this.isFetching = false;
-         
+
         });
     },
     handleSyncList() {
@@ -141,7 +141,7 @@ export default {
           this.closeDialog();
         })
         .catch(error => {
-         
+
         });
     },
     sort() {
@@ -170,7 +170,7 @@ export default {
         this.$refs.removeEntity.hide();
       }
     },
-   
+
     editItem(item) {
       console.log("Editing item:", item);
     },
@@ -184,7 +184,7 @@ export default {
       // Show the MenuForm dialog
       this.$refs.menuFormDialog.showDialog = true;
     }
-  
+
   },
 
 };
