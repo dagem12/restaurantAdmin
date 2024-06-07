@@ -3,14 +3,14 @@
         <div class="container" id="container"  ref="box">
        
        <div class="form-container sign-in" >
-        <form @submit.prevent="doLogin" >
-    <h1>Sign In</h1>
+        <form @submit.prevent="forgetPassword" >
+    <h3>Forgot Password</h3>
    
-    <input type="text" placeholder="User Name" v-model="login">
-    <input type="password" placeholder="Password" v-model="password">
-    <router-link to="/forgotPassword">Forget Your Password?</router-link>
-    <button type="submit">Sign In</button>
+    <input type="text" placeholder="Enter User Name" v-model="userName">
+    <button type="submit">Submit</button>
+    <router-link to="/login">Back To Login</router-link>
   </form>
+
 
        </div>
        <div class="toggle-container">
@@ -31,10 +31,11 @@
   <script>
   
   import axios from '../../axios/axios';
-import AccountService from './api/account.service';
+import AccountService from '../Login/api/account.service';
+import { Notify } from 'quasar';
 import { gsap } from 'gsap';
 export default {
-    name:"Login",
+    name:"ForgetPassword",
   watch: {
    
   },
@@ -42,61 +43,34 @@ export default {
     return {
       accountService: new AccountService(),
       authenticationError: null,
-      login: null,
-      password: null,
-      rememberMe: null,
+      userName: null,
     };
   },
   mounted() {
-    console.log("auth",this.$store.getters)
-    if (this.$store.getters.authenticated) {
-      console.log("work")
-      this.$router.push('/');
-    }
+    console.log("data",this.$store.state)
+
     const box = this.$refs.box;
 
-// Using GSAP to animate the element
-gsap.from(box, { duration: 1, x: -1000, opacity: 0, ease: "power1.out" });
-   
-   
+// Using GSAP to animate the elemen
+gsap.from(box, { duration: 1, x: -1000, opacity: 0, ease: "power1.in" });
   },
   methods: {
-    doLogin() {
-      const data = { username: this.login, password: this.password, rememberMe: this.rememberMe };
+    forgetPassword() {
+   
+      const data = { username: this.userName};
       axios
-        .post('/authenticate', data)
+        .post('/forgotPassword', data)
         .then(result => {
-          const bearerToken = result.headers.authorization;
-          
-          if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
-            const jwt = bearerToken.slice(7);
-
-            localStorage.setItem('jhi-authenticationToken', jwt);
-            // if (this.rememberMe) {
-            //   localStorage.setItem('jhi-authenticationToken', jwt);
-            //   sessionStorage.removeItem('jhi-authenticationToken');
-            // } else {
-            //   sessionStorage.setItem('jhi-authenticationToken', jwt);
-            //   localStorage.removeItem('jhi-authenticationToken');
-            // }
-          }
-          this.authenticationError = false;
-        
-          this.accountService.retrieveAccount().then(res=>{
-            this.$router.push('/');
-          }).catch(err=>{
-
-          });
-       
-         
          
         })
         .catch(() => {
-          this.authenticationError = true;
+          Notify.create({
+        message: 'This is a notification!',
+        color: 'negative', // or 'negative', 'warning', 'info'
+        position: 'top',
+        timeout: 2000 // in milliseconds
+      });
         });
-    },
-    authenticated() {
-       return this.$store.getters.authenticated;
     },
   },
 };
