@@ -22,13 +22,15 @@
         </md-card>
       </div>
     </div>
-    <MenuForm ref="menuFormDialog" />
+    <MenuForm :shops="shops" :organizations="organizations" ref="menuFormDialog" />
   </div>
 </template>
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import DiningTableService from "../Api/index.js";
 import MenuForm from "../components/MenuForm.vue";
+import ShopService from "../../Shop/Api/index.js";
+import OrganizationService from "../../Organization/api/organization.service.js";
 // import QRCode from 'qrcode';
 import { gsap } from 'gsap';
 // import QRCode from 'qrcode';
@@ -77,15 +79,42 @@ export default {
       diningTables: [],
       isFetching: false,
       diningTableService: new DiningTableService(),
-      vaColor:"#5335AB"
+      vaColor:"#5335AB",
+      shopService: new ShopService(),
+      organizationService: new OrganizationService(),
+      organizations: [],
+      shops: []
     };
   },
   mounted() {
     this.retrieveAllDiningTables();
     const box = this.$refs.box;
 
-// Using GSAP to animate the row
-gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
+    // Using GSAP to animate the row
+    gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
+    this.initRelationships();
+  },
+  watch: {
+    organizations: {
+      handler(newVal) {
+        if (!newVal) {
+          this.initRelationships();
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  watch: {
+    shops: {
+      handler(newVal) {
+        if (!newVal) {
+          this.initRelationships();
+        }
+      },
+      immediate: true, // This ensures the watch is triggered immediately after the component is created
+      deep: true // This allows the watch to watch for changes in nested properties of the prop
+    }
   },
   methods: {
 
@@ -202,6 +231,19 @@ gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
       // Show the MenuForm dialog
       this.$refs.menuFormDialog.showDialog = true;
     },
+    initRelationships() {
+      this.organizationService
+        .retrieve()
+        .then(res => {
+          this.organizations = res.data;
+        });
+
+      this.shopService
+        .retrieve()
+        .then(res => {
+          this.shops = res.data;
+        });
+    }
   },
 };
 </script>

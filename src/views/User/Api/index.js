@@ -1,28 +1,28 @@
-import axios from "axios";
+import axios from "@/axios/axios";
 import buildPaginationQueryOpts from "../../../utils/sorts";
 
 export default class UserManagementService {
   get(userId) {
-    return axios.get(`api/admin/users/${userId}`);
+    return axios.get(`/admin/users/${userId}`);
   }
 
   create(user) {
-    return axios.post("api/admin/users", user);
+    return axios.post("/admin/users", user);
   }
 
   update(user) {
-    return axios.put("api/admin/users", user);
+    return axios.put("/admin/users", user);
   }
 
   remove(userId) {
-    return axios.delete(`api/admin/users/${userId}`);
+    return axios.delete(`/admin/users/${userId}`);
   }
 
   retrieve(req) {
-    return axios.get(`api/admin/users?${buildPaginationQueryOpts(req)}`);
+    return axios.get(`/admin/users?${buildPaginationQueryOpts(req)}`);
   }
 
   retrieveAuthorities() {
-    return axios.get("api/authorities");
+    return axios.get("/authorities");
   }
 }

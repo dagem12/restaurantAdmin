@@ -22,12 +22,15 @@
         </md-card>
       </div>
     </div>
-    <MenuForm ref="menuFormDialog" />
+    <MenuForm :users="users" ref="menuFormDialog" />
+
   </div>
 </template>
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import OrganizationService from "../api/organization.service.js";
+import UserService from "../../User/Api/index.js";
+import { watch } from 'vue';
 import MenuForm from "../components/MenuForm.vue";
 import { gsap } from 'gsap';
 export default {
@@ -36,8 +39,10 @@ export default {
     DynamicTable,
     MenuForm
   },
+
   data() {
     return {
+
       removeId: null,
       itemsPerPage: 20,
       queryCount: null,
@@ -48,6 +53,8 @@ export default {
       totalItems: 0,
       organizations: [],
       isFetching: false,
+      showMenuForm: false,
+      userService: new UserService(),
       organizationService: new OrganizationService(),
       columns: [
         { label: "Id", field: "id" },
@@ -56,7 +63,7 @@ export default {
         { label: "Description", field: "description" },
         { label: "Enable", field: "enable" },
         { label: "CreateTime", field: "createTime" },
-       
+
       ],
       dataItems: [
         {
@@ -98,10 +105,30 @@ export default {
     this.retrieveAllOrganizations();
     const box = this.$refs.box;
 
-// Using GSAP to animate the row
-gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
+    // Using GSAP to animate the row
+    gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
+    this.initRelationships();
+  },
+  watch: {
+    users: {
+      handler(newVal) {
+        if (!newVal || this.users == '') {
+          this.initRelationships();
+        }
+      },
+      immediate: true, // This ensures the watch is triggered immediately after the component is created
+      deep: true // This allows the watch to watch for changes in nested properties of the prop
+    }
   },
   methods: {
+    initRelationships() {
+      this.userService
+        .retrieve()
+        .then(res => {
+          this.users = res.data;
+          console.log("amm colled", this.users)
+        });
+    },
     clear() {
       this.page = 1;
       this.retrieveAllOrganizations();
@@ -123,7 +150,7 @@ gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
           },
           err => {
             this.isFetching = false;
-            
+
           }
         );
     },
@@ -149,10 +176,10 @@ gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
           });
           this.removeId = null;
           this.retrieveAllOrganizations();
-          this. showAddItemDialog();
+          this.showAddItemDialog();
         })
         .catch(error => {
-          
+
         });
     },
     sort() {
@@ -179,6 +206,7 @@ gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
     showAddItemDialog() {
       // Show the MenuForm dialog
       this.$refs.menuFormDialog.showDialog = true;
+
     },
     editItem(item) {
       console.log("Editing item:", item);
