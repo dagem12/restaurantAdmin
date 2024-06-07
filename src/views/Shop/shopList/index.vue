@@ -22,7 +22,7 @@
         </md-card>
       </div>
     </div>
-    <MenuForm ref="menuFormDialog" />
+    <MenuForm ref="menuFormDialog" retrieveAllShops="retrieveAllShops"/>
   </div>
 </template>
 
@@ -30,7 +30,7 @@
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import { mapActions, mapState } from 'vuex';
 import ShopService from '../Api/index';
-import MenuForm from "../components/MenuForm.vue";
+import MenuForm from "../components/ShopForm.vue";
 import { gsap } from 'gsap';
 
 export default {
@@ -178,15 +178,15 @@ gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" })
     closeDialog() {
       if (this.$refs.removeEntity) {
         this.$refs.removeEntity.hide();
+      
       }
     },
     showAddItemDialog() {
       // Show the MenuForm dialog
+
       this.$refs.menuFormDialog.showDialog = true;
     },
-    getUrl (files) {
-      return `http://localhost:4444/upload?count=${files.length}`
-    }
+ 
 
   },
 };
