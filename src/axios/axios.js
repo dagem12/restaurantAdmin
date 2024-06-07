@@ -5,7 +5,7 @@ import store from '@/store'
 const request = axios.create({
   baseURL: 'api/', 
   headers: {
-    'Authorization':"Bearer " + sessionStorage.getItem('jhi-authenticationToken'), // Set the authentication header
+    'Authorization':"Bearer " + localStorage.getItem("jhi-authenticationToken"), // Set the authentication header
     // Other headers can be added here if needed
   },
     timeout: 120000,
@@ -48,32 +48,13 @@ const handleError = async(error) => {
      return Promise.resolve();
     } else if (error.response.status === 500) {
 
-      store.dispatch("errors/addError", error.response.data.title).then(response => {
-       console.log(store.state.errors.error);
-       
-       },
-       (error) => {
-      console.log("error",error)
-       
-     });
+     
      return Promise.resolve();
     } else if (error.response.status === 401 || error.response.status===403 ){
-      store.dispatch("errors/addError", "You are not authorized to access this page.").then(response => {
-        console.log(store.state.errors.error);
-        },
-        (error) => {
-       console.log("error",error)
-        
-      });
+     
       return Promise.resolve();
     }else{
-      store.dispatch("errors/addError", "Unknown Error Occure.").then(response => {
-        console.log(store.state.errors.error);
-        },
-        (error) => {
-       console.log("error",error)
-        
-      });
+     
       return Promise.resolve();
     }
   } else {

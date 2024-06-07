@@ -29,60 +29,10 @@
           </a>
         </li>
 
-        <li class="button-container">
-          <div class="">
-            <md-button
-              class="md-success md-block"
-              :href="freeUrl"
-              target="_blank"
-              >Free Download</md-button
-            >
-          </div>
-        </li>
+       
 
-        <li class="button-container">
-          <div class="">
-            <md-button
-              class="md-block md-primary"
-              :href="documentationLink"
-              target="_blank"
-              >Documentation</md-button
-            >
-          </div>
-        </li>
+        
 
-        <li class="header-title d-flex justify-content-center">
-          Thank you for sharing!
-        </li>
-
-        <li class="button-container">
-          <social-sharing
-            :url="shareUrl"
-            inline-template
-            title="Vue Material Dashboard - Admin Template for Vue.js"
-            hashtags="vuejs, dashboard, vuematerial"
-            twitter-user="creativetim"
-          >
-            <div class="centered-buttons">
-              <ShareNetwork
-                title=""
-                url="https://www.creative-tim.com/product/vue-material-dashboard"
-                network="facebook"
-                class="md-button md-round md-just-icon md-facebook"
-              >
-                <i class="fab fa-facebook-f"></i>
-              </ShareNetwork>
-              <ShareNetwork
-                url="https://www.creative-tim.com/product/vue-material-dashboard"
-                title=""
-                network="twitter"
-                class="md-button md-round md-just-icon md-twitter"
-              >
-                <i class="fab fa-twitter"></i>
-              </ShareNetwork>
-            </div>
-          </social-sharing>
-        </li>
         <li class="github-buttons">
           <gh-btns-star
             slug="creativetimofficial/vue-material-dashboard"
@@ -112,9 +62,10 @@ export default {
       freeUrl: "https://www.creative-tim.com/product/vue-material-dashboard",
       isOpen: false,
       sidebarColors: [
+      { color: "va", active: true },
         { color: "purple", active: false },
         { color: "blue", active: false },
-        { color: "green", active: true },
+        { color: "green", active: false },
         { color: "orange", active: false },
         { color: "red", active: false },
       ],

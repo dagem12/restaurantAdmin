@@ -11,31 +11,31 @@
         <md-icon>dashboard</md-icon>
         <p v-if="isExpanded">Dashboard</p>
       </sidebar-link>
-      <sidebar-link to="/organization">
+      <sidebar-link to="/organization" v-if="accountService.hasAuthorities(Authority.ADMIN)">
         <md-icon>corporate_fare</md-icon>
         <p v-if="isExpanded">Organization</p>
       </sidebar-link>
-      <sidebar-link to="/shop">
+      <sidebar-link to="/shop"  v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN)">
         <md-icon>store</md-icon>
         <p v-if="isExpanded">Shop</p>
       </sidebar-link>
-      <sidebar-link to="/dining-table">
+      <sidebar-link to="/dining-table"  v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) ||accountService.hasAuthorities(Authority.SHOP_ADMIN) ">
         <md-icon>dinner_dining</md-icon>
         <p v-if="isExpanded">Dining Table</p>
       </sidebar-link>
-      <sidebar-link to="/menu-catalog">
+      <sidebar-link to="/menu-catalog"  v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) || accountService.hasAuthorities(Authority.SHOP_ADMIN)">
         <md-icon>menu_book</md-icon>
         <p v-if="isExpanded">Menu Catalog</p>
       </sidebar-link>
-      <sidebar-link to="/menu-list">
+      <sidebar-link to="/menu-list"  v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) ||accountService.hasAuthorities(Authority.SHOP_ADMIN)">
         <md-icon>summarize</md-icon>
         <p v-if="isExpanded">Menu List</p>
       </sidebar-link>
-      <sidebar-link to="/order">
+      <sidebar-link to="/order"  v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) ||accountService.hasAuthorities(Authority.SHOP_ADMIN)">
         <md-icon>list_alt</md-icon>
         <p v-if="isExpanded">Product Order</p>
       </sidebar-link>
-      <sidebar-link to="/users">
+      <sidebar-link to="/users"  v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) ||accountService.hasAuthorities(Authority.SHOP_ADMIN)">
         <md-icon>person</md-icon>
         <p v-if="isExpanded">Users</p>
       </sidebar-link>
@@ -67,6 +67,8 @@ import ContentFooter from "./ContentFooter.vue";
 import DashboardContent from "./Content.vue";
 import MobileMenu from "@/pages/Layout/MobileMenu.vue";
 import FixedPlugin from "./Extra/FixedPlugin.vue";
+import { Authority } from "../../utils/authority";
+import AccountService from "../../views/Login/api/account.service";
 
 export default {
   components: {
@@ -75,12 +77,15 @@ export default {
     ContentFooter,
     // MobileMenu,
     FixedPlugin,
+  
   },
   data() {
     return {
       sidebarBackground: "green",
       sidebarBackgroundImage: require("@/assets/img/sidebar-2.jpg"),
       isExpanded: true,
+      accountService: new AccountService(),
+      Authority: new Authority()
     };
   },
   watch: {

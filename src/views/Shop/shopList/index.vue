@@ -3,14 +3,14 @@
     <div class="md-layout" ref="diningbox">
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <md-card>
-          <md-card-header data-background-color="orange" class="header-with-button">
+          <md-card-header data-background-color="" class="header-with-button">
             <div>
               <h4 class="title">Shops</h4>
               <p class="category">Explore and manage your shops</p>
             </div>
             <!-- Add Item button -->
             <div class="add-item-button">
-              <md-button color="primary" @click="this.showAddItemDialog">
+              <md-button color="" @click="this.showAddItemDialog">
                 <md-icon>add</md-icon>
                 <span>Add Item</span>
               </md-button>
@@ -183,6 +183,9 @@ gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" })
     showAddItemDialog() {
       // Show the MenuForm dialog
       this.$refs.menuFormDialog.showDialog = true;
+    },
+    getUrl (files) {
+      return `http://localhost:4444/upload?count=${files.length}`
     }
 
   },
@@ -192,5 +195,12 @@ gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" })
 <style>
 .table {
   padding: 1%;
+}
+.md-card-header{
+  background-color: #5335AB !important;
+}
+
+.md-button{
+  background-color: #5335AB !important;
 }
 </style>

@@ -16,24 +16,42 @@
         <q-toggle v-model="shopItem.enable" label="Enable" type="number" class="q-mb-md" />
         <q-input v-model="shopItem.address" label="Address" type="text" class="q-mb-md" />
         <q-toggle v-model="shopItem.orderService" label="Order Service" class="q-mb-md" />
+       
+        <q-uploader
+      url="http://localhost:8081/upload"
+      label="Click or Drag files here to upload"
+      @added="onFileAdded"
+      @uploaded="onFileUploaded"
+      :headers="uploadHeaders"
+      :factory="uploadFactory"
+    />
 
+ 
       </q-card-section>
+
+      
 
       <q-card-actions align="right">
         <q-btn color="primary" label="Add" @click="addItem" />
         <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
       </q-card-actions>
+   
+
     </q-card>
   </q-dialog>
 </template>
 
 <script>
 import ShopService from "../Api/index.js";
+import fileService from "../../../utils/file.service.js"
 export default {
   data() {
     return {
       showDialog: false,
       shopService: new ShopService(),
+      uploadHeaders: {
+        Authorization: 'Bearer YOUR_AUTH_TOKEN'
+      },
       shopItem: {
         name: '',
         tenant: null,
@@ -42,6 +60,7 @@ export default {
         enable: false,
         orderService: false,
         contact: null,
+        shortcutIcon:''
       },
       contactOptions: [
         { label: 'Abebe', value: '1' },
@@ -52,6 +71,7 @@ export default {
         { label: 'Et Restaurnt', value: '1' },
         { label: 'Kaldis Restaurant', value: '2' }
       ],
+    
     };
   },
   methods: {
@@ -93,7 +113,33 @@ export default {
         orderService: '',
         contact: null,
       };
+    },
+    onFileAdded(files) {
+      console.log('Files added:', files);
+      const formDataFile = new FormData();
+      formDataFile.append('file', files[0]);
+      fileService.createFile(formDataFile).then(res=>{
+        console.log("res",res)
+      }).catch(err=>{
+        console.log("err",err)
+      })
+    },
+    onFileUploaded(response) {
+      console.log('File uploaded:', response);
+    },
+    uploadFactory(files) {
+      // Customize how files are uploaded, if necessary
+      return files.map(file => ({
+        url: 'http://localhost:8081/upload',
+        formData: {
+          file
+        }
+      }));
     }
+   
+  
+
+  
   }
 };
 </script>

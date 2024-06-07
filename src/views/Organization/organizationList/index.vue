@@ -3,7 +3,7 @@
     <div class="md-layout" ref="box">
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <md-card>
-          <md-card-header data-background-color="orange" class="header-with-button">
+          <md-card-header data-background-color="" class="header-with-button">
             <div>
               <h4 class="title">Organization</h4>
               <p class="category">Explore and manage your organizations</p>
@@ -217,5 +217,8 @@ export default {
 <style>
 .table {
   padding: 1%;
+}
+.md-card-header{
+  background-color: #5335AB !important;
 }
 </style>

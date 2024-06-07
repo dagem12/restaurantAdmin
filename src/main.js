@@ -34,6 +34,7 @@ import Chartist from "chartist";
 import Quasar from "quasar";
 import "@quasar/extras/material-icons/material-icons.css";
 import "quasar/dist/quasar.min.css";
+import AccountService from "./views/Login/api/account.service";
 // configure router
 
 Vue.prototype.$Chartist = Chartist;

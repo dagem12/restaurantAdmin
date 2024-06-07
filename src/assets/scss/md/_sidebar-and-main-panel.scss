@@ -282,6 +282,9 @@
   &[data-color="purple"] {
     @include set-background-color-button($brand-primary);
   }
+  &[data-color="va"] {
+    @include set-background-color-button($brand-va);
+  }
 }
 
 .off-canvas-sidebar {
