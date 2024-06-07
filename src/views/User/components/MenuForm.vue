@@ -9,18 +9,18 @@
 
       <q-card-section>
         <q-input v-model="user.login" label="User Name" class="q-mb-md" />
-
         <q-input v-model="user.firstName" label="First Name" class="q-mb-md" />
-
         <q-input v-model="user.lastName" label="Last Name" class="q-mb-md" />
         <q-input v-model="user.email" label="Email" class="q-mb-md" />
         <q-toggle v-model="user.activated" label="Activated" class="q-mb-md" />
-        <q-select v-model="user.shopId" label="Shop" class="q-mb-md" />
 
-        <q-select v-model="user.orgId" label="Organization" class="q-mb-md" />
+        <q-select v-model="user.orgId" label="Organization" :options="organizations" option-label="name"
+          option-value="id" class="q-mb-md" />
 
-        <q-select v-model="user.langKey" label="Language" class="q-mb-md" />
-        <q-select v-model="user.authorities" label="Role" class="q-mb-md" />
+        <q-select v-model="user.shopId" label="Shop" :options="shops" option-label="name" option-value="id"
+          class="q-mb-md" />
+        <q-select v-model="user.authorities" label="Authority" :options="authorities" option-label="label"
+          option-value="value" multiple class="q-mb-md" />
         <q-input v-model="user.password" label="Password" class="q-mb-md" />
 
       </q-card-section>
@@ -49,11 +49,17 @@ export default {
         shopId: null,
         orgId: null,
         langKey: null,
-        authorities: null,
+        authorities: [],
         password: null
 
       }
+
     };
+  },
+  props: {
+    organizations: [],
+    shops: [],
+    authorities: []
   },
   methods: {
     async addItem() {
@@ -66,8 +72,8 @@ export default {
         lastName: this.user.lastName,
         email: this.user.email,
         activated: this.user.activated,
-        shopId: this.user.shopId,
-        orgId: this.user.orgId,
+        shopId: this.user.shopId?.id,
+        orgId: this.user.orgId?.id,
         langKey: this.user.langKey,
         authorities: this.user.authorities,
         password: this.user.password,
@@ -97,7 +103,7 @@ export default {
         shopId: null,
         orgId: null,
         langKey: null,
-        authorities: null,
+        authorities: [],
         password: null
       };
     }
