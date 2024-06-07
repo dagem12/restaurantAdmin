@@ -136,10 +136,9 @@ export default {
         .retrieveAuthorities()
         .then(_res => {
           _res.data.forEach(element => {
-            console.log("asddddddddddddddddddddddddddddd")
-            console.log("asdsadassa", this.hasAnyAuthority(this.authority.ORGANIZATION_ADMIN))
+
             if (this.hasAnyAuthority('ROLE_ADMIN')) {
-              if (element != 'ROLE_ADMIN') this.authorities.push(element);
+              this.authorities.push;
 
             } else if (this.hasAnyAuthority(this.authority.ORGANIZATION_ADMIN)) {
               if (element != 'ROLE_ORGANIZATION_ADMIN' && element != 'ROLE_ADMIN') {
@@ -174,12 +173,12 @@ export default {
     },
     initRelationships() {
       this.organizationService
-        .retrieve()
+        .retrieve
         .then(res => {
           this.organizations = res.data;
         });
       this.shopService
-        .retrieve()
+        .retrieve
         .then(res => {
           this.shops = res.data;
         });
