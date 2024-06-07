@@ -11,8 +11,12 @@
         <q-input v-model="diningItem.name" label="Name" class="q-mb-md" />
 
         <q-input v-model="diningItem.description" label="Description" type="textarea" class="q-mb-md" />
+        <q-select v-model="diningItem.tenant" label="Organization" :options="organizations" option-label="name"
+          option-value="id" class="q-mb-md" />
 
-        <q-input v-model="diningItem.shop" label="Shop" class="q-mb-md" />
+
+        <q-select v-model="diningItem.shop" :options="shops" option-label="name" option-value="id" label="Shop"
+          class="q-mb-md" />
         <q-toggle v-model="diningItem.enable" label="Enable" class="q-mb-md" />
 
       </q-card-section>
@@ -27,20 +31,45 @@
 
 <script>
 import DiningService from "../Api/index.js";
+import { Notify } from 'quasar';
 export default {
+  props: {
+    shops: [],
+    organizations: []
+  },
   data() {
     return {
       showDialog: false,
       diningService: new DiningService(),
       diningItem: {
         name: '',
-        shop: '',
+        shop: null,
         description: '',
-        enable: false
+        enable: false,
+        tenant: null
       }
     };
   },
   methods: {
+    notifySuccess(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'green'
+      });
+    },
+
+    notifyError(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'red'
+      });
+    },
     async addItem() {
       console.log('Adding new Dinind item:', this.diningItem);
 
@@ -49,16 +78,19 @@ export default {
         name: this.diningItem.name,
         shop: this.diningItem.shop,
         description: this.diningItem.description,
-        enable: this.diningItem.enable
+        enable: this.diningItem.enable,
+        tenant: this.diningItem.tenant
       };
 
       this.diningService.create(newDining)
         .then(() => {
           console.log('New Dining added successfully.');
           this.showDialog = false;
+          this.notifySuccess('Dinnig Table added successfully');
           this.resetMenuItem();
         })
         .catch(error => {
+          this.notifyError('error happens')
           console.error('Error adding new Dining Table:', error);
         });
     },
@@ -68,10 +100,12 @@ export default {
     },
     resetMenuItem() {
       this.diningItem = {
-        name: this.diningItem.name,
-        shop: this.diningItem.shop,
-        description: this.diningItem.description,
-        enable: this.diningItem.enable
+        name: '',
+        shop: null,
+        description: '',
+        enable: false,
+        tenant: null
+
       };
     }
   }
