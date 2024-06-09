@@ -1,12 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
-import routes from './routes'
-import store from '../store/index'
+import store from '../store/index';
+import routes from './routes';
 
 Vue.use(VueRouter);
 
-// fix vue-router NavigationDuplicated
+// Fix vue-router NavigationDuplicated
 const VueRouterPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
   return VueRouterPush.call(this, location).catch((err) => err);
@@ -16,32 +15,25 @@ VueRouter.prototype.replace = function replace(location) {
   return VueRouterReplace.call(this, location).catch((err) => err);
 };
 
-Vue.use(VueRouter);
-
 const router = new VueRouter({
   routes,
   linkExactActiveClass: "nav-item active",
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  console.log("Require Auth",requiresAuth)
-  console.log("Require Auth",store.getters.authenticated)
-  if (requiresAuth && ! store.getters.authenticated) {
-    next("/login");
-  } else if (
-    (to.path === "/login" || to.path === "/register") &&
-    store.getters.authenticated
-  ) {
+  if (requiresAuth && !store.getters.authenticated) {
+    if (store.getters.authenticated) {
+      next();
+    } else {
+      next("/login");
+    }
+  } else if ((to.path === "/login" || to.path === "/register") && store.getters.authenticated) {
     next("/");
   } else {
     next();
   }
-
-  // next()
-})
-
-
+});
 
 router.afterEach(() => {
   window.scrollTo(0, 0);
