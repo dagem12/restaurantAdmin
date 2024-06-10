@@ -127,6 +127,7 @@ export default class AccountService {
   }
 
   get userAuthorities() {
+    // console.log("user dddddddddd", store.getters.account?.authorities)
     return store.getters.account?.authorities;
   }
 
