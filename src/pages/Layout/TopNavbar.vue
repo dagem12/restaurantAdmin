@@ -45,7 +45,7 @@
               </drop-down>
             </md-list-item> -->
 
-            <li class="md-list-item">
+            <!-- <li class="md-list-item">
               <a href="#/notifications" class="md-list-item-router md-list-item-container md-button-clean dropdown">
                 <div class="md-list-item-content">
                   <drop-down>
@@ -64,7 +64,7 @@
                   </drop-down>
                 </div>
               </a>
-            </li>
+            </li> -->
 
             
             <q-btn-dropdown stretch flat :label="user.firstName">

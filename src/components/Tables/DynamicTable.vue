@@ -88,4 +88,5 @@ export default {
   padding: 8px;
   color: white;
 }
+
 </style>
