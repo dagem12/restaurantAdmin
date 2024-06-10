@@ -38,10 +38,8 @@ export default class AccountService {
           store.commit('authenticate');
 
           const account = response.data;
-          console.log("response", response)
           if (account != null) {
             store.commit('authenticated', account);
-            console.log("data inside account", store.getters)
             // if (this.store.getters.currentLanguage !== account.langKey) {
             //  store.commit('currentLanguage', account.langKey);
             // }
@@ -61,7 +59,6 @@ export default class AccountService {
           resolve(true);
         })
         .catch((err) => {
-          console.log("Logout", err)
           // store.commit('logout');
           resolve(false);
         });
@@ -152,7 +149,6 @@ export default class AccountService {
       }
 
     }
-    console.log(authorities)
     return false;
   }
 
