@@ -4,7 +4,10 @@ import buildPaginationQueryOpts from '@/utils/sorts';
 
 const baseApiUrl = '/product-orders';
 
-class ProductOrderService {
+export default class ProductOrderService {
+  constructor() {
+
+  }
   find(id) {
     return new Promise((resolve, reject) => {
       axios
@@ -21,7 +24,7 @@ class ProductOrderService {
   totalOrders() {
     return new Promise((resolve, reject) => {
       axios
-        .get(`/api/total-orders`)
+        .get(`/total-orders`)
         .then(res => {
           resolve(res.data);
         })
@@ -34,7 +37,7 @@ class ProductOrderService {
   totalPayments() {
     return new Promise((resolve, reject) => {
       axios
-        .get(`/api/total-payments`)
+        .get(`/total-payments`)
         .then(res => {
           resolve(res.data);
         })
@@ -60,7 +63,7 @@ class ProductOrderService {
   topDish(paginationQuery) {
     return new Promise((resolve, reject) => {
       axios
-        .get('api/top-dish' + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .get('/top-dish' + `?${buildPaginationQueryOpts(paginationQuery)}`)
         .then(res => {
           resolve(res);
         })
@@ -123,4 +126,3 @@ class ProductOrderService {
   }
 }
 
-export default ProductOrderService;

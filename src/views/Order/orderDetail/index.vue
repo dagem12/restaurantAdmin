@@ -2,12 +2,12 @@
     <div style="padding:1%;">
         <div class="form-head d-flex mb-3 align-items-start">
             <div class="mr-auto d-none d-lg-block">
-                <h2 class="text-black font-w600 mb-0">Order ID #5552351</h2>
+                <h2 class="text-black font-w600 mb-0">Order ID #{{ productOrder?.id }}</h2>
 
             </div>
 
         </div>
-        <div class="col-xl-9 col-xxl-9 col-lg-12 col-md-12">
+        <div v-if="orderItems.length > 0" class="col-xl-9 col-xxl-9 col-lg-12 col-md-12">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card">
@@ -30,26 +30,21 @@
                                                     <div class="media-body">
 
                                                         <h5 class="mt-0 mb-2 text-black mb-4">{{ order.name }}</h5>
-                                                        <div class="star-review fs-14">
-                                                            <i class="fa fa-star text-orange"></i>
-                                                            <i class="fa fa-star text-orange"></i>
-                                                            <i class="fa fa-star text-orange"></i>
-                                                            <i class="fa fa-star text-gray"></i>
-                                                            <i class="fa fa-star text-gray"></i>
-                                                            <span class="ml-3 text-dark">451 reviews</span>
-                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
-                                                <h4 class="my-0 text-secondary font-w600">{{ order.quantitiy }}x</h4>
+                                                <h4 class="my-0 text-secondary font-w600">{{ order.amount }}x</h4>
                                             </td>
                                             <td>
                                                 <h4 class="my-0 text-secondary font-w600">Birr{{ order.unitPrice }}</h4>
                                             </td>
                                             <td>
-                                                <h4 class="my-0 text-secondary font-w600">Birr{{ order.totalPrice }}
+                                                <h4 class="my-0 text-secondary font-w600">
+                                                    Birr{{ (order?.amount ?? 0) * (order?.unitPrice ?? 0) }}
                                                 </h4>
+
                                             </td>
                                             <td>
                                                 <a href="#" class="ti-close fs-28 text-danger las la-times-circle"></a>
@@ -65,11 +60,15 @@
 
             </div>
         </div>
+        <div v-else style="padding: 10px;justify-content: center;align-items: center;">
+            No Details To Show
+        </div>
     </div>
 
 </template>
 <script>
-
+import ProductOrderService from "../orderList/Api/index.js";
+import OrderItemService from "../orderDetail/Api/index";
 
 export default {
     components: {
@@ -77,46 +76,67 @@ export default {
     },
     data() {
         return {
+
             orderItems: [
-                {
-                    "id": 1,
-                    "name": "Chicken curry special with cucumber",
-                    "quantitiy": 2,
-                    "unitPrice": 230,
-                    "totalPrice": 560
-                },
-                {
-                    "id": 2,
-                    "name": "Burger",
-                    "quantitiy": 2,
-                    "unitPrice": 230,
-                    "totalPrice": 560
-                },
-                {
-                    "id": 3,
-                    "name": "BurgerSpecial special with cucumber",
-                    "quantitiy": 2,
-                    "unitPrice": 230,
-                    "totalPrice": 560
-                },
-                {
-                    "id": 4,
-                    "name": "Pizza special with cucumber",
-                    "quantitiy": 2,
-                    "unitPrice": 230,
-                    "totalPrice": 560
-                },
-                {
-                    "id": 5,
-                    "name": "Chikencn special with cucumber",
-                    "quantitiy": 2,
-                    "unitPrice": 230,
-                    "totalPrice": 560
-                }
-            ]
+
+            ],
+            productOrder: {},
+            page: 1,
+            isFetching: false,
+            itemsPerPage: 20,
+            queryCount: null,
+            totalItems: 0,
+            propOrder: 'id',
+            reverse: false,
+            productOrderService: new ProductOrderService(),
+            orderItemService: new OrderItemService(),
 
         };
     },
+    mounted() {
+        const orderId = this.$route.params.orderId;
+        this.retrieveProductOrder(orderId);
+        this.retrieveAllOrderItems(orderId);
+    },
+    methods: {
+        retrieveProductOrder(productOrderId) {
+
+            this.productOrderService
+                .find(productOrderId)
+                .then((res) => {
+                    this.productOrder = res;
+                    console.log("productOrder".this.productOrder);
+
+                })
+                .catch(error => {
+                    console.log(error)
+                });
+        },
+        retrieveAllOrderItems(productOrderId) {
+            this.isFetching = true;
+
+            this.orderItemService.findByProductOrder(productOrderId).then(
+                res => {
+                    this.orderItems = res.data;
+                    console.log("Order Items", this.orderItems)
+                    this.totalItems = Number(res.headers['x-total-count']);
+                    this.queryCount = this.totalItems;
+                    this.isFetching = false;
+                },
+                err => {
+                    this.isFetching = false;
+                    console.log(err)
+                }
+            );
+        },
+        sort() {
+            const result = [this.propOrder + ',' + (this.reverse ? 'desc' : 'asc')];
+            if (this.propOrder !== 'id') {
+                result.push('id');
+            }
+            return result;
+        }
+    }
 };
 </script>
 <style scoped>

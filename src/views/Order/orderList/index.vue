@@ -3,10 +3,7 @@
     <div class="md-layout" ref="box">
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <md-card>
-          <md-card-header
-            data-background-color=""
-            class="header-with-button"
-          >
+          <md-card-header data-background-color="" class="header-with-button">
             <div>
               <h4 class="title">Orders</h4>
               <p class="category">
@@ -75,12 +72,12 @@ export default {
           icon: "visibility",
           color: "primary",
         },
-        {
-          label: "Edit",
-          method: this.editItem,
-          icon: "edit",
-          color: "blue",
-        },
+        // {
+        //   label: "Edit",
+        //   method: this.editItem,
+        //   icon: "edit",
+        //   color: "blue",
+        // },
         {
           label: "Delete",
           method: this.deleteItem,
@@ -197,7 +194,7 @@ export default {
     },
     viewItem(item) {
       console.log("Viewing item:", item);
-      this.$router.push("/order-detail");
+      this.$router.push({ name: 'Order Detail', params: { orderId: item.id } });
     },
     addItem() {
       console.log("Adding new item");
@@ -210,7 +207,8 @@ export default {
 .table {
   padding: 1%;
 }
-.md-card-header{
+
+.md-card-header {
   background-color: #5335AB !important;
 }
 </style>
