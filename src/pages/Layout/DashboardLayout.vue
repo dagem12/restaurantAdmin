@@ -2,10 +2,7 @@
   <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
     <notifications></notifications>
 
-    <side-bar
-      :sidebar-item-color="sidebarBackground"
-      :sidebar-background-image="sidebarBackgroundImage"
-    >
+    <side-bar :sidebar-item-color="sidebarBackground" :sidebar-background-image="sidebarBackgroundImage">
       <!-- <mobile-menu slot="content"></mobile-menu> -->
       <sidebar-link to="/dashboard">
         <md-icon>dashboard</md-icon>
@@ -15,27 +12,32 @@
         <md-icon>corporate_fare</md-icon>
         <p v-if="isExpanded">Organization</p>
       </sidebar-link>
-      <sidebar-link to="/shop"  v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN)">
+      <sidebar-link to="/shop" v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN)">
         <md-icon>store</md-icon>
         <p v-if="isExpanded">Shop</p>
       </sidebar-link>
-      <sidebar-link to="/dining-table"  v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) ||accountService.hasAuthorities(Authority.SHOP_ADMIN) ">
+      <sidebar-link to="/dining-table"
+        v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) || accountService.hasAuthorities(Authority.SHOP_ADMIN)">
         <md-icon>dinner_dining</md-icon>
         <p v-if="isExpanded">Dining Table</p>
       </sidebar-link>
-      <sidebar-link to="/menu-catalog"  v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) || accountService.hasAuthorities(Authority.SHOP_ADMIN)">
+      <sidebar-link to="/menu-catalog"
+        v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) || accountService.hasAuthorities(Authority.SHOP_ADMIN)">
         <md-icon>menu_book</md-icon>
         <p v-if="isExpanded">Menu Catalog</p>
       </sidebar-link>
-      <sidebar-link to="/menu-list"  v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) ||accountService.hasAuthorities(Authority.SHOP_ADMIN)">
+      <sidebar-link to="/menu-list"
+        v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) || accountService.hasAuthorities(Authority.SHOP_ADMIN)">
         <md-icon>summarize</md-icon>
         <p v-if="isExpanded">Menu List</p>
       </sidebar-link>
-      <sidebar-link to="/order"  v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) ||accountService.hasAuthorities(Authority.SHOP_ADMIN)">
+      <sidebar-link to="/order"
+        v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) || accountService.hasAuthorities(Authority.SHOP_ADMIN)">
         <md-icon>list_alt</md-icon>
         <p v-if="isExpanded">Product Order</p>
       </sidebar-link>
-      <sidebar-link to="/users"  v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) ||accountService.hasAuthorities(Authority.SHOP_ADMIN)">
+      <sidebar-link to="/users"
+        v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) || accountService.hasAuthorities(Authority.SHOP_ADMIN)">
         <md-icon>person</md-icon>
         <p v-if="isExpanded">Users</p>
       </sidebar-link>
@@ -48,15 +50,12 @@
     <div :class="{ 'main-panel': true, collapsed: !isExpanded }">
       <top-navbar></top-navbar>
 
-      <fixed-plugin
-        :color.sync="sidebarBackground"
-        :image.sync="sidebarBackgroundImage"
-      >
+      <fixed-plugin :color.sync="sidebarBackground" :image.sync="sidebarBackgroundImage">
       </fixed-plugin>
 
       <dashboard-content> </dashboard-content>
 
-      <content-footer v-if="!$route.meta.hideFooter"></content-footer>
+      <!-- <content-footer v-if="!$route.meta.hideFooter"></content-footer> -->
     </div>
   </div>
 </template>
@@ -77,7 +76,7 @@ export default {
     ContentFooter,
     // MobileMenu,
     FixedPlugin,
-  
+
   },
   data() {
     return {
