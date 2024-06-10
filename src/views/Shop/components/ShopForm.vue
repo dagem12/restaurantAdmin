@@ -16,26 +16,20 @@
         <q-toggle v-model="shopItem.enable" label="Enable" type="number" class="q-mb-md" />
         <q-input v-model="shopItem.address" label="Address" type="text" class="q-mb-md" />
         <q-toggle v-model="shopItem.orderService" label="Order Service" class="q-mb-md" />
-       
-        <q-uploader
-      url="http://localhost:8081/upload"
-      label="Click or Drag logo "
-      @added="onFileAdded"
-      @uploaded="onFileUploaded"
-      :headers="uploadHeaders"
-      :factory="uploadFactory"
-    />
 
- 
+        <q-uploader url="http://localhost:8081/upload" label="Click or Drag logo " @added="onFileAdded"
+          @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
+
+
       </q-card-section>
 
-      
+
 
       <q-card-actions align="right">
         <q-btn color="primary" label="Add" @click="addItem" />
         <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
       </q-card-actions>
-   
+
 
     </q-card>
   </q-dialog>
@@ -45,7 +39,7 @@
 import ShopService from "../Api/index.js";
 import fileService from "../../../utils/file.service.js"
 export default {
-  props:['retrieveAllShops'],
+  props: ['retrieveAllShops'],
   data() {
     return {
       showDialog: false,
@@ -61,7 +55,7 @@ export default {
         enable: false,
         orderService: false,
         contact: null,
-        shortcutIcon:''
+        shortcutIcon: ''
       },
       contactOptions: [
         { label: 'Abebe', value: '1' },
@@ -72,7 +66,7 @@ export default {
         { label: 'Et Restaurnt', value: '1' },
         { label: 'Kaldis Restaurant', value: '2' }
       ],
-    
+
     };
   },
   methods: {
@@ -88,14 +82,14 @@ export default {
         enable: this.shopItem.enable,
         orderService: this.shopItem.orderService,
         contact: this.shopItem.contact.name,
-        shortcutIcon:this.shopItem.shortcutIcon,
-        code:this.shopItem.name
+        shortcutIcon: this.shopItem.shortcutIcon,
+        code: this.shopItem.name
       };
 
       this.shopService.create(newShop)
         .then(() => {
           console.log('New Shop added successfully.');
-       
+
           this.showDialog = false;
           this.notifySuccess('Shop added successfully');
           this.$emit('getShop');
@@ -118,18 +112,18 @@ export default {
         enable: '',
         orderService: '',
         contact: null,
-        shortcutIcon:""
+        shortcutIcon: ""
       };
     },
     onFileAdded(files) {
       console.log('Files added:', files);
       const formDataFile = new FormData();
       formDataFile.append('file', files[0]);
-      fileService.createFile(formDataFile).then(res=>{
- 
+      fileService.createFile(formDataFile).then(res => {
+
         this.shopItem.shortcutIcon = res.data.fileUrl
-      }).catch(err=>{
-        console.log("err",err)
+      }).catch(err => {
+        console.log("err", err)
       })
     },
     onFileUploaded(response) {
@@ -144,10 +138,10 @@ export default {
         }
       }));
     }
-   
-  
 
-  
+
+
+
   }
 };
 </script>

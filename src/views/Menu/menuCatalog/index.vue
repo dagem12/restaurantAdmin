@@ -23,7 +23,20 @@
         </md-card>
       </div>
     </div>
-    <MenuForm ref="menuFormDialog" :shops="shops" @getMenuCatalog="retrieveAllProductCatalogs"/>
+    <MenuForm ref="menuFormDialog" :shops="shops" @getMenuCatalog="retrieveAllProductCatalogs" />
+    <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="delete" color="primary" text-color="white" />
+          <span class="q-ml-sm">Are you sure to delete this Menu Catalog</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Confirm" :loading="loading" @click="removeProductCatalog()" color="primary" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -31,6 +44,7 @@ import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import ProductCatalogService from "./Api/index";
 import MenuForm from "../components/MenuCatalogForm.vue";
 import ShopService from "../../Shop/Api";
+import { Notify } from 'quasar';
 export default {
   name: "menuCatalogList",
   components: {
@@ -63,6 +77,8 @@ export default {
           color: "red",
         },
       ],
+      confirm: false,
+      loading: false,
       removeId: null,
       itemsPerPage: 20,
       queryCount: null,
@@ -73,12 +89,12 @@ export default {
       totalItems: 0,
       productCatalogs: [],
       isFetching: false,
-      shops:[],
+      shops: [],
       productCatalogService: new ProductCatalogService(),
       shopService: new ShopService(),
     };
   },
-  
+
   watch: {
     shops: {
       handler(newVal) {
@@ -125,27 +141,28 @@ export default {
     },
     prepareRemove(instance) {
       this.removeId = instance.id;
-      if (this.$refs.removeEntity) {
-        this.$refs.removeEntity.show();
+      if (this.removeId) {
+        this.confirm = true;
       }
     },
     removeProductCatalog() {
+      this.loading = true;
       this.productCatalogService
         .delete(this.removeId)
         .then(() => {
-          const message = this.$t('anywhereApp.productCatalog.deleted', { param: this.removeId });
-          this.$bvToast.toast(message.toString(), {
-            toaster: 'b-toaster-top-center',
-            title: 'Info',
-            variant: 'danger',
-            solid: true,
-            autoHideDelay: 5000,
-          });
+
           this.removeId = null;
+
+          this.loading = false;
+          this.confirm = false;
+          this.notifySuccess('Menu Catalog deleted succuessfuly!')
           this.retrieveAllProductCatalogs();
           this.closeDialog();
         })
         .catch(error => {
+          this.loading = false;
+          this.confirm = false;
+          this.notifyError('Error happens on Deleting Menu Catalog');
 
         });
     },
@@ -176,28 +193,29 @@ export default {
       }
     },
     initRelationships() {
-    
-    // this.organizationService
-    //   .retrieve()
-    //   .then(res => {
-    //     this.organizations = res.data;
-    //   }).catch(err=>{
-    //     console.log(err)
-    //   });
 
-    this.shopService
-      .retrieve()
-      .then(res => {
-        this.shops = res.data;
-      }).catch(err=>{
-        console.log(err)
-      });
-  },
+      // this.organizationService
+      //   .retrieve()
+      //   .then(res => {
+      //     this.organizations = res.data;
+      //   }).catch(err=>{
+      //     console.log(err)
+      //   });
+
+      this.shopService
+        .retrieve()
+        .then(res => {
+          this.shops = res.data;
+        }).catch(err => {
+          console.log(err)
+        });
+    },
     editItem(item) {
       console.log("Editing item:", item);
     },
     deleteItem(item) {
       console.log("Deleting item:", item);
+      this.prepareRemove(item);
     },
     viewItem(item) {
       console.log("Viewing item:", item);
@@ -210,6 +228,25 @@ export default {
       // Show the MenuForm dialog
       this.$refs.menuFormDialog.showDialog = true;
     },
+    notifySuccess(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'green'
+      });
+    },
+
+    notifyError(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'red'
+      });
+    },
   },
 };
 </script>
@@ -217,7 +254,8 @@ export default {
 .table {
   padding: 1%;
 }
-.md-card-header{
+
+.md-card-header {
   background-color: #5335AB !important;
 }
 </style>

@@ -26,7 +26,21 @@
     </div>
 
     <!-- MenuForm dialog -->
-    <MenuForm ref="menuFormDialog"  :productCatalogs="productCatalogs" :shops="shops" @getProduct="retrieveAllProducts"/>
+    <MenuForm ref="menuFormDialog" :productCatalogs="productCatalogs" :shops="shops"
+      @getProduct="retrieveAllProducts" />
+    <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="delete" color="primary" text-color="white" />
+          <span class="q-ml-sm">Are you sure to delete this Menu list Item</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Confirm" :loading="loading" @click="removeProduct()" color="primary" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -35,7 +49,8 @@ import DynamicTable from "@/components/Tables/DynamicTable.vue";
 import MenuForm from "../components/MenuForm.vue";
 import ProductService from "./Api/index"
 import ProductCatalogService from "../menuCatalog/Api";
-import ShopService from "../../Shop/Api/index"
+import ShopService from "../../Shop/Api/index";
+import { Notify } from 'quasar';
 
 
 export default {
@@ -68,18 +83,26 @@ export default {
         }
       ],
       actions: [
-        {
-          label: "View",
-          method: this.viewItem,
-          icon: "visibility",
-          color: "primary",
-        },
+        // {
+        //   label: "View",
+        //   method: this.viewItem,
+        //   icon: "visibility",
+        //   color: "primary",
+        // },
         { label: "Edit", method: this.editItem, icon: "edit", color: "amber" },
+        {
+          label: "Delete",
+          method: this.deleteItem,
+          icon: "delete",
+          color: "red",
+        },
       ],
       productService: new ProductService(),
       productCatalogService: new ProductCatalogService(),
       shopService: new ShopService(),
       removeId: null,
+      confirm: false,
+      loading: false,
       itemsPerPage: 20,
       queryCount: null,
       page: 1,
@@ -88,14 +111,14 @@ export default {
       reverse: true,
       totalItems: 0,
       products: [],
-      productCatalogs:[],
-      shops:[],
+      productCatalogs: [],
+      shops: [],
       isFetching: false,
     };
   },
   mounted() {
     this.retrieveAllProducts();
-    this. initRelationships()
+    this.initRelationships()
   },
 
   methods: {
@@ -129,27 +152,27 @@ export default {
     },
     prepareRemove(instance) {
       this.removeId = instance.id;
-      if (this.$refs.removeEntity) {
-        this.$refs.removeEntity.show();
+      if (this.removeId) {
+        this.confirm = true;
       }
     },
     removeProduct() {
+      this.loading = true;
       this.productService
         .delete(this.removeId)
         .then(() => {
-          const message = this.$t('anywhereApp.product.deleted', { param: this.removeId });
-          this.$bvToast.toast(message.toString(), {
-            toaster: 'b-toaster-top-center',
-            title: 'Info',
-            variant: 'danger',
-            solid: true,
-            autoHideDelay: 5000,
-          });
+
+          this.loading = false;
+          this.confirm = false;
+          this.notifySuccess('Menu List Item deleted succuessfuly!')
           this.removeId = null;
           this.retrieveAllProducts();
           this.closeDialog();
         })
         .catch(error => {
+          this.loading = false;
+          this.confirm = false;
+          this.notifyError('Error happens on Deleting Menu List Item');
 
         });
     },
@@ -185,6 +208,7 @@ export default {
     },
     deleteItem(item) {
       console.log("Deleting item:", item);
+      this.prepareRemove(item);
     },
     viewItem(item) {
       console.log("Viewing item:", item);
@@ -194,23 +218,42 @@ export default {
       this.$refs.menuFormDialog.showDialog = true;
     },
     initRelationships() {
-    
-    this.shopService
-      .retrieve()
-      .then(res => {
-        this.shops = res.data;
-      }).catch(err=>{
-        console.log(err)
-      });
 
-    this.productCatalogService
-      .retrieve()
-      .then(res => {
-        this.productCatalogs = res.data;
-      }).catch(err=>{
-        console.log(err)
+      this.shopService
+        .retrieve()
+        .then(res => {
+          this.shops = res.data;
+        }).catch(err => {
+          console.log(err)
+        });
+
+      this.productCatalogService
+        .retrieve()
+        .then(res => {
+          this.productCatalogs = res.data;
+        }).catch(err => {
+          console.log(err)
+        });
+    },
+    notifySuccess(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'green'
       });
-  },
+    },
+
+    notifyError(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'red'
+      });
+    },
 
   },
 
@@ -227,7 +270,8 @@ export default {
 .add-item-button {
   margin-top: 10px;
 }
-.md-card-header{
+
+.md-card-header {
   background-color: #5335AB !important;
 }
 </style>

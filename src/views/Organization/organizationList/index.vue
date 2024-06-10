@@ -62,6 +62,7 @@ export default {
       queryCount: null,
       page: 1,
       previousPage: 1,
+      users: [],
       propOrder: 'id',
       reverse: false,
       totalItems: 0,
