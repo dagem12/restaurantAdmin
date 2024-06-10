@@ -10,8 +10,9 @@
             </div>
             <!-- Add Item button -->
             <div class="add-item-button">
-              <md-button color="primary" @click="this.showAddItemDialog">
-                <md-icon>add</md-icon>
+              <md-button md-theme="" style="background-color: white !important;color:black !important"
+                @click="this.showAddItemDialog">
+                <md-icon style="color:black !important">add</md-icon>
                 <span>Add Item</span>
               </md-button>
             </div>
@@ -260,6 +261,7 @@ export default {
 .table {
   padding: 1%;
 }
+
 .md-button {
   background-color: #5335AB !important;
 }
