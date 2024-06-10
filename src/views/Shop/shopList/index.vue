@@ -22,7 +22,20 @@
         </md-card>
       </div>
     </div>
-    <MenuForm ref="menuFormDialog" @getShop="retrieveAllShops"/>
+    <MenuForm ref="menuFormDialog" @getShop="retrieveAllShops" />
+    <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="delete" color="primary" text-color="white" />
+          <span class="q-ml-sm">Are you sure to delete this shop</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Confirm" :loading="loading" @click="removeShop()" color="primary" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -32,6 +45,7 @@ import { mapActions, mapState } from 'vuex';
 import ShopService from '../Api/index';
 import MenuForm from "../components/ShopForm.vue";
 import { gsap } from 'gsap';
+import { Notify } from 'quasar';
 
 export default {
   name: "shopList",
@@ -66,6 +80,7 @@ export default {
         },
       ],
       removeId: null,
+      loading: false,
       itemsPerPage: 20,
       queryCount: null,
       page: 1,
@@ -75,15 +90,16 @@ export default {
       totalItems: 0,
       shops: [],
       isFetching: false,
-      shopService: new ShopService()
+      shopService: new ShopService(),
+      confirm: false
     };
   },
   mounted() {
     this.retrieveAllShops();
     const diningbox = this.$refs.diningbox;
 
-// Using GSAP to animate the row
-gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
+    // Using GSAP to animate the row
+    gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
     addItem() {
@@ -107,7 +123,7 @@ gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" })
         size: this.itemsPerPage,
         sort: this.sort(),
       };
-      console.log("data ", this.shops)
+
       this.shopService.retrieve(paginationQuery)
         .then(
           res => {
@@ -131,26 +147,29 @@ gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" })
     },
     prepareRemove(instance) {
       this.removeId = instance.id;
-      if (this.$refs.removeEntity) {
-        this.$refs.removeEntity.show();
+
+      if (this.removeId) {
+        this.confirm = true;
       }
     },
     removeShop() {
+      this.loading = true;
       this.shopService.delete(this.removeId)
         .then(() => {
-          const message = this.$t('anywhereApp.shop.deleted', { param: this.removeId });
-          this.$bvToast.toast(message.toString(), {
-            toaster: 'b-toaster-top-center',
-            title: 'Info',
-            variant: 'danger',
-            solid: true,
-            autoHideDelay: 5000,
-          });
+
+          this.loading = false;
+          this.confirm = false;
+          this.notifySuccess('Shop deleted succuessfuly!')
           this.removeId = null;
+
           this.retrieveAllShops();
-          this.closeDialog();
+
         })
         .catch(error => {
+          this.loading = false;
+          this.confirm = false;
+
+          this.notifyError('Error happens on Deleting shop')
 
         });
     },
@@ -178,7 +197,7 @@ gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" })
     closeDialog() {
       if (this.$refs.removeEntity) {
         this.$refs.removeEntity.hide();
-      
+
       }
     },
     showAddItemDialog() {
@@ -186,7 +205,29 @@ gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" })
 
       this.$refs.menuFormDialog.showDialog = true;
     },
- 
+    notifySuccess(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'green'
+      });
+    },
+
+    notifyError(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'red'
+      });
+    },
+
+
+
+
 
   },
 };
@@ -196,11 +237,12 @@ gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" })
 .table {
   padding: 1%;
 }
-.md-card-header{
+
+.md-card-header {
   background-color: #5335AB !important;
 }
 
-.md-button{
+.md-button {
   background-color: #5335AB !important;
 }
 </style>

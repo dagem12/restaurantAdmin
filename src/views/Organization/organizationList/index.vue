@@ -22,8 +22,20 @@
         </md-card>
       </div>
     </div>
-    <MenuForm :users="users" ref="menuFormDialog" />
+    <MenuForm :users="users" @getOrganizations="retrieveAllOrganizations" ref="menuFormDialog" />
+    <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="delete" color="primary" text-color="white" />
+          <span class="q-ml-sm">Are you sure to delete this Organization</span>
+        </q-card-section>
 
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Confirm" :loading="loading" @click="removeOrganization()" color="primary" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -33,6 +45,7 @@ import UserService from "../../User/Api/index.js";
 import { watch } from 'vue';
 import MenuForm from "../components/MenuForm.vue";
 import { gsap } from 'gsap';
+import { Notify } from 'quasar';
 export default {
   name: "organizationList",
   components: {
@@ -42,7 +55,8 @@ export default {
 
   data() {
     return {
-
+      loading: false,
+      confirm: false,
       removeId: null,
       itemsPerPage: 20,
       queryCount: null,
@@ -94,7 +108,7 @@ export default {
         },
         {
           label: "Delete",
-          method: this.removeOrganization,
+          method: this.deleteItem,
           icon: "delete",
           color: "red",
         },
@@ -109,24 +123,14 @@ export default {
     gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
     this.initRelationships();
   },
-  watch: {
-    users: {
-      handler(newVal) {
-        if (!newVal || this.users == '') {
-          this.initRelationships();
-        }
-      },
-      immediate: true, // This ensures the watch is triggered immediately after the component is created
-      deep: true // This allows the watch to watch for changes in nested properties of the prop
-    }
-  },
+
   methods: {
     initRelationships() {
       this.userService
         .retrieve()
         .then(res => {
           this.users = res.data;
-          console.log("amm colled", this.users)
+
         });
     },
     clear() {
@@ -159,27 +163,26 @@ export default {
     },
     prepareRemove(instance) {
       this.removeId = instance.id;
-      if (this.$refs.removeEntity) {
-        this.$refs.removeEntity.show();
+      if (this.removeId) {
+        this.confirm = true;
       }
     },
     removeOrganization() {
+      this.loading = true;
       this.organizationService.delete(this.removeId)
         .then(() => {
-          const message = this.$t('anywhereApp.organization.deleted', { param: this.removeId });
-          this.$bvToast.toast(message.toString(), {
-            toaster: 'b-toaster-top-center',
-            title: 'Info',
-            variant: 'danger',
-            solid: true,
-            autoHideDelay: 5000,
-          });
+
           this.removeId = null;
+          this.loading = false;
+          this.confirm = false;
+          this.notifySuccess('Organization deleted succuessfuly!')
           this.retrieveAllOrganizations();
-          this.showAddItemDialog();
+          // this.showAddItemDialog();
         })
         .catch(error => {
-
+          this.loading = false;
+          this.confirm = false;
+          this.notifyError('Error happens on Deleting Organization');
         });
     },
     sort() {
@@ -203,6 +206,25 @@ export default {
       this.reverse = !this.reverse;
       this.transition();
     },
+    notifySuccess(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'green'
+      });
+    },
+
+    notifyError(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'red'
+      });
+    },
     showAddItemDialog() {
       // Show the MenuForm dialog
       this.$refs.menuFormDialog.showDialog = true;
@@ -211,6 +233,9 @@ export default {
     editItem(item) {
       console.log("Editing item:", item);
     },
+    deleteItem(item) {
+      this.prepareRemove(item);
+    }
   },
 };
 </script>

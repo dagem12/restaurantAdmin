@@ -47,6 +47,9 @@ import OrganizationService from "../api/organization.service.js";
 import { Notify } from 'quasar';
 
 export default {
+  props: {
+    users: []
+  },
   data() {
     return {
       showDialog: false,
@@ -68,9 +71,7 @@ export default {
   mounted() {
 
   },
-  props: {
-    users: []
-  },
+
 
   methods: {
 
@@ -94,6 +95,7 @@ export default {
           console.log('New Organization added successfully.');
           this.showDialog = false;
           this.notifySuccess('Organization added successfully');
+          this.$emit('getOrganizations');
           this.resetMenuItem();
         })
         .catch(error => {

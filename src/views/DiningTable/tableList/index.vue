@@ -22,7 +22,21 @@
         </md-card>
       </div>
     </div>
-    <MenuForm :shops="shops" :organizations="organizations" ref="menuFormDialog" @getDiningTable="retrieveAllDiningTables"/>
+    <MenuForm :shops="shops" :organizations="organizations" ref="menuFormDialog"
+      @getDiningTable="retrieveAllDiningTables" />
+    <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="delete" color="primary" text-color="white" />
+          <span class="q-ml-sm">Are you sure to delete this Table</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Confirm" :loading="loading" @click="removeDiningTable()" color="primary" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -32,6 +46,7 @@ import MenuForm from "../components/DinnigTableForm";
 import ShopService from "../../Shop/Api/index.js";
 import OrganizationService from "../../Organization/api/organization.service.js";
 import AccountService from "../../Login/api/account.service.js";
+import { Notify } from 'quasar';
 // import QRCode from 'qrcode';
 import { gsap } from 'gsap';
 import { accountStore } from "../../../store/modules/user/index.js";
@@ -68,7 +83,8 @@ export default {
           color: "red",
         },
       ],
-
+      confirm: false,
+      loading: false,
       removeId: null,
       itemsPerPage: 20,
       queryCount: null,
@@ -80,13 +96,13 @@ export default {
       diningTables: [],
       isFetching: false,
       diningTableService: new DiningTableService(),
-      vaColor:"#5335AB",
+      vaColor: "#5335AB",
       shopService: new ShopService(),
       organizationService: new OrganizationService(),
       accountService: new AccountService(),
       organizations: [],
       shops: [],
-      
+
     };
   },
   mounted() {
@@ -162,33 +178,33 @@ export default {
 
         });
     },
+    prepareRemove(instance) {
+      this.removeId = instance.id;
+      if (this.removeId) {
+        this.confirm = true;
+      }
+    },
+
     handleSyncList() {
       this.clear();
     },
-    prepareRemove(instance) {
-      this.removeId = instance.id;
-      if (this.$refs.removeEntity) {
-        this.$refs.removeEntity.show();
-      }
-    },
     removeDiningTable() {
+      this.loading = true;
       this.diningTableService
         .delete(this.removeId)
         .then(() => {
-          const message = this.$t('anywhereApp.diningTable.deleted', { param: this.removeId });
-          this.$bvToast.toast(message.toString(), {
-            toaster: 'b-toaster-top-center',
-            title: 'Info',
-            variant: 'danger',
-            solid: true,
-            autoHideDelay: 5000,
-          });
+
+
           this.removeId = null;
+          this.loading = false;
+          this.confirm = false;
+          this.notifySuccess('Table deleted succuessfuly!')
           this.retrieveAllDiningTables();
-          this.closeDialog();
         })
         .catch(error => {
-
+          this.loading = false;
+          this.confirm = false;
+          this.notifyError('Error happens on Deleting Table');
         });
     },
     sort() {
@@ -222,6 +238,7 @@ export default {
     },
     deleteItem(item) {
       console.log("Deleting item:", item);
+      this.prepareRemove(item);
     },
     viewItem(item) {
       console.log("Viewing item:", item);
@@ -235,7 +252,7 @@ export default {
       this.$refs.menuFormDialog.showDialog = true;
     },
     initRelationships() {
-    
+
       // this.organizationService
       //   .retrieve()
       //   .then(res => {
@@ -248,10 +265,29 @@ export default {
         .retrieve()
         .then(res => {
           this.shops = res.data;
-        }).catch(err=>{
+        }).catch(err => {
           console.log(err)
         });
-    }
+    },
+    notifySuccess(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'green'
+      });
+    },
+
+    notifyError(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'red'
+      });
+    },
   },
 };
 </script>
@@ -259,7 +295,8 @@ export default {
 .table {
   padding: 1%;
 }
-.md-card-header{
+
+.md-card-header {
   background-color: #5335AB !important;
 }
 </style>

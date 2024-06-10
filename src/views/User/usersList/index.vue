@@ -22,7 +22,21 @@
         </md-card>
       </div>
     </div>
-    <MenuForm :shops="shops" :organizations="organizations" :authorities="authorities" ref="menuFormDialog" />
+    <MenuForm :shops="shops" :organizations="organizations" :authorities="authorities" ref="menuFormDialog"
+      @getUsers="loadAll" />
+    <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="delete" color="primary" text-color="white" />
+          <span class="q-ml-sm">Are you sure to delete this User</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Confirm" :loading="loading" @click="removeUser()" color="primary" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script>
@@ -33,6 +47,7 @@ import { Authority } from "../../../utils/authority";
 import MenuForm from "../components/MenuForm.vue";
 import AccountService from "../../Login/api/account.service";
 import UserManagementService from "../Api/index.js";
+import { Notify } from 'quasar';
 
 
 export default {
@@ -80,6 +95,8 @@ export default {
           color: "red",
         },
       ],
+      confirm: false,
+      loading: false,
       shopService: new ShopService(),
       organizationService: new OrganizationService(),
       organizations: [],
@@ -112,13 +129,62 @@ export default {
     },
     deleteItem(item) {
       console.log("Deleting item:", item);
+      this.prepareRemove(item);
     },
     viewItem(item) {
       console.log("Viewing item:", item);
+
     },
     addItem() {
       console.log("Adding new item");
       // Add your logic here to handle adding a new item
+    },
+    prepareRemove(instance) {
+      this.removeId = instance.login;
+      if (this.removeId) {
+        this.confirm = true;
+      }
+    },
+
+    handleSyncList() {
+      this.clear();
+    },
+    removeUser() {
+      this.loading = true;
+      this.userManagementService
+        .remove(this.removeId)
+        .then(() => {
+
+          this.notifySuccess('User deleted succuessfuly!')
+          this.removeId = null;
+          this.loading = false;
+          this.confirm = false;
+          this.loadAll();
+        })
+        .catch(error => {
+          this.loading = false;
+          this.confirm = false;
+          this.notifyError('Error happens on Deleting User');
+        });
+    },
+    notifySuccess(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'green'
+      });
+    },
+
+    notifyError(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'red'
+      });
     },
     showAddItemDialog() {
 
