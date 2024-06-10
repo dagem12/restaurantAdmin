@@ -58,6 +58,9 @@
   &[table-header-color="green"] .md-table-head {
     color: $brand-success !important;
   }
+  &[table-header-color="va"] .md-table-head {
+    color: $brand-va !important;
+  }
 
   .md-table-row td {
     border-top-color: rgba(0, 0, 0, 0.06) !important;

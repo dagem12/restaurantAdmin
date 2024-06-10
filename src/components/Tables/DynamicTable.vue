@@ -7,9 +7,14 @@
           :key="column.label"
           :md-label="column.label"
         >
-
-          {{column.isRelation? (item[column.field]?.name?item[column.field]?.name:item[column.field]?.value): item[column.field]}}
-        </md-table-cell>
+        <template v-if="column.isImage">
+      <img :src="`https://localhost:8080/api/images/${item[column.field]}`" style="height: 50px; width: 50px;" alt="Image" />
+    </template>
+    <template v-else>
+      {{column.isRelation? (item[column.field]?.name?item[column.field]?.name:item[column.field]?.value): item[column.field]}}
+       
+    </template>
+          </md-table-cell>
         <md-table-cell md-label="Actions">
           <q-btn
             v-for="action in actions"
@@ -83,4 +88,5 @@ export default {
   padding: 8px;
   color: white;
 }
+
 </style>

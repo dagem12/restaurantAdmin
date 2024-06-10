@@ -1,7 +1,7 @@
 <template>
   <div style="margin-top: 20px;">
     <div class="content">
-      <div class="md-layout">
+      <div class="md-layout" ref="box">
         <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
           <md-card>
             <md-card-header data-background-color="" class="header-with-button">
@@ -52,6 +52,7 @@ import ProductService from "./Api/index"
 import ProductCatalogService from "../menuCatalog/Api";
 import ShopService from "../../Shop/Api/index";
 import { Notify } from 'quasar';
+import { gsap } from 'gsap';
 
 
 export default {
@@ -62,8 +63,9 @@ export default {
   data() {
     return {
       columns: [
+      { label: "Image", field: "imageUrl",  isImage:true},
         { label: "Name", field: "name" },
-        { label: "Price", field: "price" },
+        { label: "Price", field: "unitPrice" },
         { label: "Description", field: "description" }
       ],
       dataItems: [
@@ -120,6 +122,10 @@ export default {
   mounted() {
     this.retrieveAllProducts();
     this.initRelationships()
+    const box = this.$refs.box;
+
+// Using GSAP to animate the row
+gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
 
   methods: {

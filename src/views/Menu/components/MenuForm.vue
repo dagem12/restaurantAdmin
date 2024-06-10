@@ -72,6 +72,7 @@ export default {
         isVisible: true,
         imageUrl: null
       },
+       baseUrl:process.env.VUE_APP_SERVER_URL,
       productCatalogService: new ProductCatalogService(),
       authority: new Authority(),
       accountService: new AccountService(),
@@ -127,7 +128,7 @@ export default {
       formDataFile.append('file', files[0]);
       fileService.createFile(formDataFile).then(res=>{
  
-        this.menuItem.imageUrl = res.data.fileUrl
+        this.menuItem.imageUrl = res.data.fileName
       }).catch(err=>{
         console.log("err",err)
       })
