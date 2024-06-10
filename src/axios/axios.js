@@ -1,12 +1,11 @@
 import axios from 'axios'
 import store from '@/store'
 
- 
+  
 const request = axios.create({
   baseURL: 'api/', 
   headers: {
-    'Authorization':"Bearer " + localStorage.getItem("jhi-authenticationToken"), // Set the authentication header
-    // Other headers can be added here if needed
+   
   },
     timeout: 120000,
   withCredentials: true,
@@ -17,20 +16,20 @@ let refreshSubscribers = [];
 
  
 
-request.interceptors.request.use(config => {
-  if(config.headers['Content-Type']) {
+request.interceptors.request.use(
+  config => {
+    config.headers['Authorization'] = 'Bearer ' + localStorage.getItem("jhi-authenticationToken");
 
-  } else {
-    config.headers['Content-Type'] = 'application/json'
+    if (!config.headers['Content-Type']) {
+      config.headers['Content-Type'] = 'application/json';
+    }
 
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
   }
- 
-
-  
-  return config
-  }, error => {
-  return Promise.reject(error)
-})
+);
 
 
   
