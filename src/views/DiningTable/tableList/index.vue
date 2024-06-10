@@ -22,17 +22,19 @@
         </md-card>
       </div>
     </div>
-    <MenuForm :shops="shops" :organizations="organizations" ref="menuFormDialog" />
+    <MenuForm :shops="shops" :organizations="organizations" ref="menuFormDialog" @getDiningTable="retrieveAllDiningTables"/>
   </div>
 </template>
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import DiningTableService from "../Api/index.js";
-import MenuForm from "../components/MenuForm.vue";
+import MenuForm from "../components/DinnigTableForm";
 import ShopService from "../../Shop/Api/index.js";
 import OrganizationService from "../../Organization/api/organization.service.js";
+import AccountService from "../../Login/api/account.service.js";
 // import QRCode from 'qrcode';
 import { gsap } from 'gsap';
+import { accountStore } from "../../../store/modules/user/index.js";
 // import QRCode from 'qrcode';
 
 export default {
@@ -45,7 +47,6 @@ export default {
     return {
       columns: [
         { label: "Id", field: "id" },
-        { label: "Code", field: "code" },
         { label: "Name", field: "name" },
         { label: "Description", field: "description" },
         { label: "CreateTime", field: "createTime" },
@@ -73,8 +74,8 @@ export default {
       queryCount: null,
       page: 1,
       previousPage: 1,
-      propOrder: "id",
-      reverse: false,
+      propOrder: "createTime",
+      reverse: true,
       totalItems: 0,
       diningTables: [],
       isFetching: false,
@@ -82,8 +83,10 @@ export default {
       vaColor:"#5335AB",
       shopService: new ShopService(),
       organizationService: new OrganizationService(),
+      accountService: new AccountService(),
       organizations: [],
-      shops: []
+      shops: [],
+      
     };
   },
   mounted() {
@@ -232,16 +235,21 @@ export default {
       this.$refs.menuFormDialog.showDialog = true;
     },
     initRelationships() {
-      this.organizationService
-        .retrieve()
-        .then(res => {
-          this.organizations = res.data;
-        });
+    
+      // this.organizationService
+      //   .retrieve()
+      //   .then(res => {
+      //     this.organizations = res.data;
+      //   }).catch(err=>{
+      //     console.log(err)
+      //   });
 
       this.shopService
         .retrieve()
         .then(res => {
           this.shops = res.data;
+        }).catch(err=>{
+          console.log(err)
         });
     }
   },

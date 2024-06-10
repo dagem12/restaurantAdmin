@@ -19,7 +19,7 @@
        
         <q-uploader
       url="http://localhost:8081/upload"
-      label="Click or Drag files here to upload"
+      label="Click or Drag logo "
       @added="onFileAdded"
       @uploaded="onFileUploaded"
       :headers="uploadHeaders"
@@ -45,6 +45,7 @@
 import ShopService from "../Api/index.js";
 import fileService from "../../../utils/file.service.js"
 export default {
+  props:['retrieveAllShops'],
   data() {
     return {
       showDialog: false,
@@ -86,13 +87,18 @@ export default {
         address: this.shopItem.address,
         enable: this.shopItem.enable,
         orderService: this.shopItem.orderService,
-        contact: this.shopItem.contact
+        contact: this.shopItem.contact.name,
+        shortcutIcon:this.shopItem.shortcutIcon,
+        code:this.shopItem.name
       };
 
       this.shopService.create(newShop)
         .then(() => {
           console.log('New Shop added successfully.');
+       
           this.showDialog = false;
+          this.notifySuccess('Shop added successfully');
+          this.$emit('getShop');
           this.resetMenuItem();
         })
         .catch(error => {
@@ -112,6 +118,7 @@ export default {
         enable: '',
         orderService: '',
         contact: null,
+        shortcutIcon:""
       };
     },
     onFileAdded(files) {
@@ -119,7 +126,8 @@ export default {
       const formDataFile = new FormData();
       formDataFile.append('file', files[0]);
       fileService.createFile(formDataFile).then(res=>{
-        console.log("res",res)
+ 
+        this.shopItem.shortcutIcon = res.data.fileUrl
       }).catch(err=>{
         console.log("err",err)
       })

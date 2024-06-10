@@ -11,8 +11,10 @@
                 <q-input v-model="menuItem.name" label="Name" class="q-mb-md" />
 
                 <q-input v-model="menuItem.description" label="Description" type="textarea" class="q-mb-md" />
-                <q-toggle v-model="menuItem.enable" label="Price" type="number" class="q-mb-md" />
-                <q-uploader v-model="menuItem.poster" label="Upload Image" accept="image/*" class="q-mb-md" />
+                <q-select v-model="menuItem.shop" :options="shops" option-label="name" option-value="id" label="Shop"
+          class="q-mb-md" v-if="accountService.hasAuthorities(authority.ORGANIZATION_ADMIN)"/>
+                <q-toggle v-model="menuItem.enable" label="Enable" type="number" class="q-mb-md" />
+                
 
 
                 <q-card-actions align="right">
@@ -26,7 +28,12 @@
 
 <script>
 import ProductCatalogService from '../menuCatalog/Api/index'
+import AccountService from "../../Login/api/account.service.js";
+import { Authority } from "../../../utils/authority.js";
 export default {
+    props: {
+    shops: [],
+  },
     data() {
         return {
             showDialog: false,
@@ -37,8 +44,9 @@ export default {
                 poster: null,
 
             },
-            productCatalogService: new ProductCatalogService()
-
+            productCatalogService: new ProductCatalogService(),
+            authority: new Authority(),
+            accountService: new AccountService(),
         };
     },
     methods: {
@@ -58,6 +66,7 @@ export default {
                 .then(() => {
                     console.log('New product  Menu Catalog successfully.');
                     this.showDialog = false;
+                    this.$emit('getMenuCatalog');
                     this.resetMenuItem();
                 })
                 .catch(error => {
