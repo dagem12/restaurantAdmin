@@ -26,7 +26,7 @@
     </div>
 
     <!-- MenuForm dialog -->
-    <MenuForm ref="menuFormDialog" />
+    <MenuForm ref="menuFormDialog"  :productCatalogs="productCatalogs" :shops="shops" @getProduct="retrieveAllProducts"/>
   </div>
 </template>
 
@@ -34,6 +34,9 @@
 import DynamicTable from "@/components/Tables/DynamicTable.vue";
 import MenuForm from "../components/MenuForm.vue";
 import ProductService from "./Api/index"
+import ProductCatalogService from "../menuCatalog/Api";
+import ShopService from "../../Shop/Api/index"
+
 
 export default {
   components: {
@@ -74,21 +77,27 @@ export default {
         { label: "Edit", method: this.editItem, icon: "edit", color: "amber" },
       ],
       productService: new ProductService(),
+      productCatalogService: new ProductCatalogService(),
+      shopService: new ShopService(),
       removeId: null,
       itemsPerPage: 20,
       queryCount: null,
       page: 1,
       previousPage: 1,
-      propOrder: 'id',
-      reverse: false,
+      propOrder: 'createTime',
+      reverse: true,
       totalItems: 0,
       products: [],
+      productCatalogs:[],
+      shops:[],
       isFetching: false,
     };
   },
   mounted() {
     this.retrieveAllProducts();
+    this. initRelationships()
   },
+
   methods: {
 
     clear() {
@@ -183,7 +192,25 @@ export default {
     showAddItemDialog() {
       // Show the MenuForm dialog
       this.$refs.menuFormDialog.showDialog = true;
-    }
+    },
+    initRelationships() {
+    
+    this.shopService
+      .retrieve()
+      .then(res => {
+        this.shops = res.data;
+      }).catch(err=>{
+        console.log(err)
+      });
+
+    this.productCatalogService
+      .retrieve()
+      .then(res => {
+        this.productCatalogs = res.data;
+      }).catch(err=>{
+        console.log(err)
+      });
+  },
 
   },
 

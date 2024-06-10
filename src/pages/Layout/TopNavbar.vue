@@ -122,7 +122,9 @@ export default {
       this.$router.push({ path: '/profile' });
     },
     logout() {
+      localStorage.removeItem("jhi-authenticationToken")
       this.$store.commit('logout');
+      console.log("data ", this.$store.getters.account)
       this.$router.push({ path: '/login' }); 
     },
     toggleSidebar() {

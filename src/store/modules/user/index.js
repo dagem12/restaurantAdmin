@@ -28,11 +28,11 @@ export const accountStore = {
       state.logon = false;
     },
     logout(state) {
-      
+      console.log("logout is not work")
       state.userIdentity = null;
       state.authenticated = false;
       state.logon = false;
-      localStorage.removeItem("jhi-authenticationToken")
+     
     },
     setActiveProfiles(state, profile) {
       

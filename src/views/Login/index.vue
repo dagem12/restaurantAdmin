@@ -71,7 +71,8 @@ gsap.from(box, { duration: 1, x: -1000, opacity: 0, ease: "power1.out" });
           if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
             const jwt = bearerToken.slice(7);
 
-            localStorage.setItem('jhi-authenticationToken', jwt);
+            localStorage.setItem('jhi-authenticationToken', jwt)
+
             // if (this.rememberMe) {
             //   localStorage.setItem('jhi-authenticationToken', jwt);
             //   sessionStorage.removeItem('jhi-authenticationToken');
@@ -82,14 +83,17 @@ gsap.from(box, { duration: 1, x: -1000, opacity: 0, ease: "power1.out" });
           }
           this.authenticationError = false;
         
-          this.accountService.retrieveAccount().then(res=>{
+         
+       
+         return localStorage.getItem('jhi-authenticationToken');
+         
+        }).then(data=>{
+          console.log("data",data)
+          new AccountService().retrieveAccount().then(res=>{
             this.$router.push('/');
           }).catch(err=>{
 
           });
-       
-         
-         
         })
         .catch(() => {
           this.authenticationError = true;
