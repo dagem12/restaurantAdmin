@@ -109,6 +109,7 @@ export default {
         .then(() => {
           console.log('New User added successfully.');
           this.showDialog = false;
+          this.$emit('getUsers');
           this.notifySuccess('User added successfully');
           this.resetMenuItem();
         })

@@ -78,12 +78,12 @@ export default {
         //   icon: "edit",
         //   color: "blue",
         // },
-        {
-          label: "Delete",
-          method: this.deleteItem,
-          icon: "delete",
-          color: "red",
-        },
+        // {
+        //   label: "Delete",
+        //   method: this.deleteItem,
+        //   icon: "delete",
+        //   color: "red",
+        // },
       ],
       productOrderService: new ProductOrderService(),
 
