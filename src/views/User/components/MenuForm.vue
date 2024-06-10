@@ -14,8 +14,8 @@
         <q-input v-model="user.email" label="Email" class="q-mb-md" />
         <q-toggle v-model="user.activated" label="Activated" class="q-mb-md" />
 
-        <q-select v-model="user.orgId" label="Organization" :options="organizations" option-label="name"
-          option-value="id" class="q-mb-md" />
+        <q-select v-if="this.accountService.hasAuthorities(this.authority.ADMIN)" v-model="user.orgId"
+          label="Organization" :options="organizations" option-label="name" option-value="id" class="q-mb-md" />
 
         <q-select v-model="user.shopId" label="Shop" :options="shops" option-label="name" option-value="id"
           class="q-mb-md" />
@@ -35,6 +35,9 @@
 
 <script>
 import UserService from "../Api/index.js";
+import AccountService from "../../Login/api/account.service";
+import { Authority } from "../../../utils/authority";
+import { Notify } from 'quasar';
 export default {
   data() {
     return {
@@ -50,9 +53,12 @@ export default {
         orgId: null,
         langKey: null,
         authorities: [],
-        password: null
+        password: null,
 
-      }
+
+      },
+      authority: new Authority(),
+      accountService: new AccountService()
 
     };
   },
@@ -62,8 +68,27 @@ export default {
     authorities: []
   },
   methods: {
+    notifySuccess(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'green'
+      });
+    },
+
+    notifyError(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'red'
+      });
+    },
     async addItem() {
-      console.log('Adding new Organization item:', this.user);
+      console.log('Adding new New User item:', this.user);
 
 
       const newUser = {
@@ -73,20 +98,23 @@ export default {
         email: this.user.email,
         activated: this.user.activated,
         shopId: this.user.shopId?.id,
-        orgId: this.user.orgId?.id,
+        orgId: this.$store.getters.account.orgId,
         langKey: this.user.langKey,
         authorities: this.user.authorities,
         password: this.user.password,
+
       };
 
       this.userService.create(newUser)
         .then(() => {
           console.log('New User added successfully.');
           this.showDialog = false;
+          this.notifySuccess('User added successfully');
           this.resetMenuItem();
         })
         .catch(error => {
           console.error('Error adding new User:', error);
+          this.notifyError('Error Happens')
         });
     },
     cancelAddItem() {
