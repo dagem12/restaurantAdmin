@@ -66,10 +66,27 @@
               </a>
             </li>
 
-            <md-list-item href="#/user">
-              <i class="material-icons">person</i>
-              <p class="hidden-lg hidden-md">Profile</p>
-            </md-list-item>
+            
+            <q-btn-dropdown stretch flat :label="user.firstName">
+        <q-list>
+          <q-item clickable v-close-popup tabindex="0" @click="goToProfile()">
+            <q-item-section avatar>
+              <q-avatar icon="person" color="primary" text-color="white" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Profile</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item clickable v-close-popup tabindex="0" @click="logout()">
+            <q-item-section avatar>
+              <q-avatar icon="logout" color="primary" text-color="white" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Logout</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-btn-dropdown>
           </md-list>
         </div>
       </div>
@@ -93,11 +110,26 @@ export default {
         "Ryan Howard",
         "Kevin Malone",
       ],
+      showDropdown: false,
+      user:{}
     };
   },
+  mounted(){
+    this.user=this.$store.getters.account
+  },
   methods: {
+    goToProfile() {
+      this.$router.push({ path: '/profile' });
+    },
+    logout() {
+      this.$store.commit('logout');
+      this.$router.push({ path: '/login' }); 
+    },
     toggleSidebar() {
       this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
+    },
+    hideDropdown() {
+      this.showDropdown = false;
     },
     toggleFullscreen() {
       this.isFullscreen = !this.isFullscreen;

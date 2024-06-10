@@ -269,7 +269,7 @@
                       stripe
                       rounded
                       size="20px"
-                      value="0.24"
+                      :value=progressData.progressValue1
                       style="color: rgb(145, 204, 117) !important"
                       class="q-mt-sm"
                     />
@@ -283,7 +283,7 @@
                       stripe
                       rounded
                       size="20px"
-                      value="0.41"
+                      :value=progressData.progressValue2
                       style="color: rgb(84, 112, 198) !important"
                       class="q-mt-sm"
                     />
@@ -297,7 +297,7 @@
                       stripe
                       rounded
                       size="20px"
-                      value="0.15"
+                      :value=progressData.progressValue3
                       style="color: rgb(250, 200, 88) !important"
                       class="q-mt-sm"
                     />
@@ -311,12 +311,12 @@
                       stripe
                       rounded
                       size="20px"
-                      value="0.05"
+                      :value=progressData.progressValue4
                       style="color: rgb(238, 102, 102) !important"
                       class="q-mt-sm"
                     />
                     <span class="pull-right ml-auto col-1 px-0 text-right"
-                      >07</span
+                      >05</span
                     >
                   </div>
                 </div>
@@ -549,6 +549,12 @@ gsap.from(dashboardbox, { duration: 1, opacity: 0, y: 1000, ease: "power1.out" }
           ],
         ],
       },
+      progressData:{
+        progressValue1: parseFloat("0.24") ,
+        progressValue2: parseFloat("0.41") ,
+        progressValue3: parseFloat("0.15") ,
+        progressValue4: parseFloat("0.05") 
+      }
     };
   },
 };
