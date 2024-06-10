@@ -61,8 +61,9 @@ export default {
   data() {
     return {
       columns: [
+      { label: "Image", field: "imageUrl",  isImage:true},
         { label: "Name", field: "name" },
-        { label: "Price", field: "price" },
+        { label: "Price", field: "unitPrice" },
         { label: "Description", field: "description" }
       ],
       dataItems: [
