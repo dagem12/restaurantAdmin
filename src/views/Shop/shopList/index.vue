@@ -22,7 +22,7 @@
         </md-card>
       </div>
     </div>
-    <MenuForm ref="menuFormDialog" retrieveAllShops="retrieveAllShops"/>
+    <MenuForm ref="menuFormDialog" @getShop="retrieveAllShops"/>
   </div>
 </template>
 
@@ -70,8 +70,8 @@ export default {
       queryCount: null,
       page: 1,
       previousPage: 1,
-      propOrder: 'id',
-      reverse: false,
+      propOrder: 'createTime',
+      reverse: true,
       totalItems: 0,
       shops: [],
       isFetching: false,

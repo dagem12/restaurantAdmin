@@ -23,13 +23,14 @@
         </md-card>
       </div>
     </div>
-    <MenuForm ref="menuFormDialog" />
+    <MenuForm ref="menuFormDialog" :shops="shops" @getMenuCatalog="retrieveAllProductCatalogs"/>
   </div>
 </template>
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import ProductCatalogService from "./Api/index";
 import MenuForm from "../components/MenuCatalogForm.vue";
+import ShopService from "../../Shop/Api";
 export default {
   name: "menuCatalogList",
   components: {
@@ -40,7 +41,6 @@ export default {
     return {
       columns: [
         { label: "Id", field: "id" },
-        { label: "Code", field: "code" },
         { label: "Name", field: "name" },
         { label: "Description", field: "description" },
         { label: "Enable", field: "enable" },
@@ -68,16 +68,31 @@ export default {
       queryCount: null,
       page: 1,
       previousPage: 1,
-      propOrder: 'id',
+      propOrder: 'createTime',
       reverse: false,
       totalItems: 0,
       productCatalogs: [],
       isFetching: false,
-      productCatalogService: new ProductCatalogService()
+      shops:[],
+      productCatalogService: new ProductCatalogService(),
+      shopService: new ShopService(),
     };
+  },
+  
+  watch: {
+    shops: {
+      handler(newVal) {
+        if (!newVal) {
+          this.initRelationships();
+        }
+      },
+      immediate: true, // This ensures the watch is triggered immediately after the component is created
+      deep: true // This allows the watch to watch for changes in nested properties of the prop
+    }
   },
   mounted() {
     this.retrieveAllProductCatalogs();
+    this.initRelationships();
   },
   methods: {
 
@@ -160,6 +175,24 @@ export default {
         this.$refs.removeEntity.hide();
       }
     },
+    initRelationships() {
+    
+    // this.organizationService
+    //   .retrieve()
+    //   .then(res => {
+    //     this.organizations = res.data;
+    //   }).catch(err=>{
+    //     console.log(err)
+    //   });
+
+    this.shopService
+      .retrieve()
+      .then(res => {
+        this.shops = res.data;
+      }).catch(err=>{
+        console.log(err)
+      });
+  },
     editItem(item) {
       console.log("Editing item:", item);
     },

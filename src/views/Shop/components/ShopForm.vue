@@ -95,9 +95,10 @@ export default {
       this.shopService.create(newShop)
         .then(() => {
           console.log('New Shop added successfully.');
-          this.retrieveAllShops
+       
           this.showDialog = false;
-
+          this.notifySuccess('Shop added successfully');
+          this.$emit('getShop');
           this.resetMenuItem();
         })
         .catch(error => {

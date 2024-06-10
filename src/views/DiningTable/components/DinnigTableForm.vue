@@ -11,12 +11,12 @@
         <q-input v-model="diningItem.name" label="Name" class="q-mb-md" />
 
         <q-input v-model="diningItem.description" label="Description" type="textarea" class="q-mb-md" />
-        <q-select v-model="diningItem.tenant" label="Organization" :options="organizations" option-label="name"
-          option-value="id" class="q-mb-md" />
+        <!-- <q-select v-model="diningItem.tenant" label="Organization" :options="organizations" option-label="name"
+          option-value="id" class="q-mb-md" /> -->
 
 
         <q-select v-model="diningItem.shop" :options="shops" option-label="name" option-value="id" label="Shop"
-          class="q-mb-md" />
+          class="q-mb-md" v-if="accountService.hasAuthorities(authority.ORGANIZATION_ADMIN)"/>
         <q-toggle v-model="diningItem.enable" label="Enable" class="q-mb-md" />
 
       </q-card-section>
@@ -32,6 +32,8 @@
 <script>
 import DiningService from "../Api/index.js";
 import { Notify } from 'quasar';
+import AccountService from "../../Login/api/account.service.js";
+import { Authority } from "../../../utils/authority.js";
 export default {
   props: {
     shops: [],
@@ -41,6 +43,8 @@ export default {
     return {
       showDialog: false,
       diningService: new DiningService(),
+      authority: new Authority(),
+      accountService: new AccountService(),
       diningItem: {
         name: '',
         shop: null,
@@ -84,9 +88,11 @@ export default {
 
       this.diningService.create(newDining)
         .then(() => {
-          console.log('New Dining added successfully.');
+        
           this.showDialog = false;
+          this.$emit('getDiningTable');
           this.notifySuccess('Dinnig Table added successfully');
+         
           this.resetMenuItem();
         })
         .catch(error => {
