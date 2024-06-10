@@ -80,7 +80,7 @@ export default {
   },
   data() {
     return {
-      sidebarBackground: "green",
+      sidebarBackground: "va",
       sidebarBackgroundImage: require("@/assets/img/sidebar-2.jpg"),
       isExpanded: true,
       accountService: new AccountService(),
