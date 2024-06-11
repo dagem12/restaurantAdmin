@@ -37,7 +37,7 @@
         <p v-if="isExpanded">Product Order</p>
       </sidebar-link>
       <sidebar-link to="/users"
-        v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) || accountService.hasAuthorities(Authority.SHOP_ADMIN)">
+        v-if="accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN) || accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN)">
         <md-icon>person</md-icon>
         <p v-if="isExpanded">Users</p>
       </sidebar-link>

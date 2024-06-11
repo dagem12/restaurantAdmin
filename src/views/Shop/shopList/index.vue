@@ -24,6 +24,7 @@
       </div>
     </div>
     <MenuForm ref="menuFormDialog" @getShop="retrieveAllShops" />
+    <ShopEditForm ref="editFormDialog" :shop="shop" @getShop="retrieveAllShops" />
     <q-dialog v-model="confirm" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -46,6 +47,7 @@ import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import { mapActions, mapState } from 'vuex';
 import ShopService from '../Api/index';
 import MenuForm from "../components/ShopForm.vue";
+import ShopEditForm from "../components/ShopEditForm.vue";
 import { gsap } from 'gsap';
 import { Notify } from 'quasar';
 
@@ -53,7 +55,8 @@ export default {
   name: "shopList",
   components: {
     DynamicTable,
-    MenuForm
+    MenuForm,
+    ShopEditForm
   },
   data() {
     return {
@@ -93,7 +96,8 @@ export default {
       shops: [],
       isFetching: false,
       shopService: new ShopService(),
-      confirm: false
+      confirm: false,
+      shop: {}
     };
   },
   mounted() {
@@ -108,6 +112,10 @@ export default {
       // Define your add item logic here
     },
     editItem(item) {
+      console.log("editing", item)
+      this.shop = item;
+      this.$refs.editFormDialog.showDialogEdit = true;
+
       // Define your edit item logic here
     },
     deleteItem(item) {

@@ -25,6 +25,8 @@
     </div>
     <MenuForm :shops="shops" :organizations="organizations" ref="menuFormDialog"
       @getDiningTable="retrieveAllDiningTables" />
+    <DiningTableEditForm :shops="shops" :organizations="organizations" ref="editFormDialog"
+      @getDiningTable="retrieveAllDiningTables" :dining="dining" />
     <q-dialog v-model="confirm" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -44,6 +46,7 @@
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import DiningTableService from "../Api/index.js";
 import MenuForm from "../components/DinnigTableForm";
+import DiningTableEditForm from "../components/DiningTableEditForm";
 import ShopService from "../../Shop/Api/index.js";
 import OrganizationService from "../../Organization/api/organization.service.js";
 import AccountService from "../../Login/api/account.service.js";
@@ -57,7 +60,8 @@ export default {
   name: "diningTableList",
   components: {
     DynamicTable,
-    MenuForm
+    MenuForm,
+    DiningTableEditForm
   },
   data() {
     return {
@@ -84,6 +88,7 @@ export default {
           color: "red",
         },
       ],
+      dining: {},
       confirm: false,
       loading: false,
       removeId: null,
@@ -236,6 +241,9 @@ export default {
     },
     editItem(item) {
       console.log("Editing item:", item);
+      this.dining = item;
+      this.$refs.editFormDialog.showDialogEdit = true;
+
     },
     deleteItem(item) {
       console.log("Deleting item:", item);

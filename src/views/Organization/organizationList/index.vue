@@ -24,6 +24,8 @@
       </div>
     </div>
     <MenuForm :users="users" @getOrganizations="retrieveAllOrganizations" ref="menuFormDialog" />
+    <EditForm :organization="organization" @getOrganizations="retrieveAllOrganizations" :users="users"
+      ref="editFormDialog" />
     <q-dialog v-model="confirm" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -45,13 +47,16 @@ import OrganizationService from "../api/organization.service.js";
 import UserService from "../../User/Api/index.js";
 import { watch } from 'vue';
 import MenuForm from "../components/MenuForm.vue";
+import EditForm from "../components/EditForm.vue";
 import { gsap } from 'gsap';
 import { Notify } from 'quasar';
+
 export default {
   name: "organizationList",
   components: {
     DynamicTable,
-    MenuForm
+    MenuForm,
+    EditForm
   },
 
   data() {
@@ -72,6 +77,7 @@ export default {
       showMenuForm: false,
       userService: new UserService(),
       organizationService: new OrganizationService(),
+      organization: {},
       columns: [
         { label: "Id", field: "id" },
         { label: "Code", field: "code" },
@@ -234,6 +240,8 @@ export default {
     },
     editItem(item) {
       console.log("Editing item:", item);
+      this.organization = item;
+      this.$refs.editFormDialog.showDialogEdit = true;
     },
     deleteItem(item) {
       this.prepareRemove(item);

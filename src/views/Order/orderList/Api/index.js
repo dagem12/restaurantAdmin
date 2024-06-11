@@ -34,6 +34,7 @@ export default class ProductOrderService {
     });
   }
 
+
   totalPayments() {
     return new Promise((resolve, reject) => {
       axios
@@ -90,6 +91,18 @@ export default class ProductOrderService {
     return new Promise((resolve, reject) => {
       axios
         .post(`${baseApiUrl}`, entity)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+  changeOrderStatus(id, statusId) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`/product-order/complete/${id}`, statusId)
         .then(res => {
           resolve(res.data);
         })
