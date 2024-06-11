@@ -25,6 +25,7 @@
       </div>
     </div>
     <MenuForm ref="menuFormDialog" :shops="shops" @getMenuCatalog="retrieveAllProductCatalogs" />
+    <MenuFormEdit ref="editFormDialog" :shops="shops" @getMenuCatalog="retrieveAllProductCatalogs" :menu="menu" />
     <q-dialog v-model="confirm" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -44,6 +45,8 @@
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import ProductCatalogService from "./Api/index";
 import MenuForm from "../components/MenuCatalogForm.vue";
+
+import MenuFormEdit from "../components/MenuCatalogEditForm.vue";
 import ShopService from "../../Shop/Api";
 import { Notify } from 'quasar';
 import { gsap } from 'gsap';
@@ -51,7 +54,8 @@ export default {
   name: "menuCatalogList",
   components: {
     DynamicTable,
-    MenuForm
+    MenuForm,
+    MenuFormEdit
   },
   data() {
     return {
@@ -94,6 +98,7 @@ export default {
       shops: [],
       productCatalogService: new ProductCatalogService(),
       shopService: new ShopService(),
+      menu: {}
     };
   },
 
@@ -113,8 +118,8 @@ export default {
     this.initRelationships();
     const box = this.$refs.box;
 
-// Using GSAP to animate the row
-gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
+    // Using GSAP to animate the row
+    gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
 
@@ -218,6 +223,10 @@ gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
     },
     editItem(item) {
       console.log("Editing item:", item);
+      this.menu = item;
+      this.$refs.editFormDialog.showDialogEdit = true;
+
+
     },
     deleteItem(item) {
       console.log("Deleting item:", item);

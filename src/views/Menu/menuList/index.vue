@@ -29,6 +29,8 @@
     <!-- MenuForm dialog -->
     <MenuForm ref="menuFormDialog" :productCatalogs="productCatalogs" :shops="shops"
       @getProduct="retrieveAllProducts" />
+    <MenuFormEdit ref="editFormDialog" :productCatalogs="productCatalogs" :shops="shops"
+      @getProduct="retrieveAllProducts" :menu="menu" />
     <q-dialog v-model="confirm" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -48,6 +50,7 @@
 <script>
 import DynamicTable from "@/components/Tables/DynamicTable.vue";
 import MenuForm from "../components/MenuForm.vue";
+import MenuFormEdit from "../components/MenuFormEdit.vue";
 import ProductService from "./Api/index"
 import ProductCatalogService from "../menuCatalog/Api";
 import ShopService from "../../Shop/Api/index";
@@ -58,12 +61,13 @@ import { gsap } from 'gsap';
 export default {
   components: {
     DynamicTable,
-    MenuForm
+    MenuForm,
+    MenuFormEdit
   },
   data() {
     return {
       columns: [
-      { label: "Image", field: "imageUrl",  isImage:true},
+        { label: "Image", field: "imageUrl", isImage: true },
         { label: "Name", field: "name" },
         { label: "Price", field: "unitPrice" },
         { label: "Description", field: "description" }
@@ -117,6 +121,7 @@ export default {
       productCatalogs: [],
       shops: [],
       isFetching: false,
+      menu: {}
     };
   },
   mounted() {
@@ -124,8 +129,8 @@ export default {
     this.initRelationships()
     const box = this.$refs.box;
 
-// Using GSAP to animate the row
-gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
+    // Using GSAP to animate the row
+    gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
 
   methods: {
@@ -212,6 +217,9 @@ gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
 
     editItem(item) {
       console.log("Editing item:", item);
+      this.menu = item;
+      this.$refs.editFormDialog.showDialogEdit = true;
+
     },
     deleteItem(item) {
       console.log("Deleting item:", item);

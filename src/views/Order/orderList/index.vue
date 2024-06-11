@@ -29,6 +29,7 @@
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import ProductOrderService from "./Api/index";
+import { Notify } from 'quasar';
 import { gsap } from 'gsap';
 export default {
   name: "orderList",
@@ -72,12 +73,17 @@ export default {
           icon: "visibility",
           color: "primary",
         },
-        // {
-        //   label: "Edit",
-        //   method: this.editItem,
-        //   icon: "edit",
-        //   color: "blue",
-        // },
+        {
+          label: "Edit",
+          label2: "Update Status",
+          label2Options: ['open', 'preparing', 'served', 'payed'],
+          method: this.editItem,
+          methodOptions: this.updateStatus,
+          loadingS: false,
+          specificItem: null,
+          icon: "edit",
+          color: "blue",
+        },
         // {
         //   label: "Delete",
         //   method: this.deleteItem,
@@ -96,7 +102,8 @@ export default {
       reverse: false,
       totalItems: 0,
       productOrders: [],
-      isFetching: false
+      isFetching: false,
+      loadingStatus: false
     };
   },
   mounted() {
@@ -107,6 +114,25 @@ export default {
     gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
+    notifySuccess(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'green'
+      });
+    },
+
+    notifyError(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'red'
+      });
+    },
     clear() {
       this.page = 1;
       this.retrieveAllProductOrders();
@@ -200,6 +226,34 @@ export default {
       console.log("Adding new item");
       // Add your logic here to handle adding a new item
     },
+    updateStatus(option, item) {
+
+      let statuscode = '';
+      if (option == 'preparing') {
+        statuscode = 7002
+      } else if (option == 'served') {
+        statuscode = 7003
+      } else if (option == 'payed') {
+        statuscode = 7004
+      }
+
+      this.actions[1].loadingS = true;
+      this.actions[1].specificItem = item;
+
+      this.productOrderService.changeOrderStatus(item.id, statuscode).then((res) => {
+
+        this.actions[1].loadingS = false;
+        this.notifySuccess(`Order Status Changed To ${option} successfully`);
+        this.retrieveAllProductOrders();
+      }).catch(err => {
+        console.log(err)
+        this.actions[1].loadingS = false;
+        this.notifyError('Error Occured')
+
+      })
+
+
+    }
   }
 };
 </script>

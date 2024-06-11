@@ -25,6 +25,8 @@
     </div>
     <MenuForm :shops="shops" :organizations="organizations" :authorities="authorities" ref="menuFormDialog"
       @getUsers="loadAll" />
+    <MenuFormEdit :shops="shops" :organizations="organizations" :authorities="authorities" ref="editFormDialog"
+      @getUsers="loadAll" :user="user" />
     <q-dialog v-model="confirm" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -46,6 +48,7 @@ import OrganizationService from "../../Organization/api/organization.service";
 import ShopService from "../../Shop/Api";
 import { Authority } from "../../../utils/authority";
 import MenuForm from "../components/MenuForm.vue";
+import MenuFormEdit from "../components/MenuFormEdit.vue";
 import AccountService from "../../Login/api/account.service";
 import UserManagementService from "../Api/index.js";
 import { Notify } from 'quasar';
@@ -55,7 +58,8 @@ export default {
   name: "usersList",
   components: {
     DynamicTable,
-    MenuForm
+    MenuForm,
+    MenuFormEdit
   },
   data() {
     return {
@@ -114,7 +118,8 @@ export default {
       reverse: false,
       totalItems: 0,
       isLoading: false,
-      users: []
+      users: [],
+      user: {}
 
     };
   },
@@ -127,6 +132,9 @@ export default {
   methods: {
     editItem(item) {
       console.log("Editing item:", item);
+      this.user = item;
+      this.$refs.editFormDialog.showDialogEdit = true;
+
     },
     deleteItem(item) {
       console.log("Deleting item:", item);
