@@ -66,8 +66,7 @@ export default {
         { label: "Name", field: "name" },
         { label: "Description", field: "description" },
         { label: "Enable", field: "enable" },
-        { label: "CreateTime", field: "createTime" },
-        { label: "ShopKey", field: "shopKey" },
+        { label: "CreateTime", field: "createTime", isCreateTime: true },
         { label: "Address", field: "address" },
       ],
       actions: [
@@ -121,6 +120,9 @@ export default {
     deleteItem(item) {
       this.prepareRemove(item);
     },
+    generateQR(item) {
+
+    },
     clear() {
       this.page = 1;
       this.retrieveAllShops();
@@ -144,12 +146,12 @@ export default {
             this.isFetching = false;
             console.log("data ", this.shops)
           },
-          err => {
-            console.log(err)
-            this.isFetching = false;
 
-          }
-        );
+        ).catch(err => {
+          console.log(err)
+          this.isFetching = false;
+
+        });
       console.log("data data")
     },
     handleSyncList() {

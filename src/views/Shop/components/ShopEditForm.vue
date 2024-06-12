@@ -94,6 +94,7 @@ export default {
                 enable: this.shop?.enable,
                 orderService: this.shop?.orderService,
                 contact: this.shop?.contact?.name,
+                createTime: this.shop?.createTime,
                 shortcutIcon: this.shop?.shortcutIcon,
                 code: this.shop?.name,
                 shopKey: this.shop?.shopKey
