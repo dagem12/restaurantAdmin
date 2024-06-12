@@ -93,7 +93,7 @@ export default {
       organization: {},
       columns: [
         { label: "Id", field: "id" },
-        { label: "Code", field: "code" },
+       
         { label: "Name", field: "name" },
         { label: "Description", field: "description" },
         { label: "Enable", field: "enable" },

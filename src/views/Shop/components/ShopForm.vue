@@ -121,7 +121,7 @@ export default {
       formDataFile.append('file', files[0]);
       fileService.createFile(formDataFile).then(res => {
 
-        this.shopItem.shortcutIcon = res.data.fileUrl
+        this.shopItem.shortcutIcon = res.data.fileName
       }).catch(err => {
         console.log("err", err)
       })

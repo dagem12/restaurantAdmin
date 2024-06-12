@@ -54,6 +54,7 @@ export default {
         langKey: null,
         authorities: [],
         password: null,
+        orgId:null
 
 
       },
@@ -97,13 +98,14 @@ export default {
         lastName: this.user.lastName,
         email: this.user.email,
         activated: this.user.activated,
-        shopId: this.user.shopId?.id,
-        orgId: this.$store.getters.account.orgId,
+        shopId: this.user?.shopId?.id,
+        orgId :this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)?this.$store.getters.account.orgId:this.user.orgId.id,
         langKey: this.user.langKey,
         authorities: this.user.authorities,
         password: this.user.password,
 
       };
+      console.log("new user ",newUser)
 
       this.userService.create(newUser)
         .then(() => {

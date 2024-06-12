@@ -4,7 +4,7 @@
       <div class="md-layout" ref="box">
         <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
           <md-card>
-            <md-card-header data-background-color="" class="header-with-button">
+            <md-card-header :style="{ backgroundColor: sidebarItemColor }" class="header-with-button">
               <div>
                 <h4 class="title">Menus</h4>
                 <p class="category">Explore and manage your restaurant's menu items</p>
@@ -74,6 +74,16 @@ export default {
     DynamicTable,
     MenuForm,
     MenuFormEdit
+  },
+  props: {
+    sidebarItemColor: {
+      type: String,
+      default: "blue",
+      validator: (value) => {
+        let acceptedValues = ["va", "purple", "blue", "green", "orange", "red", ""];
+        return acceptedValues.indexOf(value) !== -1;
+      },
+    },
   },
   data() {
     return {
@@ -145,7 +155,11 @@ export default {
     // Using GSAP to animate the row
     gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
-
+  watch: {
+    sidebarItemColor(newColor) {
+      console.log('sidebarItemColor changed to:', newColor);
+    }
+  },
   methods: {
     toggleSearch() {
       this.showSearchInput = !this.showSearchInput;
@@ -328,4 +342,6 @@ export default {
 .md-card-header {
   background-color: #5335AB !important;
 }
+
+*/
 </style>
