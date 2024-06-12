@@ -9,13 +9,24 @@
                 <h4 class="title">Menus</h4>
                 <p class="category">Explore and manage your restaurant's menu items</p>
               </div>
-              <!-- Add Item button -->
-              <div class="add-item-button">
-                <md-button md-theme="" style="background-color: white !important;color:black !important"
-                  @click="this.showAddItemDialog">
-                  <md-icon style="color:black !important">add</md-icon>
-                  <span>Add Item</span>
-                </md-button>
+              <div style="display: flex;">
+                <div class="search-container">
+                  <q-input v-model="searchKeyword" v-show="showSearchInput" @keyup.enter="performSearch"
+                    placeholder="Enter search keyword" class="custom-input"></q-input>
+                  <div style="padding: 10px;" @click="toggleSearch">
+                    <md-icon label="Search" style="color:white !important">search</md-icon>
+                  </div>
+
+                  <!-- <q-btn @click="toggleSearch" label="Search" color="primary"></q-btn> -->
+                </div>
+                <!-- Add Item button -->
+                <div class="add-item-button">
+                  <md-button md-theme="" style="background-color: white !important;color:black !important"
+                    @click="this.showAddItemDialog">
+                    <md-icon style="color:black !important">add</md-icon>
+                    <span>Add Item</span>
+                  </md-button>
+                </div>
               </div>
             </md-card-header>
             <md-card-content>
@@ -64,18 +75,20 @@ export default {
     MenuForm,
     MenuFormEdit
   },
-  props:{
+  props: {
     sidebarItemColor: {
       type: String,
       default: "blue",
       validator: (value) => {
-        let acceptedValues = ["va", "purple", "blue", "green", "orange", "red",""];
+        let acceptedValues = ["va", "purple", "blue", "green", "orange", "red", ""];
         return acceptedValues.indexOf(value) !== -1;
       },
     },
   },
   data() {
     return {
+      showSearchInput: false,
+      searchKeyword: '',
       columns: [
         { label: "Image", field: "imageUrl", isImage: true },
         { label: "Name", field: "name" },
@@ -143,11 +156,22 @@ export default {
     gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   watch: {
-  sidebarItemColor(newColor) {
-    console.log('sidebarItemColor changed to:', newColor);
-  }
-},
+    sidebarItemColor(newColor) {
+      console.log('sidebarItemColor changed to:', newColor);
+    }
+  },
   methods: {
+    toggleSearch() {
+      this.showSearchInput = !this.showSearchInput;
+      if (this.showSearchInput) {
+        this.$nextTick(() => this.$refs.searchInput.focus());
+      }
+    },
+    performSearch() {
+      // Your search logic here
+      console.log('Search performed:', this.searchKeyword);
+    }
+    ,
 
     clear() {
       this.page = 1;
@@ -296,11 +320,28 @@ export default {
   align-items: center;
 }
 
+.search-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  text-align: end;
+}
+
+::v-deep .md-card-header {
+  justify-content: space-between;
+}
+
 .add-item-button {
   margin-top: 10px;
 }
 
-/* .md-card-header {
+.custom-input .q-field__native {
+  color: white !important;
+}
+
+.md-card-header {
   background-color: #5335AB !important;
-} */
+}
+
+*/
 </style>

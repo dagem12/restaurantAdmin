@@ -13,7 +13,9 @@ export default class UserManagementService {
   update(user) {
     return axios.put("/admin/users", user);
   }
-
+  searchUser(name) {
+    return axios.get(`/admin/user?name=${name}`);
+  }
   remove(userId) {
     return axios.delete(`/admin/users/${userId}`);
   }
