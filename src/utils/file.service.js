@@ -20,7 +20,7 @@ function createFile(body) {
   }
   function getFile(fileName) {
     return axios({
-      url: `/upload/${fileName}`,
+      url: `/images/${fileName}`,
       method: 'get',
     });
   }
