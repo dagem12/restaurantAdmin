@@ -76,7 +76,7 @@ export default {
         {
           label: "Edit",
           label2: "Update Status",
-          label2Options: ['open', 'preparing', 'served', 'payed'],
+          label2Options: ['Open', 'Preparing', 'Delivered', 'Paid', 'Cancelled'],
           method: this.editItem,
           methodOptions: this.updateStatus,
           loadingS: false,
