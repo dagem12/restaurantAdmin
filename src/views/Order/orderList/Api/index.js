@@ -34,6 +34,19 @@ export default class ProductOrderService {
     });
   }
 
+  searchOrder(name) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`/product-order?name=${name}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
 
   totalPayments() {
     return new Promise((resolve, reject) => {

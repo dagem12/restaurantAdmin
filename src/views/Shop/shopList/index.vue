@@ -9,12 +9,23 @@
               <p class="category">Explore and manage your shops</p>
             </div>
             <!-- Add Item button -->
-            <div class="add-item-button">
-              <md-button md-theme="" style="background-color: white !important;color:black !important"
-                @click="this.showAddItemDialog">
-                <md-icon style="color:black !important">add</md-icon>
-                <span>Add Item</span>
-              </md-button>
+            <div style="display: flex;">
+              <div class="search-container">
+                <q-input v-model="searchKeyword" v-show="showSearchInput" @keyup.enter="performSearch"
+                  placeholder="Enter search keyword" class="custom-input"></q-input>
+                <div style="padding: 10px;" @click="toggleSearch">
+                  <md-icon label="Search" style="color:white !important">search</md-icon>
+                </div>
+
+                <!-- <q-btn @click="toggleSearch" label="Search" color="primary"></q-btn> -->
+              </div>
+              <div class="add-item-button">
+                <md-button md-theme="" style="background-color: white !important;color:black !important"
+                  @click="this.showAddItemDialog">
+                  <md-icon style="color:black !important">add</md-icon>
+                  <span>Add Item</span>
+                </md-button>
+              </div>
             </div>
           </md-card-header>
           <md-card-content>
@@ -60,9 +71,10 @@ export default {
   },
   data() {
     return {
+      showSearchInput: false,
+      searchKeyword: '',
       columns: [
         { label: "Id", field: "id" },
-        { label: "Code", field: "code" },
         { label: "Name", field: "name" },
         { label: "Description", field: "description" },
         { label: "Enable", field: "enable" },
@@ -96,7 +108,8 @@ export default {
       isFetching: false,
       shopService: new ShopService(),
       confirm: false,
-      shop: {}
+      shop: {},
+      searchWord: ''
     };
   },
   mounted() {
@@ -107,6 +120,17 @@ export default {
     gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
+    toggleSearch() {
+      this.showSearchInput = !this.showSearchInput;
+      if (this.showSearchInput) {
+        this.$nextTick(() => this.$refs.searchInput.focus());
+      }
+    },
+    performSearch() {
+      // Your search logic here
+      console.log('Search performed:', this.searchKeyword);
+    }
+    ,
     addItem() {
       // Define your add item logic here
     },
@@ -250,8 +274,24 @@ export default {
   padding: 1%;
 }
 
+.search-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  text-align: end;
+}
+
+::v-deep .md-card-header {
+  justify-content: space-between;
+}
+
+
 .md-card-header {
   background-color: #5335AB !important;
+}
+
+.custom-input .q-field__native {
+  color: white !important;
 }
 
 .md-button {

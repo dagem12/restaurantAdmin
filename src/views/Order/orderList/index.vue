@@ -10,12 +10,26 @@
                 Explore and manage your restaurant's orders
               </p>
             </div>
-            <!-- Add Item button -->
-            <div class="add-item-button">
-              <!-- <md-button color="primary" @click="this.addItem">
+            <div style="display: flex;">
+              <div class="search-container">
+                <div v-show="showSearchInput" style="padding: 10px;" @click="clear">
+                  <md-icon label="Search" style="color:white !important">close</md-icon>
+                </div>
+                <q-input v-model="searchKeyword" v-show="showSearchInput" @keyup.enter="performSearch"
+                  placeholder="Enter search keyword" class="custom-input"></q-input>
+                <div style="padding: 10px;" @click="toggleSearch">
+                  <md-icon label="Search" style="color:white !important">search</md-icon>
+                </div>
+
+                <!-- <q-btn @click="toggleSearch" label="Search" color="primary"></q-btn> -->
+              </div>
+              <!-- Add Item button -->
+              <div class="add-item-button">
+                <!-- <md-button color="primary" @click="this.addItem">
                 <md-icon>add</md-icon>
                 <span>Add Item</span>
               </md-button> -->
+              </div>
             </div>
           </md-card-header>
           <md-card-content>
@@ -38,11 +52,14 @@ export default {
   },
   data() {
     return {
+      showSearchInput: false,
+      searchKeyword: '',
       columns: [
         { label: "Id", field: "id", isRelation: false },
         { label: "Code", field: "code", isRelation: false },
         { label: "Name", field: "name", isRelation: false },
         { label: "Status", field: "status", isRelation: true },
+        { label: "CreateBy", field: "createBy" },
         { label: "CreateTime", field: "createTime", isRelation: false, isCreateTime: true },
         { label: "DiningTable", field: "diningTable", isRelation: true },
       ],
@@ -114,6 +131,37 @@ export default {
     gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
+    toggleSearch() {
+      this.showSearchInput = !this.showSearchInput;
+      if (this.showSearchInput) {
+        this.$nextTick(() => this.$refs.searchInput.focus());
+      }
+    },
+    clear() {
+      this.searchKeyword = '';
+      this.retrieveAllProductOrders();
+    },
+    performSearch() {
+      // Your search logic here
+      console.log('Search performed:', this.searchKeyword);
+      this.productOrderService.searchOrder(this.searchKeyword).then(res => {
+        if (res.length == 0) {
+          this.notifyNotfound("Not Found");
+        }
+
+
+        // Clear the po array
+        console.log("am IN", this.productOrders);
+        this.productOrders = [];
+        // Assign the new data to the po array
+        this.productOrders = [...res];
+        console.log("haha in", this.productOrders);
+      }).catch(err => {
+
+        console.log(err)
+      })
+    }
+    ,
     notifySuccess(message) {
       Notify.create({
 
@@ -121,6 +169,15 @@ export default {
         timeout: 3000,
         position: 'center',
         color: 'green'
+      });
+    },
+    notifyNotfound(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'blue'
       });
     },
 
@@ -264,6 +321,21 @@ export default {
 <style>
 .table {
   padding: 1%;
+}
+
+.search-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  text-align: end;
+}
+
+::v-deep .md-card-header {
+  justify-content: space-between;
+}
+
+.custom-input .q-field__native {
+  color: white !important;
 }
 
 .md-card-header {

@@ -8,13 +8,27 @@
               <h4 class="title">Users</h4>
               <p class="category">Explore and manage your users</p>
             </div>
-            <!-- Add Item button -->
-            <div class="add-item-button">
-              <md-button md-theme="" style="background-color: white !important;color:black !important"
-                @click="this.showAddItemDialog">
-                <md-icon style="color:black !important">add</md-icon>
-                <span>Add Item</span>
-              </md-button>
+            <div style="display: flex;">
+              <div class="search-container">
+                <div v-show="showSearchInput" style="padding: 10px;" @click="clear">
+                  <md-icon label="Search" style="color:white !important">close</md-icon>
+                </div>
+                <q-input v-model="searchKeyword" v-show="showSearchInput" @keyup.enter="performSearch"
+                  placeholder="Enter search keyword" class="custom-input"></q-input>
+                <div style="padding: 10px;" @click="toggleSearch">
+                  <md-icon label="Search" style="color:white !important">search</md-icon>
+                </div>
+
+                <!-- <q-btn @click="toggleSearch" label="Search" color="primary"></q-btn> -->
+              </div>
+              <!-- Add Item button -->
+              <div class="add-item-button">
+                <md-button md-theme="" style="background-color: white !important;color:black !important"
+                  @click="this.showAddItemDialog">
+                  <md-icon style="color:black !important">add</md-icon>
+                  <span>Add Item</span>
+                </md-button>
+              </div>
             </div>
           </md-card-header>
           <md-card-content>
@@ -63,6 +77,8 @@ export default {
   },
   data() {
     return {
+      showSearchInput: false,
+      searchKeyword: '',
       columns: [
         { label: "Id", field: "id" },
         { label: "Login", field: "login" },
@@ -130,6 +146,33 @@ export default {
 
   },
   methods: {
+    toggleSearch() {
+      this.showSearchInput = !this.showSearchInput;
+      if (this.showSearchInput) {
+        this.$nextTick(() => this.$refs.searchInput.focus());
+      }
+    },
+    clear() {
+      this.searchKeyword = '';
+      this.loadAll();
+    },
+    performSearch() {
+      // Your search logic here
+      console.log('Search performed:', this.searchKeyword);
+      this.userManagementService.searchUser(this.searchKeyword).then(res => {
+
+        if (res.data.length == 0) {
+          this.notifyNotfound("Not Found");
+        }
+        // Clear the users array
+        this.users = [];
+        // Assign the new data to the users array
+        this.users = [...res.data];
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+    ,
     editItem(item) {
       console.log("Editing item:", item);
       this.user = item;
@@ -183,6 +226,15 @@ export default {
         timeout: 3000,
         position: 'center',
         color: 'green'
+      });
+    },
+    notifyNotfound(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'blue'
       });
     },
 
@@ -268,6 +320,18 @@ export default {
 <style>
 .table {
   padding: 1%;
+}
+
+::v-deep .md-card-header {
+  justify-content: space-between;
+}
+
+.custom-input .q-field__native {
+  color: white !important;
+}
+
+.md-card-header {
+  background-color: #5335AB !important;
 }
 
 .md-button {
