@@ -48,7 +48,8 @@ export default {
             authority: new Authority(),
             accountService: new AccountService(),
             loading: false,
-            showDialogEdit: false
+            showDialogEdit: false,
+            
 
         };
     },
@@ -82,8 +83,11 @@ export default {
         async addItem() {
             console.log('updating new New User item:', this.user);
             this.loading = true;
-
-            const newUser = {
+        console.log("data data ",this.user.orgId)
+        let orgId=this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)?this.$store.getters.account.orgId:this.user.orgId.id
+        console.log("data data ",orgId)  
+           
+        const newUser = {
                 id: this.user?.id,
                 login: this.user?.login,
                 firstName: this.user?.firstName,
@@ -91,7 +95,7 @@ export default {
                 email: this.user?.email,
                 activated: this.user?.activated,
                 shopId: this.user?.shopId?.id,
-                orgId: this.$store.getters.account.orgId,
+                orgId:orgId,
                 langKey: this.user?.langKey,
                 authorities: this.user?.authorities,
 
