@@ -342,6 +342,4 @@ export default {
 .md-card-header {
   background-color: #5335AB !important;
 }
-
-*/
 </style>
