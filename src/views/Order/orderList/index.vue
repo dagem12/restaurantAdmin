@@ -229,12 +229,14 @@ export default {
     updateStatus(option, item) {
 
       let statuscode = '';
-      if (option == 'preparing') {
+      if (option == 'Preparing') {
         statuscode = 7002
-      } else if (option == 'served') {
+      } else if (option == 'Delivered') {
         statuscode = 7003
-      } else if (option == 'payed') {
+      } else if (option == 'Paid') {
         statuscode = 7004
+      } else if (option == 'Cancelled') {
+        statuscode = 7005
       }
 
       this.actions[1].loadingS = true;
