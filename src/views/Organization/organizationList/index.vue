@@ -84,7 +84,7 @@ export default {
         { label: "Name", field: "name" },
         { label: "Description", field: "description" },
         { label: "Enable", field: "enable" },
-        { label: "CreateTime", field: "createTime" },
+        { label: "CreateTime", field: "createTime", isCreateTime: true },
 
       ],
       dataItems: [

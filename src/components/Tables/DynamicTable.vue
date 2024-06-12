@@ -7,6 +7,9 @@
             <img :src="`https://localhost:8080/api/images/${item[column.field]}`" style="height: 50px; width: 50px;"
               alt="Image" />
           </template>
+          <template v-else-if="column.isCreateTime">
+            {{ formatDate(item[column.field]) }}
+          </template>
           <template v-else>
             {{ column.isRelation ? (item[column.field]?.name ? item[column.field]?.name : item[column.field]?.value) :
               item[column.field] }}
@@ -15,8 +18,8 @@
         </md-table-cell>
         <md-table-cell md-label="Actions">
           <q-btn v-for="action in actions" :key="action.label" :color="action.color" :icon="action.icon"
-            v-if="action.label2 == null" :label="action.label2" @click="action.method(item)" :dense="true" flat="true"
-            style="margin: 2px" round />
+            v-if="action.label2 == null && action.label22 == null" :label="action.label2" @click="action.method(item)"
+            :dense="true" flat="true" style="margin: 2px" round />
 
           <q-btn-dropdown style="margin-left: 10px;" v-for="action in actions" :key="item.id"
             v-if="action.label2 != null" color="primary" :label="action.label2"
@@ -33,6 +36,9 @@
 
             </q-list>
           </q-btn-dropdown>
+          <q-btn style="margin-left: 10px;" v-for="action in actions" v-if="action.label22 != null && action.label22"
+            @click="action.method(item)" :label="action.label22" :loading="action.loadingS" color="grey-4"
+            text-color="purple" glossy unelevated label="Generate QR" />
         </md-table-cell>
       </md-table-row>
     </md-table>
@@ -87,6 +93,15 @@ export default {
     },
 
   },
+  methods: {
+    formatDate(timestamp) {
+      if (timestamp == null || timestamp == '') {
+        return "Not Setted"
+      }
+      const date = new Date(timestamp);
+      return date.toLocaleString();
+    }
+  }
 };
 </script>
 

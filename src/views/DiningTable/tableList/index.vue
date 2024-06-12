@@ -51,7 +51,7 @@ import ShopService from "../../Shop/Api/index.js";
 import OrganizationService from "../../Organization/api/organization.service.js";
 import AccountService from "../../Login/api/account.service.js";
 import { Notify } from 'quasar';
-// import QRCode from 'qrcode';
+import QRCode from 'qrcode';
 import { gsap } from 'gsap';
 import { accountStore } from "../../../store/modules/user/index.js";
 // import QRCode from 'qrcode';
@@ -69,7 +69,7 @@ export default {
         { label: "Id", field: "id" },
         { label: "Name", field: "name" },
         { label: "Description", field: "description" },
-        { label: "CreateTime", field: "createTime" },
+        { label: "CreateTime", field: "createTime", isCreateTime: true },
         { label: "Enable", field: "enable" },
         { label: "CreateBy", field: "createBy" },
       ],
@@ -86,6 +86,12 @@ export default {
           method: this.deleteItem,
           icon: "delete",
           color: "red",
+        },
+        {
+
+          label22: "GenerateQR",
+          method: this.generateQR,
+          loadingS: false
         },
       ],
       dining: {},
@@ -147,22 +153,27 @@ export default {
       this.page = 1;
       this.retrieveAllDiningTables();
     },
-    // async generateQR(tableId, shopKey) {
-    //   try {
-    //     const qrText = `${shopKey}/${tableId}`;
-    //     const qrCodeImage = await QRCode.toDataURL(qrText);
+    async generateQR(item) {
+      this.actions[2].loadingS = true;
+      const tableId = item?.tableId;
+      const shopKey = item?.shop?.shopKey;
+      try {
+        const qrText = `${shopKey}/${tableId}`;
+        const qrCodeImage = await QRCode.toDataURL(qrText);
 
-    //     const downloadLink = document.createElement('a');
-    //     downloadLink.href = qrCodeImage;
-    //     downloadLink.download = 'qr_code.png';
+        const downloadLink = document.createElement('a');
+        downloadLink.href = qrCodeImage;
+        downloadLink.download = item?.name + '_' + 'qr_code.png';
 
-    //     document.body.appendChild(downloadLink);
-    //     downloadLink.click();
-    //     document.body.removeChild(downloadLink);
-    //   } catch (error) {
-    //     console.error('Error generating QR code:', error);
-    //   }
-    // },
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        this.actions[2].loadingS = false;
+      } catch (error) {
+        console.error('Error generating QR code:', error);
+        this.actions[2].loadingS = false;
+      }
+    },
     retrieveAllDiningTables() {
       this.isFetching = true;
       const paginationQuery = {

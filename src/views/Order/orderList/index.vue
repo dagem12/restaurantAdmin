@@ -43,7 +43,7 @@ export default {
         { label: "Code", field: "code", isRelation: false },
         { label: "Name", field: "name", isRelation: false },
         { label: "Status", field: "status", isRelation: true },
-        { label: "CreateTime", field: "createTime", isRelation: false },
+        { label: "CreateTime", field: "createTime", isRelation: false, isCreateTime: true },
         { label: "DiningTable", field: "diningTable", isRelation: true },
       ],
       dataItems: [
@@ -233,6 +233,8 @@ export default {
         statuscode = 7002
       } else if (option == 'Delivered') {
         statuscode = 7003
+      } else if (option == 'Open') {
+        statuscode = 7001
       } else if (option == 'Paid') {
         statuscode = 7004
       } else if (option == 'Cancelled') {
