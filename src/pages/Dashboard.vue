@@ -1,6 +1,7 @@
 <template>
   <div class="content">
     <div class="md-layout" ref="dashboardbox">
+      <!-- cards -->
       <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
         <div class="col-xl-3 col-xxl-3 col-lg-6 col-md-6 col-sm-6">
           <div class="widget-stat card">
@@ -16,10 +17,10 @@
                 </span>
                 <div class="media-body">
                   <h3 class="mb-0 text-black">
-                    <span class="counter ml-0">12</span>
+                    <span class="counter ml-0">{{ cards[0].count }}</span>
                   </h3>
                   <p class="mb-0 sub-title">Total Menus</p>
-                  <small>4% (30 days)</small>
+                
                 </div>
               </div>
             </div>
@@ -41,10 +42,15 @@
                 </span>
                 <div class="media-body">
                   <h3 class="mb-0 text-black">
-                    <span class="counter ml-0">1</span>k
+                    <span class="counter ml-0">{{ formattedCount}}</span>
                   </h3>
                   <p class="mb-0 sub-title">Total Revenue</p>
-                  <small>4% (30 days)</small>
+                  <small :class="percentageClass(cards[1].percentage)">
+                    <template v-if="cards[1].percentage !== 0">
+    <q-icon :name="percentageIcon(cards[1].percentage)" />
+  </template>
+      {{ Math.abs(cards[1].percentage) }}% (30 days)
+    </small>
                 </div>
               </div>
             </div>
@@ -75,10 +81,15 @@
                 </span>
                 <div class="media-body">
                   <h3 class="mb-0 text-black">
-                    <span class="counter ml-0">11</span>
+                    <span class="counter ml-0">{{ cards[2].count }}</span>
                   </h3>
                   <p class="mb-0 sub-title">Total Orders</p>
-                  <small>4% (30 days)</small>
+                  <small :class="percentageClass(cards[2].percentage)">
+                    <template v-if="cards[2].percentage !== 0">
+    <q-icon :name="percentageIcon(cards[2].percentage)" />
+  </template>
+      {{ Math.abs(cards[2].percentage) }}% (30 days)
+    </small>
                 </div>
               </div>
             </div>
@@ -106,19 +117,27 @@
                 </span>
                 <div class="media-body">
                   <h3 class="mb-0 text-black">
-                    <span class="counter ml-0">5</span>
+                    <span class="counter ml-0">{{ cards[3].count }}</span>
                   </h3>
                   <p class="mb-0 sub-title">Total Client</p>
-                  <small>4% (30 days)</small>
+                  <small :class="percentageClass(cards[3].percentage)">
+                    <template v-if="cards[3].percentage !== 0">
+    <q-icon :name="percentageIcon(cards[3].percentage)" />
+  </template>
+      {{ Math.abs(cards[3].percentage) }}% (30 days)
+    </small>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <!-- table -->
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
         <img class="image box-shadow" src="../assets/img/table.png" alt="" />
       </div>
+
+       <!-- order summary -->
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
         <div class="card">
           <div class="card-header border-0 pb-0 d-sm-flex d-block">
@@ -158,27 +177,33 @@
             <div class="row">
               <div class="col-sm-3 mb-4">
                 <div class="border px-3 py-3 rounded-xl">
-                  <h2 class="fs-20 font-w600 counter">25</h2>
+                  <h2 class="fs-20 font-w600 counter">{{orderSummary.open}}</h2>
                   <p class="fs-12 mb-0">Open</p>
                 </div>
               </div>
               <div class="col-sm-3 mb-4">
                 <div class="border px-3 py-3 rounded-xl">
-                  <h2 class="fs-20 font-w600 counter">25</h2>
+                  <h2 class="fs-20 font-w600 counter">{{orderSummary.preparing}}</h2>
                   <p class="fs-12 mb-0">Preparing</p>
                 </div>
               </div>
 
               <div class="col-sm-3 mb-4">
                 <div class="border px-3 py-3 rounded-xl">
-                  <h2 class="fs-20 font-w600 counter">60</h2>
+                  <h2 class="fs-20 font-w600 counter">{{orderSummary.delivered}}</h2>
                   <p class="fs-12 mb-0">Delivered</p>
                 </div>
               </div>
               <div class="col-sm-3 mb-4">
                 <div class="border px-3 py-3 rounded-xl">
-                  <h2 class="fs-20 font-w600 counter">7</h2>
-                  <p class="fs-12 mb-0">Canceled</p>
+                  <h2 class="fs-20 font-w600 counter">{{orderSummary.paid}}</h2>
+                  <p class="fs-12 mb-0">Paid</p>
+                </div>
+              </div>
+              <div class="col-sm-3 mb-4">
+                <div class="border px-3 py-3 rounded-xl">
+                  <h2 class="fs-20 font-w600 counter">{{orderSummary.cancelled}}</h2>
+                  <p class="fs-12 mb-0">Cancelled</p>
                 </div>
               </div>
             </div>
@@ -188,40 +213,42 @@
                   <PieChart></PieChart>
                 </div>
                 <div class="col-xl-9 col-lg-8 col-xxl-8 col-sm-8 px-0">
-                  <div class="d-flex align-items-center mb-3">
-                    <p class="mb-0 fs-14 mr-2 col-4 px-0">Open (24%)</p>
-                    <q-linear-progress stripe rounded size="20px" :value=progressData.progressValue1
-                      style="color: rgb(145, 204, 117) !important" class="q-mt-sm" />
-                    <span class="pull-right ml-auto col-1 px-0 text-right">25</span>
-                  </div>
-                  <div class="d-flex align-items-center mb-3">
-                    <p class="mb-0 fs-14 mr-2 col-4 px-0">Preparing (41%)</p>
-                    <q-linear-progress stripe rounded size="20px" :value=progressData.progressValue2
-                      style="color: rgb(84, 112, 198) !important" class="q-mt-sm" />
-                    <span class="pull-right ml-auto col-1 px-0 text-right">60</span>
-                  </div>
-                  <div class="d-flex align-items-center">
-                    <p class="mb-0 fs-14 mr-2 col-4 px-0">Delivered (15%)</p>
-                    <q-linear-progress stripe rounded size="20px" :value=progressData.progressValue3
-                      style="color: rgb(250, 200, 88) !important" class="q-mt-sm" />
-                    <span class="pull-right ml-auto col-1 px-0 text-right">07</span>
-                  </div>
-                  <div class="d-flex align-items-center">
-                    <p class="mb-0 fs-14 mr-2 col-4 px-0">Delivered (5%)</p>
-                    <q-linear-progress stripe rounded size="20px" :value=progressData.progressValue4
-                      style="color: rgb(238, 102, 102) !important" class="q-mt-sm" />
-                    <span class="pull-right ml-auto col-1 px-0 text-right">05</span>
-                  </div>
-                </div>
+    <div class="d-flex" style="margin-bottom: 10px !important;">
+      <p class="mb-0 fs-14 col-4 px-0">Open ({{ percentages.open }}%)</p>
+      <q-linear-progress stripe rounded size="20px" :value="progressValues.open" color="green" />
+      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.open }}</span>
+    </div>
+    <div class="d-flex" style="margin-bottom: 10px !important;">
+      <p class="mb-0 fs-14 col-4 px-0">Preparing ({{ percentages.preparing }}%)</p>
+      <q-linear-progress stripe rounded size="20px" :value="progressValues.preparing" color="blue" />
+      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.preparing }}</span>
+    </div>
+    <div class="d-flex" style="margin-bottom: 10px !important;">
+      <p class="mb-0 fs-14 col-4 px-0">Delivered ({{ percentages.delivered }}%)</p>
+      <q-linear-progress stripe rounded size="20px" :value="progressValues.delivered" color="yellow" />
+      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.delivered }}</span>
+    </div>
+    <div class="d-flex" style="margin-bottom: 10px !important;">
+      <p class="mb-0 fs-14 col-4 px-0">Paid ({{ percentages.paid }}%)</p>
+      <q-linear-progress stripe rounded size="20px" :value="progressValues.paid" color="yellow" />
+      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.paid }}</span>
+    </div>
+    <div class="d-flex" style="margin-bottom: 10px !important;">
+      <p class="mb-0 fs-14 col-4 px-0">Cancelled ({{ percentages.cancelled }}%)</p>
+      <q-linear-progress stripe rounded size="20px" :value="progressValues.cancelled" color="red" />
+      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.cancelled }}</span>
+    </div>
+  </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <!-- most sells -->
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
-        <MostSells />
+        <MostSells :title="mostSells.title" :description="mostSells.description" :tabs="mostSells.tabs" :loading="mostSells.loading" />
       </div>
-
+        <!-- customer map -->
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
         <div class="card">
           <div class="card-header border-0 pb-0 d-sm-flex d-block">
@@ -254,6 +281,8 @@
           </div>
         </div>
       </div>
+
+      <!-- revenue -->
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
         <div class="card">
           <div class="card-header border-0 pb-0 d-sm-flex d-block">
@@ -294,6 +323,7 @@
 import PieChart from "@/components/Dashboard/pie-chart/index.vue";
 import MostSells from "@/components/Dashboard/most-trend/index.vue";
 import Revenue from "@/components/Dashboard/revenue/index.vue";
+import DashBoardManagementService from "./Api/index.js"
 import { gsap } from 'gsap';
 export default {
   components: {
@@ -302,9 +332,9 @@ export default {
     Revenue,
   },
   mounted() {
-
+    this.cardData()
     const dashboardbox = this.$refs.dashboardbox;
-
+      
     // Using GSAP to animate the row
     gsap.from(dashboardbox, { duration: 1, opacity: 0, y: 1000, ease: "power1.out" });
   },
@@ -396,18 +426,184 @@ export default {
           ],
         ],
       },
-      progressData: {
-        progressValue1: parseFloat("0.24"),
-        progressValue2: parseFloat("0.41"),
-        progressValue3: parseFloat("0.15"),
-        progressValue4: parseFloat("0.05")
-      }
+      cards: [
+        {
+          id:0,
+          count: 0,
+          title: "Total Menus",
+          percentage: "10",
+        },
+        {
+          id:1,
+          count: 0,
+          title: "Total Revenue",
+          percentage: "0",
+        },
+        {
+          id:2,
+          count: 0,
+          title: "Total Orders",
+          percentage: "0",
+        },
+        {
+          id:3,
+          count: 0,
+          title: "Total Client",
+          percentage: "-10",
+        },
+        
+      ],
+      orderSummary:{
+        open:10,
+        preparing:4,
+        delivered:12,
+        paid:20,
+        cancelled:0
+      },
+      mostSells:{
+        title: "Most Selling Items",
+      description: "Lorem ipsum dolor sit amet, consectetur",
+      tabs: [
+        {
+          id: "monthly",
+          label: "Monthly",
+          active: true,
+          items: [
+            {
+              id: 1,
+              title: "Meidum Spicy Spagethi Italiano",
+              category: "Spagethi",
+              imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLuyV_ExtmCl2_VqmL_1u2FmDNBO813EUhlQ&s",
+              serving: "Serves for 4 Person",
+              preparationTime: "24mins",
+              price: "$12.56"
+            },
+            // Add more items as needed
+          ]
+        },
+        {
+          id: "weekly",
+          label: "Weekly",
+          active: false,
+          items: [
+            {
+              id: 2,
+              title: "Pizza Meal for Kids (Small size)",
+              category: "MAIN COURSE",
+              imageUrl: "../../../assets/img/pic4.jpg",
+              serving: "Serves for 4 Person",
+              preparationTime: "24mins",
+              price: "$5.67"
+            },
+            // Add more items as needed
+          ]
+        },
+        {
+          id: "today",
+          label: "Today",
+          active: false,
+          items: [
+            {
+              id: 3,
+              title: "Another Item",
+              category: "Category",
+              imageUrl: "path/to/image.jpg",
+              serving: "Serves for X Person",
+              preparationTime: "X mins",
+              price: "$X.XX"
+            },
+            // Add more items as needed
+          ]
+        }
+      ],
+      loading: false // Set to true when data is fetched
+      },
+      API: new DashBoardManagementService(),
     };
   },
-};
+
+  methods:{
+    percentageClass(percentage) {
+      if (percentage > 0) {
+        return 'text-green';
+      } else if (percentage === 0) {
+        return 'text-black';
+      } else {
+        return 'text-red';
+      }
+    },
+    percentageIcon(percentage) {
+      if (percentage > 0) {
+        return 'arrow_upward';
+      } else if (percentage === 0) {
+        return 'drag_handle';
+      } else {
+        return 'arrow_downward';
+      }
+    },
+    cardData(){
+      this.API.getDashBoardData().then((res =>{
+        console.log(res)
+        this.cards[0].count = res.data.totalMenus
+        this.cards[1].count = res.data.totalRevenue.todayRevenue
+        this.cards[2].count = res.data.totalOrders.todayCount
+        this.cards[3].count = res.data.totalClients.todayCount
+
+        this.cards[1].percentage = res.data.totalRevenue.percentageChange
+        this.cards[2].percentage = res.data.totalOrders.percentageChange
+        this.cards[3].percentage = res.data.totalClients.percentageChange
+      })).catch(err =>{
+        console.log(err)
+      })
+    }
+    
+  },
+  computed: {
+    totalOrders() {
+      return Object.values(this.orderSummary).reduce((sum, value) => sum + value, 0);
+    },
+    percentages() {
+      return {
+        open: ((this.orderSummary.open / this.totalOrders) * 100).toFixed(2),
+        preparing: ((this.orderSummary.preparing / this.totalOrders) * 100).toFixed(2),
+        delivered: ((this.orderSummary.delivered / this.totalOrders) * 100).toFixed(2),
+        paid: ((this.orderSummary.paid / this.totalOrders) * 100).toFixed(2),
+        cancelled: ((this.orderSummary.cancelled / this.totalOrders) * 100).toFixed(2),
+      };
+    },
+    progressValues() {
+      return {
+        open: this.orderSummary.open / this.totalOrders,
+        preparing: this.orderSummary.preparing / this.totalOrders,
+        delivered: this.orderSummary.delivered / this.totalOrders,
+        paid: this.orderSummary.paid / this.totalOrders,
+        cancelled: this.orderSummary.cancelled / this.totalOrders,
+      };
+    },
+    formattedCount() {
+      let count = this.cards[1].count;
+      if (count >= 1000000) {
+        return (count / 1000000).toFixed(2) + "M";
+      } else  {
+        return (count / 1000).toFixed(2) + "K";
+      } 
+  },
+}
+}
 </script>
 
 <style scoped>
+.text-green {
+  color: green;
+}
+
+.text-black {
+  color:black;
+}
+
+.text-red {
+  color: red;
+}
 .card {
   margin-bottom: 1.875rem;
   background-color: #fff;
@@ -417,7 +613,7 @@ export default {
   border-radius: 20px;
   box-shadow: 0px 12px 23px 0px rgba(62, 73, 84, 0.04);
 
-  height: calc(100% - 30px);
+  height: calc(100% - 45px);
 }
 
 .box-shadow {
@@ -429,7 +625,7 @@ export default {
 }
 
 .p-4 {
-  padding: 1.5rem !important;
+  padding: 0.5rem !important;
 }
 
 .widget-stat .media {
@@ -476,7 +672,7 @@ export default {
 }
 
 .widget-stat .media .media-body h3 {
-  font-size: 40px;
+  font-size: 35px;
   font-weight: 600;
   margin: 0;
   line-height: 1.2;
@@ -1013,8 +1209,8 @@ h6 {
 
 p {
   display: block;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
+  /* margin-block-start: 1em;
+  margin-block-end: 1em; */
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   unicode-bidi: isolate;
