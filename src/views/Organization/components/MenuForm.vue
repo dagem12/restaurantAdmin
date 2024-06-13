@@ -9,15 +9,18 @@
       </q-card-section>
 
       <q-card-section>
-        <q-input v-model="organizationItem.name" label="Name" class="q-mb-md" />
+        <q-input ref="name" v-model="organizationItem.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
 
         <q-input v-model="organizationItem.description" label="Description" type="textarea" class="q-mb-md" />
-        <q-input v-model="organizationItem.tinNumber" label="Tin Number" type="number" class="q-mb-md" />
-        <q-input v-model="organizationItem.merchantId" label="Merchant Id" class="q-mb-md" />
-        <q-input v-model="organizationItem.merchantCode" label="Merchant Code" class="q-mb-md" />
+        <q-input ref="tinNumber" v-model="organizationItem.tinNumber" label="Tin Number" type="number" class="q-mb-md"
+          :rules="[rules.required, rules.onlyNumbers]" />
+        <q-input ref="merchantId" v-model="organizationItem.merchantId" label="Merchant Id" class="q-mb-md"
+          :rules="[rules.required]" />
+        <q-input ref="merchantCode" v-model="organizationItem.merchantCode" label="Merchant Code" class="q-mb-md"
+          :rules="[rules.required]" />
         <q-toggle v-model="organizationItem.orderService" label="Order Service" class="q-mb-md" />
-        <q-select v-model="organizationItem.admin" :options="users" option-label="login" option-value="id" label="Admin"
-          class="q-mb-md" />
+        <!-- <q-select v-model="organizationItem.admin" :options="users" option-label="login" option-value="id"
+          label="Admin" class="q-mb-md" /> -->
         <q-toggle v-model="organizationItem.enable" label="Enable" class="q-mb-md" />
 
         <!-- <q-select v-model="organizationItem.admin" label="Admin" class="q-mb-md" /> -->
@@ -33,7 +36,7 @@
       </div> -->
 
       <q-card-actions align="right">
-        <q-btn color="primary" label="Add" @click="addItem" />
+        <q-btn color="primary" label="Add" @click="validateForm" />
         <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
       </q-card-actions>
     </q-card>
@@ -55,6 +58,23 @@ export default {
       showDialog: false,
       organizationService: new OrganizationService(),
       alertSuccuss: false,
+      rules: {
+        required: val => !!val || 'Field is required',
+        email: val => /.+@.+\..+/.test(val) || 'Email must be valid',
+        minLength: len => val => (val && val.length >= len) || `Minimum ${len} characters required`,
+        onlyAlphabets: val => /^[a-zA-Z]+$/.test(val) || 'Only alphabets are allowed',
+        onlyNumbers: val => /^[0-9]+$/.test(val) || 'Only numbers are allowed',
+        validImage: file => {
+          const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+          const maxSize = 2 * 1024 * 1024; // 2MB
+
+          if (!file) return 'Image is required';
+          if (!allowedTypes.includes(file.type)) return 'Only JPEG, PNG, and GIF formats are allowed';
+          if (file.size > maxSize) return 'Image size must be less than 2MB';
+
+          return true;
+        }
+      },
 
       organizationItem: {
         name: '',
@@ -74,6 +94,24 @@ export default {
 
 
   methods: {
+
+    validateForm() {
+
+      // Perform form validation
+      const inputs = [
+        this.$refs.name,
+        this.$refs.tinNumber,
+        this.$refs.merchantCode,
+        this.$refs.merchantId
+
+      ];
+
+      const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
+
+      if (valid) {
+        this.addItem();
+      }
+    },
 
     async addItem() {
       console.log('Adding new Organization item:', this.organizationItem);

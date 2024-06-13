@@ -8,10 +8,13 @@
       </q-card-section>
 
       <q-card-section>
-        <q-input v-model="user.login" label="User Name" class="q-mb-md" />
-        <q-input v-model="user.firstName" label="First Name" class="q-mb-md" />
-        <q-input v-model="user.lastName" label="Last Name" class="q-mb-md" />
-        <q-input v-model="user.email" label="Email" class="q-mb-md" />
+        <q-input ref="login" v-model="user.login" label="User Name" class="q-mb-md" :rules="[rules.required]" />
+        <q-input ref="firstName" v-model="user.firstName" label="First Name" class="q-mb-md"
+          :rules="[rules.required, rules.onlyAlphabets]" />
+        <q-input v-model="user.lastName" label="Last Name" class="q-mb-md"
+          :rules="[rules.required, rules.onlyAlphabets]" />
+        <q-input ref="email" v-model="user.email" label="Email" class="q-mb-md"
+          :rules="[rules.required, rules.email]" />
         <q-toggle v-model="user.activated" label="Activated" class="q-mb-md" />
 
         <q-select v-if="this.accountService.hasAuthorities(this.authority.ADMIN)" v-model="user.orgId"
@@ -19,14 +22,15 @@
 
         <q-select v-model="user.shopId" label="Shop" :options="shops" option-label="name" option-value="id"
           class="q-mb-md" />
-        <q-select v-model="user.authorities" label="Authority" :options="authorities" option-label="label"
-          option-value="value" multiple class="q-mb-md" />
-        <q-input v-model="user.password" label="Password" class="q-mb-md" />
+        <q-select ref="authority" v-model="user.authorities" label="Authority" :options="authorities"
+          option-label="label" option-value="value" multiple class="q-mb-md" :rules="[rules.required]" />
+        <q-input ref="password" v-model="user.password" label="Password" class="q-mb-md"
+          :rules="[rules.required, rules.minLength(6)]" />
 
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn color="primary" label="Add" @click="addItem" />
+        <q-btn color="primary" label="Add" :loading="loading" @click="validateForm" />
         <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
       </q-card-actions>
     </q-card>
@@ -54,9 +58,16 @@ export default {
         langKey: null,
         authorities: [],
         password: null,
-        orgId:null
+        orgId: null,
+        loading: false
 
 
+      },
+      rules: {
+        required: val => !!val || 'Field is required',
+        email: val => /.+@.+\..+/.test(val) || 'Email must be valid',
+        minLength: len => val => (val && val.length >= len) || `Minimum ${len} characters required`,
+        onlyAlphabets: val => /^[a-zA-Z]+$/.test(val) || 'Only alphabets are allowed'
       },
       authority: new Authority(),
       accountService: new AccountService()
@@ -78,6 +89,24 @@ export default {
         color: 'green'
       });
     },
+    validateForm() {
+
+      // Perform form validation
+      const inputs = [
+        this.$refs.login,
+        this.$refs.firstName,
+        this.$refs.email,
+        this.$refs.password,
+        this.$refs.authority
+
+      ];
+
+      const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
+
+      if (valid) {
+        this.addItem();
+      }
+    },
 
     notifyError(message) {
       Notify.create({
@@ -89,6 +118,7 @@ export default {
       });
     },
     async addItem() {
+      this.loading = true;
       console.log('Adding new New User item:', this.user);
 
 
@@ -99,24 +129,26 @@ export default {
         email: this.user.email,
         activated: this.user.activated,
         shopId: this.user?.shopId?.id,
-        orgId :this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)?this.$store.getters.account.orgId:this.user.orgId.id,
+        orgId: this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN) ? this.$store.getters.account.orgId : this.user.orgId.id,
         langKey: this.user.langKey,
         authorities: this.user.authorities,
         password: this.user.password,
 
       };
-      console.log("new user ",newUser)
+      console.log("new user ", newUser)
 
       this.userService.create(newUser)
         .then(() => {
           console.log('New User added successfully.');
           this.showDialog = false;
           this.$emit('getUsers');
+          this.loading = false;
           this.notifySuccess('User added successfully');
           this.resetMenuItem();
         })
         .catch(error => {
           console.error('Error adding new User:', error);
+          this.loading = false;
           this.notifyError('Error Happens')
         });
     },

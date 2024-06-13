@@ -8,13 +8,14 @@
       </q-card-section>
 
       <q-card-section>
-        <q-input v-model="shopItem.name" label="Name" class="q-mb-md" />
+        <q-input ref="name" v-model="shopItem.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
 
         <q-input v-model="shopItem.description" label="Description" type="textarea" class="q-mb-md" />
         <!-- <q-select v-model="shopItem.contact" :options="contactOptions" label="Contact" class="q-mb-md" /> -->
         <!-- <q-select v-model="shopItem.tenant" :options="tenantOptions" label="Tenant" type="select" class="q-mb-md" /> -->
         <q-toggle v-model="shopItem.enable" label="Enable" type="number" class="q-mb-md" />
-        <q-input v-model="shopItem.address" label="Address" type="text" class="q-mb-md" />
+        <q-input ref="address" v-model="shopItem.address" label="Address" type="text" class="q-mb-md"
+          :rules="[rules.required]" />
         <q-toggle v-model="shopItem.orderService" label="Order Service" class="q-mb-md" />
 
         <q-uploader url="http://localhost:8081/upload" label="Click or Drag logo " @added="onFileAdded"
@@ -26,7 +27,7 @@
 
 
       <q-card-actions align="right">
-        <q-btn color="primary" label="Add" @click="addItem" />
+        <q-btn color="primary" label="Add" @click="validateForm" />
         <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
       </q-card-actions>
 
@@ -38,6 +39,7 @@
 <script>
 import ShopService from "../Api/index.js";
 import fileService from "../../../utils/file.service.js"
+import { Notify } from 'quasar';
 export default {
   props: ['retrieveAllShops'],
   data() {
@@ -46,6 +48,12 @@ export default {
       shopService: new ShopService(),
       uploadHeaders: {
         Authorization: 'Bearer YOUR_AUTH_TOKEN'
+      },
+      rules: {
+        required: val => !!val || 'Field is required',
+        email: val => /.+@.+\..+/.test(val) || 'Email must be valid',
+        minLength: len => val => (val && val.length >= len) || `Minimum ${len} characters required`,
+        onlyAlphabets: val => /^[a-zA-Z]+$/.test(val) || 'Only alphabets are allowed'
       },
       shopItem: {
         name: '',
@@ -57,11 +65,26 @@ export default {
         // contact: null,
         shortcutIcon: ''
       },
-      
+
 
     };
   },
   methods: {
+    validateForm() {
+
+      // Perform form validation
+      const inputs = [
+        this.$refs.name,
+        this.$refs.address
+
+      ];
+
+      const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
+
+      if (valid) {
+        this.addItem();
+      }
+    },
     async addItem() {
       console.log('Adding new shopItem item:', this.shopItem);
 
@@ -90,6 +113,24 @@ export default {
         .catch(error => {
           console.error('Error adding new Shop:', error);
         });
+    },
+    notifySuccess(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'green'
+      });
+    },
+    notifyError(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'red'
+      });
     },
     cancelAddItem() {
       this.showDialog = false;
