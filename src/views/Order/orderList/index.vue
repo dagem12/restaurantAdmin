@@ -272,7 +272,7 @@ export default {
       }
     },
     transition() {
-      this.retrieveAllShops();
+      this.retrieveAllProductOrders();
     },
     changeOrder(propOrder) {
       this.propOrder = propOrder;

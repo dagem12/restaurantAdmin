@@ -306,7 +306,7 @@ export default {
       }
     },
     transition() {
-      this.retrieveAllShops();
+      this.retrieveAllDiningTables();
     },
     changeOrder(propOrder) {
       this.propOrder = propOrder;
