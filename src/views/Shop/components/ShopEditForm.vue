@@ -8,7 +8,7 @@
             </q-card-section>
 
             <q-card-section>
-                <q-input ref="name" v-model="shop.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
+                <q-input v-model="shop.name" label="Name" class="q-mb-md" />
 
                 <q-input v-model="shop.description" label="Description" type="textarea" class="q-mb-md" />
                 <q-select v-model="shop.contact" :options="contactOptions" label="Contact" class="q-mb-md" />
@@ -26,7 +26,7 @@
 
 
             <q-card-actions align="right">
-                <q-btn color="primary" label="Update" :loading="loading" @click="validateForm" />
+                <q-btn color="primary" label="Update" :loading="loading" @click="updateItem" />
                 <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
             </q-card-actions>
 
@@ -99,36 +99,7 @@ export default {
         };
     },
     methods: {
-        validateForm() {
 
-            // Perform form validation
-            const inputs = [
-                this.$refs.name
-
-
-            ];
-
-
-            const valid = inputs.reduce((acc, input) => {
-                if (input && input.validate) {
-                    return acc && input.validate(); // Validate if input has a validate method
-                }
-                return acc;
-            }, true);
-            const file = this.$refs.imageUploader.files[0]; // Access the uploaded file
-
-            // Validate using the validImage rule
-            const validImage = this.rules.validImage(file);
-            if (validImage != true) {
-
-                this.imageError = validImage;
-            }
-            console.log("here me", validImage, valid)
-
-            if (valid && validImage == true) {
-                this.updateItem();
-            }
-        },
         async updateItem() {
             this.loading = true;
             console.log('Updating shopItem item:', this.shop);
