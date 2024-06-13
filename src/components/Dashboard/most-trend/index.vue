@@ -20,18 +20,15 @@
             :label="tab.label"
             :name="tab.id"
             :active-class="'text-primary'"
+               @click="handleTabChange(tab)"
+              :disable="activeTab !== tab.id && tabLoading"
           />
         </q-tabs>
       </div>
     </div>
     <div class="card-body tab-content">
-      <div
-        v-for="tab in tabs"
-        :key="tab.id"
-        :class="{ 'tab-pane': true, fade: !isActiveTab(tab.id), show: isActiveTab(tab.id) }"
-        :id="tab.id"
-      >
-        <div v-if="loading && activeTab === tab.id" class="skeleton-loader">
+       <template v-if="tabLoading">
+        <div  class="skeleton-loader">
           <div v-for="n in 5" :key="n" class="media mb-4 items-list-2">
             <div class="skeleton-image mr-3" style="width: 85px; height: 85px; background: #e0e0e0;"></div>
             <div class="media-body col-6 px-0">
@@ -45,13 +42,20 @@
             </div>
           </div>
         </div>
-        <div v-else>
-          <div
-            v-for="item in tabData"
+       </template>
+       <template  v-else >
+                      <md-empty-state v-if="trendingData.length === 0"
+    md-rounded
+    md-icon="access_time"
+    md-label="No Orders Found"
+    md-description="Currently, there are no orders please check again after a while.">
+  </md-empty-state>
+          <div v-else
+            v-for="item in trendingData"
             :key="item.id"
             class="media mb-4 items-list-2"
           >
-            <img :src="item.imageUrl" class="img-fluid rounded mr-3" :alt="item.title" width="85">
+            <img :src="item.imageUrl" class="img-fluid rounded mr-3" :alt="item.title" width="75" @error="handleImageError">
             <div class="media-body col-6 px-0">
               <h5 class="mt-0 mb-1 text-black">{{ item.title }}</h5>
               <small class="text-primary font-w500 mb-3">{{ item.category }}</small>
@@ -64,15 +68,21 @@
               <h3 class="mb-0 font-w600 text-secondary">{{ item.price }}</h3>
             </div>
           </div>
-        </div>
-      </div>
+       </template>
+      
     </div>
   </div>
 </template>
 
 <script>
+import { Notify } from 'quasar';
+
+import DashBoardManagementService from '../../../pages/Api/index'
 export default {
   name: "MostSell",
+  components:{
+  
+  },
   props: {
     title: String,
     description: String,
@@ -80,6 +90,7 @@ export default {
   data() {
     return {
       activeTab: 'daily',
+      tabLoading:false,
       data: {
         monthly: [],
         weekly: [],
@@ -90,7 +101,9 @@ export default {
         { id: 'weekly', label: 'Weekly' },
         { id: 'daily', label: 'Daily' }
       ],
-      loading: false
+      loading: false,
+      trendingData:[],
+      API: new DashBoardManagementService(),
     };
   },
   computed: {
@@ -98,47 +111,119 @@ export default {
       return this.data[this.activeTab];
     }
   },
-  watch: {
-    activeTab(newVal) {
-      this.changeTab(newVal);
-    },
-  },
+
   mounted() {
-    this.changeTab(this.activeTab);
+    this.trendingDataFetch(this.activeTab)
   },
   methods: {
-    async changeTab(activeTabId) {
-      this.loading = true;
-      // if (!this.data[activeTabId].length) {
-      //   await this.fetchData(activeTabId);
-      // }
-      this.loading = true;
+    handleImageError(event) {
+    event.target.src = 'https://via.placeholder.com/70';
+  },
+    notifySuccess(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'green'
+      });
     },
-    async fetchData(tabId) {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      // Replace this with actual API calls
-      // Example:
-      // const response = await fetch(`your_api_endpoint/${tabId}`);
-      // const data = await response.json();
-      // this.data[tabId] = data;
-      this.data[tabId] = this.generateDummyData(); // Dummy data for demonstration
-    },
-    generateDummyData() {
-      // Generate dummy data
-      return Array.from({ length: 2 }, (_, i) => ({
-        id: i,
-        title: `Item ${i} ${this.activeTab}`,
-        imageUrl: `https://st.depositphotos.com/1003814/5052/i/450/depositphotos_50523105-stock-photo-pizza-with-tomatoes.jpg`,
-        category: `Category ${i}`,
-        serving: `Serving ${i}`,
-        preparationTime: `Preparation ${i}`,
-        price: `$${Math.floor(Math.random() * 100) + 1}`
-      }));
-    },
+
+    notifyError(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'red'
+      });}
+      ,
     isActiveTab(tabId) {
       return this.activeTab === tabId;
+    },
+    trendingDataFetch(tab){
+      this.tabLoading=true
+    // setTimeout(() =>{
+    //   this.trendingData = [
+    //       {
+    //         id: 1,
+    //         imageUrl: 'https://via.placeholder.com/85',
+    //         title: 'Dish 1',
+    //         category: 'Category 1',
+    //         serving: '2 servings',
+    //         preparationTime: 30,
+    //         price: '$15.00'
+    //       },
+    //       {
+    //         id: 2,
+    //         imageUrl: 'https://via.placeholder.com/85',
+    //         title: 'Dish 2',
+    //         category: 'Category 2',
+    //         serving: '1 serving',
+    //         preparationTime: 20,
+    //         price: '$10.00'
+    //       },
+    //       {
+    //         id: 3,
+    //         imageUrl: 'https://via.placeholder.com/85',
+    //         title: 'Dish 3',
+    //         category: 'Category 3',
+    //         serving: '3 servings',
+    //         preparationTime: 40,
+    //         price: '$20.00'
+    //       },
+    //       {
+    //         id: 4,
+    //         imageUrl: 'https://via.placeholder.com/85',
+    //         title: 'Dish 4',
+    //         category: 'Category 4',
+    //         serving: '2 servings',
+    //         preparationTime: 25,
+    //         price: '$12.00'
+    //       },
+    //       {
+    //         id: 5,
+    //         imageUrl: 'https://via.placeholder.com/85',
+    //         title: 'Dish 5',
+    //         category: 'Category 5',
+    //         serving: '4 servings',
+    //         preparationTime: 50,
+    //         price: '$25.00'
+    //       }
+    //     ];
+    // this.tabLoading=false
+
+    // },3000)
+    this.API.getDashBoardDataTrendingOrders(tab).then( res =>{
+         console.log(res)
+      this.trendingData = res.data.trendingData.topProducts.map((product, index) => ({
+                id: index + 1,
+                imageUrl: process.env.VUE_APP_SERVER_URL+'/api/images/'+ product.imageUrl || 'https://via.placeholder.com/70',
+                title: product.name,
+                category: product.category,
+                serving: `${product.count} servings`,
+                preparationTime: product.preparationTime || 30,  // Assuming `preparationTime` is part of your backend response
+                price: `Br ${(product.amount).toFixed(2)}`  // Assuming `amount` is already in correct currency format
+            }));
+            this.tabLoading = false;
+
+    }).catch(err =>{
+     this.notifyError('Error Occured Please Contact System Administrator')
+     this.tabLoading = false;
+    })
+    },
+    handleTabChange(tab) {
+  this.tabLoading=true
+  this.activeTab = tab.id; // Set active tab
+  this.tabs.forEach(t => {
+    if (t.id !== tab.id) {
+      t.disabled = true;
     }
+  });
+
+  this.trendingDataFetch(tab.id)
+ 
+},
   },
 };
 </script>
@@ -208,7 +293,7 @@ export default {
     border-color: #f0f1f5;
     position: relative;
     background: transparent;
-    padding: 1.5rem 1.875rem 1.25rem;
+    padding: 12px  1.875rem 1.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -527,7 +612,7 @@ export default {
     border-color: #f0f1f5;
     position: relative;
     background: transparent;
-    padding: 1.5rem 1.875rem 1.25rem;
+    padding: 12px  1.875rem 1.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;

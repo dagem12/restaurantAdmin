@@ -21,6 +21,7 @@
     "quasar": "^1.14.7",
     "vue": "2.7.14",
     "vue-clickaway": "2.2.2",
+    "vue-drag-resize": "^1.5.4",
     "vue-github-buttons": "3.1.0",
     "vue-material": "1.0.0-beta-15",
     "vue-router": "3.6.5",

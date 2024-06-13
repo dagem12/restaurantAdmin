@@ -20,7 +20,7 @@
                     <span class="counter ml-0">{{ cards[0].count }}</span>
                   </h3>
                   <p class="mb-0 sub-title">Total Menus</p>
-                
+
                 </div>
               </div>
             </div>
@@ -47,10 +47,10 @@
                   <p class="mb-0 sub-title">Total Revenue</p>
                   <small :class="percentageClass(cards[1].percentage)">
                     <template v-if="cards[1].percentage !== 0">
-    <q-icon :name="percentageIcon(cards[1].percentage)" />
-  </template>
-      {{ Math.abs(cards[1].percentage) }}% (30 days)
-    </small>
+                      <q-icon :name="percentageIcon(cards[1].percentage)" />
+                    </template>
+                    {{ Math.abs(cards[1].percentage) }}% (30 days)
+                  </small>
                 </div>
               </div>
             </div>
@@ -86,10 +86,10 @@
                   <p class="mb-0 sub-title">Total Orders</p>
                   <small :class="percentageClass(cards[2].percentage)">
                     <template v-if="cards[2].percentage !== 0">
-    <q-icon :name="percentageIcon(cards[2].percentage)" />
-  </template>
-      {{ Math.abs(cards[2].percentage) }}% (30 days)
-    </small>
+                      <q-icon :name="percentageIcon(cards[2].percentage)" />
+                    </template>
+                    {{ Math.abs(cards[2].percentage) }}% (30 days)
+                  </small>
                 </div>
               </div>
             </div>
@@ -122,10 +122,10 @@
                   <p class="mb-0 sub-title">Total Client</p>
                   <small :class="percentageClass(cards[3].percentage)">
                     <template v-if="cards[3].percentage !== 0">
-    <q-icon :name="percentageIcon(cards[3].percentage)" />
-  </template>
-      {{ Math.abs(cards[3].percentage) }}% (30 days)
-    </small>
+                      <q-icon :name="percentageIcon(cards[3].percentage)" />
+                    </template>
+                    {{ Math.abs(cards[3].percentage) }}% (30 days)
+                  </small>
                 </div>
               </div>
             </div>
@@ -137,42 +137,87 @@
         <img class="image box-shadow" src="../assets/img/table.png" alt="" />
       </div>
 
-       <!-- order summary -->
+      <!-- order summary -->
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
         <div class="card">
           <div class="card-header border-0 pb-0 d-sm-flex d-block">
             <div>
               <h4 class="card-title mb-1">Orders Summary</h4>
-              <small class="mb-0">Lorem ipsum dolor sit amet, consectetur</small>
+              <small class="mb-0">A quick overview of your orders' statuses and progress.</small>
             </div>
             <div class="card-action card-tabs mt-3 mt-sm-0">
-              <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#user" role="tab" aria-selected="false">
-                    Monthly
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#bounce" role="tab" aria-selected="false">
-                    Weekly
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link active" data-toggle="tab" href="#session-duration" role="tab" aria-selected="true">
-                    Daily
-                  </a>
-                </li>
-              </ul>
+              <q-tabs
+            v-model="activeTab"
+            class="q-tabs-card"
+            dense
+            align="left"
+            indicator-color="primary"
+            active-color="primary"
+          >
+            <q-tab
+              v-for="tab in tabs"
+              :key="tab.id"
+              :label="tab.label"
+              :name="tab.id"
+              :active-class="'text-primary'"
+              @click="handleTabChange(tab)"
+              :disable="activeTab !== tab.id && tabLoading"
+            />
+          </q-tabs>
             </div>
           </div>
           <div class="card-body orders-summary">
-            <div class="d-flex order-manage p-3 align-items-center mb-4">
-              <a href="javascript:void(0);" class="btn fs-22 py-1 btn-success px-4 mr-3">25</a>
+            <template v-if="tabLoading">
+      <div class="skeleton-loader">
+        <div class="d-flex order-manage p-3 align-items-center mb-4">
+          <div class="skeleton-block skeleton-btn"></div>
+          <div class="skeleton-block skeleton-heading"></div>
+          <div class="skeleton-block skeleton-btn"></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3 mb-4">
+            <div class="skeleton-block skeleton-order-summary"></div>
+          </div>
+          <div class="col-sm-3 mb-4">
+            <div class="skeleton-block skeleton-order-summary"></div>
+          </div>
+          <div class="col-sm-3 mb-4">
+            <div class="skeleton-block skeleton-order-summary"></div>
+          </div>
+          <div class="col-sm-3 mb-4">
+            <div class="skeleton-block skeleton-order-summary"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-3 col-lg-4 col-xxl-4 col-sm-4 px-0 my-2 text-center text-sm-left "style="margin-right: 40px;">
+            <div class="skeleton-block skeleton-pie-chart"></div>
+          </div>
+          <div class="col-xl-8 col-lg-7 col-xxl-7 col-sm-7 px-0">
+            <div class="skeleton-row">
+              <div class="skeleton-block skeleton-progress-bar"></div>
+              <div class="skeleton-block skeleton-progress-bar"></div>
+            </div>
+            <div class="skeleton-row">
+              <div class="skeleton-block skeleton-progress-bar"></div>
+              <div class="skeleton-block skeleton-progress-bar"></div>
+            </div>
+          </div>
+        </div>
+     
+      </div>
+    </template>
+        <template v-else >
+          <div class="d-flex order-manage p-3 align-items-center mb-4">
+              <q-btn to="/order" color="green" :label="orderSummary.open" class="btn text-white fs-22 py-1 px-4 mr-3" />
               <h4 class="mb-0">
-                New Orders <i class="fa fa-circle text-success ml-1 fs-15"></i>
+                <router-link to="/order">
+                  New Orders <q-icon name="fiber_manual_record" class=" fs-15 ml-1"
+                    style="color: #e7faec !important;"></q-icon>
+                </router-link>
               </h4>
-              <a href="javascript:void(0);" class="ml-auto text-primary font-w500">Manage orders <i
-                  class="ti-angle-right ml-1"></i></a>
+              <router-link to="/order" class="ml-auto text-blue-500 font-semibold">
+                Manage orders <q-icon name="arrow_forward" class="text-blue-500 ml-1"></q-icon>
+              </router-link>
             </div>
             <div class="row">
               <div class="col-sm-3 mb-4">
@@ -210,45 +255,48 @@
             <div class="widget-timeline-icon">
               <div class="row align-items-center mx-0">
                 <div class="col-xl-3 col-lg-4 col-xxl-4 col-sm-4 px-0 my-2 text-center text-sm-left">
-                  <PieChart></PieChart>
+                  <PieChart :orderSummary="orderSummary"></PieChart>
                 </div>
                 <div class="col-xl-9 col-lg-8 col-xxl-8 col-sm-8 px-0">
-    <div class="d-flex" style="margin-bottom: 10px !important;">
-      <p class="mb-0 fs-14 col-4 px-0">Open ({{ percentages.open }}%)</p>
-      <q-linear-progress stripe rounded size="20px" :value="progressValues.open" color="green" />
-      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.open }}</span>
-    </div>
-    <div class="d-flex" style="margin-bottom: 10px !important;">
-      <p class="mb-0 fs-14 col-4 px-0">Preparing ({{ percentages.preparing }}%)</p>
-      <q-linear-progress stripe rounded size="20px" :value="progressValues.preparing" color="blue" />
-      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.preparing }}</span>
-    </div>
-    <div class="d-flex" style="margin-bottom: 10px !important;">
-      <p class="mb-0 fs-14 col-4 px-0">Delivered ({{ percentages.delivered }}%)</p>
-      <q-linear-progress stripe rounded size="20px" :value="progressValues.delivered" color="yellow" />
-      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.delivered }}</span>
-    </div>
-    <div class="d-flex" style="margin-bottom: 10px !important;">
-      <p class="mb-0 fs-14 col-4 px-0">Paid ({{ percentages.paid }}%)</p>
-      <q-linear-progress stripe rounded size="20px" :value="progressValues.paid" color="yellow" />
-      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.paid }}</span>
-    </div>
-    <div class="d-flex" style="margin-bottom: 10px !important;">
-      <p class="mb-0 fs-14 col-4 px-0">Cancelled ({{ percentages.cancelled }}%)</p>
-      <q-linear-progress stripe rounded size="20px" :value="progressValues.cancelled" color="red" />
-      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.cancelled }}</span>
-    </div>
-  </div>
+                  <div class="d-flex" style="margin-bottom: 10px !important;">
+                    <p class="mb-0 fs-14 col-4 px-0">Open ({{ percentages.open }}%)</p>
+                    <q-linear-progress stripe rounded size="20px" :value="progressValues.open" color="green" />
+                    <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.open }}</span>
+                  </div>
+                  <div class="d-flex" style="margin-bottom: 10px !important;">
+                    <p class="mb-0 fs-14 col-4 px-0">Preparing ({{ percentages.preparing }}%)</p>
+                    <q-linear-progress stripe rounded size="20px" :value="progressValues.preparing" color="blue" />
+                    <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.preparing }}</span>
+                  </div>
+                  <div class="d-flex" style="margin-bottom: 10px !important;">
+                    <p class="mb-0 fs-14 col-4 px-0">Delivered ({{ percentages.delivered }}%)</p>
+                    <q-linear-progress stripe rounded size="20px" :value="progressValues.delivered" color="yellow" />
+                    <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.delivered }}</span>
+                  </div>
+                  <div class="d-flex" style="margin-bottom: 10px !important;">
+                    <p class="mb-0 fs-14 col-4 px-0">Paid ({{ percentages.paid }}%)</p>
+                    <q-linear-progress stripe rounded size="20px" :value="progressValues.paid" color="orange" />
+                    <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.paid }}</span>
+                  </div>
+                  <div class="d-flex" style="margin-bottom: 10px !important;">
+                    <p class="mb-0 fs-14 col-4 px-0">Cancelled ({{ percentages.cancelled }}%)</p>
+                    <q-linear-progress stripe rounded size="20px" :value="progressValues.cancelled" color="red" />
+                    <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.cancelled }}</span>
+                  </div>
+                </div>
               </div>
             </div>
+        </template>
+           
           </div>
         </div>
       </div>
       <!-- most sells -->
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
-        <MostSells :title="mostSells.title" :description="mostSells.description" :tabs="mostSells.tabs" :loading="mostSells.loading" />
+        <MostSells :title="mostSells.title" :description="mostSells.description" :tabs="mostSells.tabs"
+          :loading="mostSells.loading" />
       </div>
-        <!-- customer map -->
+      <!-- customer map -->
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
         <div class="card">
           <div class="card-header border-0 pb-0 d-sm-flex d-block">
@@ -315,6 +363,7 @@
           </div>
         </div>
       </div>
+    
     </div>
   </div>
 </template>
@@ -323,6 +372,7 @@
 import PieChart from "@/components/Dashboard/pie-chart/index.vue";
 import MostSells from "@/components/Dashboard/most-trend/index.vue";
 import Revenue from "@/components/Dashboard/revenue/index.vue";
+import TableChair from "@/components/TableChair/index.vue";
 import DashBoardManagementService from "./Api/index.js"
 import { gsap } from 'gsap';
 export default {
@@ -330,9 +380,11 @@ export default {
     MostSells,
     PieChart,
     Revenue,
+    TableChair
   },
   mounted() {
     this.cardData()
+    this.summaryData("daily")
     const dashboardbox = this.$refs.dashboardbox;
       
     // Using GSAP to animate the row
@@ -340,6 +392,13 @@ export default {
   },
   data() {
     return {
+      activeTab: 'daily', 
+      tabLoading:false,
+      tabs: [
+        { id: 'monthly', label: 'Monthly' },
+        { id: 'weekly', label: 'Weekly' },
+        { id: 'daily', label: 'Daily' }
+      ],
       dailySalesChart: {
         data: {
           labels: ["M", "T", "W", "T", "F", "S", "S"],
@@ -431,38 +490,38 @@ export default {
           id:0,
           count: 0,
           title: "Total Menus",
-          percentage: "10",
+          percentage: 0,
         },
         {
           id:1,
           count: 0,
           title: "Total Revenue",
-          percentage: "0",
+          percentage: 0,
         },
         {
           id:2,
           count: 0,
           title: "Total Orders",
-          percentage: "0",
+          percentage: 0,
         },
         {
           id:3,
           count: 0,
           title: "Total Client",
-          percentage: "-10",
+          percentage: 0,
         },
         
       ],
       orderSummary:{
-        open:10,
-        preparing:4,
-        delivered:12,
-        paid:20,
+        open:0,
+        preparing:0,
+        delivered:0,
+        paid:0,
         cancelled:0
       },
       mostSells:{
-        title: "Most Selling Items",
-      description: "Lorem ipsum dolor sit amet, consectetur",
+        title: "Most Trending Dishes",
+      description: "Discover the most popular and highly rated dishes currently trending.",
       tabs: [
         {
           id: "monthly",
@@ -548,14 +607,42 @@ export default {
         this.cards[1].count = res.data.totalRevenue.todayRevenue
         this.cards[2].count = res.data.totalOrders.todayCount
         this.cards[3].count = res.data.totalClients.todayCount
-
         this.cards[1].percentage = res.data.totalRevenue.percentageChange
         this.cards[2].percentage = res.data.totalOrders.percentageChange
         this.cards[3].percentage = res.data.totalClients.percentageChange
       })).catch(err =>{
         console.log(err)
       })
-    }
+    },
+    summaryData(tab){
+      this.tabLoading = true;
+      this.API.getDashBoardDataSummaryData(tab).then((res =>{
+       
+      this.orderSummary.open = res.data.orderSummary.open || 0;
+      this.orderSummary.preparing = res.data.orderSummary.preparing || 0;
+      this.orderSummary.delivered = res.data.orderSummary.delivered || 0;
+      this.orderSummary.paid = res.data.orderSummary.paid || 0;
+      this.orderSummary.cancelled = res.data.orderSummary.cancelled || 0;
+      console.log("thisordersummary",this.orderSummary)
+      })).catch(err =>{
+        console.log(err)
+      }).finally(_=>{
+        this.tabLoading = false;
+      })
+    },
+    handleTabChange(tab) {
+  
+      this.activeTab = tab.id; // Set active tab
+      this.tabs.forEach(t => {
+        if (t.id !== tab.id) {
+          t.disabled = true;
+        }
+      });
+    
+      this.summaryData(tab.id)
+     
+    },
+
     
   },
   computed: {
@@ -563,6 +650,15 @@ export default {
       return Object.values(this.orderSummary).reduce((sum, value) => sum + value, 0);
     },
     percentages() {
+      if (this.totalOrders === 0) {
+    return {
+      open: 0,
+      preparing: 0,
+      delivered: 0,
+      paid: 0,
+      cancelled: 0
+    };
+  }
       return {
         open: ((this.orderSummary.open / this.totalOrders) * 100).toFixed(2),
         preparing: ((this.orderSummary.preparing / this.totalOrders) * 100).toFixed(2),
@@ -593,6 +689,40 @@ export default {
 </script>
 
 <style scoped>
+.skeleton-loader {
+  width: 100%;
+  background-color: #f3f3f3;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.skeleton-block {
+  width: 100%;
+  height: 20px;
+  background-color: #e0e0e0;
+  margin-bottom: 40px;
+  margin-right: 10px;
+}
+
+.skeleton-heading {
+  width: 50%;
+}
+
+.skeleton-btn {
+  width: 100px;
+}
+
+.skeleton-pie-chart {
+  height: 200px;
+}
+
+.skeleton-progress-bar {
+  width: 80%;
+}
+
+.skeleton-order-summary {
+  height: 100px;
+}
 .text-green {
   color: green;
 }
@@ -720,7 +850,7 @@ small {
 }
 
 .card-header {
-  border-color: #f0f1f5;
+  border-color: #ffffff;
   position: relative;
   background: transparent;
   padding: 1.5rem 1.875rem 1.25rem;
@@ -751,7 +881,7 @@ small {
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
-  background-color: rgba(0, 0, 0, 0.03);
+  background-color: rgba(0, 0, 0, 0.0);
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 
@@ -850,7 +980,7 @@ li {
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
-  background-color: rgba(0, 0, 0, 0.03);
+  background-color: rgba(0, 0, 0, 0.0);
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 

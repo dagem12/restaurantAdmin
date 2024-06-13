@@ -11,8 +11,8 @@
         <q-input v-model="shopItem.name" label="Name" class="q-mb-md" />
 
         <q-input v-model="shopItem.description" label="Description" type="textarea" class="q-mb-md" />
-        <q-select v-model="shopItem.contact" :options="contactOptions" label="Contact" class="q-mb-md" />
-        <q-select v-model="shopItem.tenant" :options="tenantOptions" label="Tenant" type="select" class="q-mb-md" />
+        <!-- <q-select v-model="shopItem.contact" :options="contactOptions" label="Contact" class="q-mb-md" /> -->
+        <!-- <q-select v-model="shopItem.tenant" :options="tenantOptions" label="Tenant" type="select" class="q-mb-md" /> -->
         <q-toggle v-model="shopItem.enable" label="Enable" type="number" class="q-mb-md" />
         <q-input v-model="shopItem.address" label="Address" type="text" class="q-mb-md" />
         <q-toggle v-model="shopItem.orderService" label="Order Service" class="q-mb-md" />
@@ -49,23 +49,15 @@ export default {
       },
       shopItem: {
         name: '',
-        tenant: null,
+        // tenant: null,
         description: '',
         address: '',
         enable: false,
         orderService: false,
-        contact: null,
+        // contact: null,
         shortcutIcon: ''
       },
-      contactOptions: [
-        { label: 'Abebe', value: '1' },
-        { label: 'Kebede', value: '2' },
-        { label: 'Rebede', value: '3' }
-      ],
-      tenantOptions: [
-        { label: 'Et Restaurnt', value: '1' },
-        { label: 'Kaldis Restaurant', value: '2' }
-      ],
+      
 
     };
   },
@@ -76,12 +68,12 @@ export default {
 
       const newShop = {
         name: this.shopItem.name,
-        tenant: this.shopItem.tenant,
+        // tenant: this.shopItem.tenant,
         description: this.shopItem.description,
         address: this.shopItem.address,
         enable: this.shopItem.enable,
         orderService: this.shopItem.orderService,
-        contact: this.shopItem.contact.name,
+        // contact: this.shopItem.contact.name,
         shortcutIcon: this.shopItem.shortcutIcon,
         code: this.shopItem.name
       };
