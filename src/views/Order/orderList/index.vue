@@ -12,7 +12,7 @@
             </div>
             <div style="display: flex;">
               <div class="search-container">
-                <div v-show="showSearchInput" style="padding: 10px;" @click="clear">
+                <div v-show="showSearchInput" style="padding: 10px;" @click="clear2">
                   <md-icon label="Search" style="color:white !important">close</md-icon>
                 </div>
                 <q-input v-model="searchKeyword" v-show="showSearchInput" @keyup.enter="performSearch"
@@ -34,6 +34,8 @@
           </md-card-header>
           <md-card-content>
             <dynamic-table table-header-color="red" :columns="columns" :data-items="productOrders" :actions="actions" />
+            <q-pagination v-if="productOrders.length > 0" v-model="current" :max="totalPages"
+              @update:model-value="loadPage" direction-links flat color="grey" active-color="primary" />
           </md-card-content>
           <div v-if="productOrders.length == 0">
             <md-empty-state md-rounded md-icon="description" md-label="Not Found !" md-description="No record founded">
@@ -56,6 +58,7 @@ export default {
   },
   data() {
     return {
+      current: 1,
       showSearchInput: false,
       searchKeyword: '',
       columns: [
@@ -127,6 +130,11 @@ export default {
       loadingStatus: false
     };
   },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.totalItems / this.itemsPerPage);
+    }
+  },
   mounted() {
     this.retrieveAllProductOrders();
     const box = this.$refs.box;
@@ -141,7 +149,7 @@ export default {
         this.$nextTick(() => this.$refs.searchInput.focus());
       }
     },
-    clear() {
+    clear2() {
       this.searchKeyword = '';
       this.retrieveAllProductOrders();
     },
@@ -259,11 +267,12 @@ export default {
     loadPage(page) {
       if (page !== this.previousPage) {
         this.previousPage = page;
+        this.current = page;
         this.transition();
       }
     },
     transition() {
-      this.retrieveAllProductOrders();
+      this.retrieveAllShops();
     },
     changeOrder(propOrder) {
       this.propOrder = propOrder;

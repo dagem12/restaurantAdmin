@@ -33,6 +33,8 @@
           </md-card-header>
           <md-card-content>
             <dynamic-table table-header-color="red" :columns="columns" :data-items="shops" :actions="actions" />
+            <q-pagination v-if="shops.length > 0" v-model="current" :max="totalPages" @update:model-value="loadPage"
+              direction-links flat color="grey" active-color="primary" />
           </md-card-content>
           <div v-if="shops.length == 0">
             <md-empty-state md-rounded md-icon="description" md-label="Not Found !" md-description="No record founded">
@@ -76,8 +78,10 @@ export default {
     MenuForm,
     ShopEditForm
   },
+
   data() {
     return {
+      current: 1,
       showSearchInput: false,
       searchKeyword: '',
       columns: [
@@ -118,6 +122,11 @@ export default {
       shop: {},
       searchWord: ''
     };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.totalItems / this.itemsPerPage);
+    }
   },
   mounted() {
     this.retrieveAllShops();
@@ -251,6 +260,7 @@ export default {
     loadPage(page) {
       if (page !== this.previousPage) {
         this.previousPage = page;
+        this.current = page;
         this.transition();
       }
     },
