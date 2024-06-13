@@ -8,7 +8,7 @@
             </q-card-section>
 
             <q-card-section>
-                <q-input v-model="shop.name" label="Name" class="q-mb-md" />
+                <q-input ref="name" v-model="shop.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
 
                 <q-input v-model="shop.description" label="Description" type="textarea" class="q-mb-md" />
                 <q-select v-model="shop.contact" :options="contactOptions" label="Contact" class="q-mb-md" />
@@ -17,16 +17,16 @@
                 <q-input v-model="shop.address" label="Address" type="text" class="q-mb-md" />
                 <q-toggle v-model="shop.orderService" label="Order Service" class="q-mb-md" />
 
-                <q-uploader url="http://localhost:8081/upload" label="Click or Drag logo " @added="onFileAdded"
-                    @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
-
+                <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo "
+                    @added="onFileAdded" @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
+                <label></label>
 
             </q-card-section>
 
 
 
             <q-card-actions align="right">
-                <q-btn color="primary" label="Update" :loading="loading" @click="updateItem" />
+                <q-btn color="primary" label="Update" :loading="loading" @click="validateForm" />
                 <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
             </q-card-actions>
 
@@ -50,6 +50,25 @@ export default {
     },
     data() {
         return {
+            imageError: '',
+            rules: {
+                required: val => !!val || 'Field is required',
+                email: val => /.+@.+\..+/.test(val) || 'Email must be valid',
+                minLength: len => val => (val && val.length >= len) || `Minimum ${len} characters required`,
+                onlyAlphabets: val => /^[a-zA-Z]+$/.test(val) || 'Only alphabets are allowed',
+                onlyNumbers: val => /^[0-9]+$/.test(val) || 'Only numbers are allowed',
+                validImage: file => {
+                    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                    const maxSize = 2 * 1024 * 1024; // 2MB
+
+                    if (!file) return 'Image is required';
+                    if (!allowedTypes.includes(file.type)) return 'Only JPEG, PNG, and GIF formats are allowed';
+                    if (file.size > maxSize) return 'Image size must be less than 2MB';
+
+                    return true;
+                }
+
+            },
             showDialogEdit: false,
             showDialog: false,
             shopService: new ShopService(),
@@ -80,6 +99,36 @@ export default {
         };
     },
     methods: {
+        validateForm() {
+
+            // Perform form validation
+            const inputs = [
+                this.$refs.name
+
+
+            ];
+
+
+            const valid = inputs.reduce((acc, input) => {
+                if (input && input.validate) {
+                    return acc && input.validate(); // Validate if input has a validate method
+                }
+                return acc;
+            }, true);
+            const file = this.$refs.imageUploader.files[0]; // Access the uploaded file
+
+            // Validate using the validImage rule
+            const validImage = this.rules.validImage(file);
+            if (validImage != true) {
+
+                this.imageError = validImage;
+            }
+            console.log("here me", validImage, valid)
+
+            if (valid && validImage == true) {
+                this.updateItem();
+            }
+        },
         async updateItem() {
             this.loading = true;
             console.log('Updating shopItem item:', this.shop);

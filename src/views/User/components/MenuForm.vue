@@ -47,6 +47,7 @@ export default {
     return {
       showDialog: false,
       userService: new UserService(),
+      loading: false,
       user: {
         login: '',
         firstName: '',
@@ -59,7 +60,7 @@ export default {
         authorities: [],
         password: null,
         orgId: null,
-        loading: false
+
 
 
       },

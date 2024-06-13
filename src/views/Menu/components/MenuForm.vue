@@ -36,7 +36,7 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn color="primary" label="Add" @click="validateForm" />
+        <q-btn color="primary" label="Add" :loading="loading" @click="validateForm" />
         <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
       </q-card-actions>
     </q-card>
@@ -49,6 +49,7 @@ import ProductCatalogService from '../menuCatalog/Api';
 import AccountService from "../../Login/api/account.service.js";
 import { Authority } from "../../../utils/authority.js";
 import fileService from '../../../utils/file.service.js';
+import { Notify } from 'quasar';
 export default {
   props: {
     productCatalogs: [],
@@ -89,6 +90,7 @@ export default {
         isVisible: true,
         imageUrl: null
       },
+      loading: false,
       baseUrl: process.env.VUE_APP_SERVER_URL,
       productCatalogService: new ProductCatalogService(),
       authority: new Authority(),
@@ -145,7 +147,7 @@ export default {
     addItem() {
       console.log('Adding new menu item:', this.menuItem);
 
-
+      this.loading = true;
       const newProduct = {
         name: this.menuItem.name,
         description: this.menuItem.description,
@@ -161,10 +163,15 @@ export default {
         .then(() => {
           console.log('New product added successfully.');
           this.showDialog = false;
+          this.loading = false;
+          this.notifySuccess('New Menu Item created successfully')
+
           this.$emit('getProduct');
           this.resetMenuItem();
         })
         .catch(error => {
+          this.loading = false;
+          this.notifyError('Server Error')
           console.error('Error adding new product:', error);
         });
     },
@@ -194,6 +201,23 @@ export default {
           file
         }
       }));
+    },
+    notifySuccess(message) {
+      Notify.create({
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'green'
+      });
+    },
+    notifyError(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'red'
+      });
     },
 
     resetMenuItem() {

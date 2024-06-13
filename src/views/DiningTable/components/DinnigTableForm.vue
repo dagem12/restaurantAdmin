@@ -23,7 +23,7 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn color="primary" label="Add" @click="validateForm" />
+        <q-btn color="primary" label="Add" :loading="loading" @click="validateForm" />
         <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
       </q-card-actions>
     </q-card>
@@ -46,6 +46,7 @@ export default {
       diningService: new DiningService(),
       authority: new Authority(),
       accountService: new AccountService(),
+      loading: false,
       diningItem: {
         name: '',
         shop: null,
@@ -107,6 +108,7 @@ export default {
       });
     },
     async addItem() {
+      this.loading = true;
       console.log('Adding new Dinind item:', this.diningItem);
 
 
@@ -123,6 +125,7 @@ export default {
         .then(() => {
 
           this.showDialog = false;
+          this.loading = false;
           this.$emit('getDiningTable');
           this.notifySuccess('Dinnig Table added successfully');
 
@@ -130,6 +133,7 @@ export default {
         })
         .catch(error => {
           this.notifyError('error happens')
+          this.loading = false;
           console.error('Error adding new Dining Table:', error);
         });
     },
