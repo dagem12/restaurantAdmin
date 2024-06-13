@@ -11,6 +11,9 @@
             <!-- Add Item button -->
             <div style="display: flex;">
               <div class="search-container">
+                <div v-show="showSearchInput" style="padding: 10px;" @click="clear2">
+                  <md-icon label="Search" style="color:white !important">close</md-icon>
+                </div>
                 <q-input v-model="searchKeyword" v-show="showSearchInput" @keyup.enter="performSearch"
                   placeholder="Enter search keyword" class="custom-input"></q-input>
                 <div style="padding: 10px;" @click="toggleSearch">
@@ -31,6 +34,10 @@
           <md-card-content>
             <dynamic-table table-header-color="red" :columns="columns" :data-items="shops" :actions="actions" />
           </md-card-content>
+          <div v-if="shops.length == 0">
+            <md-empty-state md-rounded md-icon="description" md-label="Not Found !" md-description="No record founded">
+            </md-empty-state>
+          </div>
         </md-card>
       </div>
     </div>
@@ -120,6 +127,19 @@ export default {
     gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
+    clear2() {
+      this.searchKeyword = '';
+      this.retrieveAllShops();
+    },
+    notifyNotfound(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'blue'
+      });
+    },
     toggleSearch() {
       this.showSearchInput = !this.showSearchInput;
       if (this.showSearchInput) {
@@ -129,6 +149,18 @@ export default {
     performSearch() {
       // Your search logic here
       console.log('Search performed:', this.searchKeyword);
+      this.shopService.searchShop(this.searchKeyword).then(res => {
+
+        if (res.data.length == 0) {
+          this.notifyNotfound("Not Found");
+        }
+        // Clear the users array
+        this.shops = [];
+        // Assign the new data to the users array
+        this.shops = [...res.data];
+      }).catch(err => {
+        console.log(err)
+      })
     }
     ,
     addItem() {

@@ -7,6 +7,10 @@
             </div>
 
         </div>
+        <div v-if="orderItems.length == 0">
+            <md-empty-state md-rounded md-icon="description" md-label="Not Found !" md-description="No record founded">
+            </md-empty-state>
+        </div>
         <div v-if="orderItems.length > 0" class="col-xl-9 col-xxl-9 col-lg-12 col-md-12">
             <div class="row">
                 <div class="col-xl-12">

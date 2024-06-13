@@ -33,6 +33,20 @@ export default class OrganizationService {
         });
     });
   }
+  searchOrg(name) {
+    return new Promise((resolve, reject) => {
+
+      axios
+        .get(`/organization?name=${name}`)
+        .then((res) => {
+          console.log("res ", res)
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
 
   delete(id) {
     return new Promise((resolve, reject) => {

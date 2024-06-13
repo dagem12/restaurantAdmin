@@ -10,6 +10,9 @@
             </div>
             <div style="display: flex;">
               <div class="search-container">
+                <div v-show="showSearchInput" style="padding: 10px;" @click="clear2">
+                  <md-icon label="Search" style="color:white !important">close</md-icon>
+                </div>
                 <q-input v-model="searchKeyword" v-show="showSearchInput" @keyup.enter="performSearch"
                   placeholder="Enter search keyword" class="custom-input"></q-input>
                 <div style="padding: 10px;" @click="toggleSearch">
@@ -32,6 +35,10 @@
             <dynamic-table table-header-color="red" :columns="columns" :data-items="productCatalogs"
               :actions="actions" />
           </md-card-content>
+          <div v-if="productCatalogs.length == 0">
+            <md-empty-state md-rounded md-icon="description" md-label="Not Found !" md-description="No record founded">
+            </md-empty-state>
+          </div>
         </md-card>
       </div>
     </div>
@@ -135,6 +142,19 @@ export default {
     gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
+    clear2() {
+      this.searchKeyword = '';
+      this.retrieveAllProductCatalogs();
+    },
+    notifyNotfound(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'blue'
+      });
+    },
     toggleSearch() {
       this.showSearchInput = !this.showSearchInput;
       if (this.showSearchInput) {
@@ -144,6 +164,24 @@ export default {
     performSearch() {
       // Your search logic here
       console.log('Search performed:', this.searchKeyword);
+
+
+      this.productCatalogService.searchMenuCat(this.searchKeyword).then(res => {
+        if (res.data.length == 0) {
+          this.notifyNotfound("Not Found");
+        }
+
+
+        // Clear the po array
+        console.log("am IN", this.productCatalogs);
+        this.productCatalogs = [];
+        // Assign the new data to the po array
+        this.productCatalogs = [...res.data];
+        console.log("haha in", this.productCatalogs);
+      }).catch(err => {
+
+        console.log(err)
+      })
     }
     ,
 
