@@ -34,6 +34,8 @@
             </md-card-header>
             <md-card-content>
               <dynamic-table table-header-color="red" :columns="columns" :data-items="products" :actions="actions" />
+              <q-pagination v-if="products.length > 0" v-model="current" :max="totalPages"
+                @update:model-value="loadPage" direction-links flat color="grey" active-color="primary" />
             </md-card-content>
             <div v-if="products.length == 0">
               <md-empty-state md-rounded md-icon="description" md-label="Not Found !"
@@ -95,6 +97,7 @@ export default {
   },
   data() {
     return {
+      current: 1,
       showSearchInput: false,
       searchKeyword: '',
       columns: [
@@ -154,6 +157,11 @@ export default {
       isFetching: false,
       menu: {}
     };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.totalItems / this.itemsPerPage);
+    }
   },
   mounted() {
     this.retrieveAllProducts();
@@ -274,11 +282,12 @@ export default {
     loadPage(page) {
       if (page !== this.previousPage) {
         this.previousPage = page;
+        this.current = page;
         this.transition();
       }
     },
     transition() {
-      this.retrieveAllProducts();
+      this.retrieveAllShops();
     },
     changeOrder(propOrder) {
       this.propOrder = propOrder;
