@@ -8,17 +8,18 @@
             </q-card-section>
 
             <q-card-section>
-                <q-input v-model="menuItem.name" label="Name" class="q-mb-md" />
+                <q-input ref="name" v-model="menuItem.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
 
                 <q-input v-model="menuItem.description" label="Description" type="textarea" class="q-mb-md" />
-                <q-select v-model="menuItem.shop" :options="shops" option-label="name" option-value="id" label="Shop"
-          class="q-mb-md" v-if="accountService.hasAuthorities(authority.ORGANIZATION_ADMIN)"/>
+                <q-select ref="shop" v-model="menuItem.shop" :options="shops" option-label="name" option-value="id"
+                    label="Shop" class="q-mb-md" v-if="accountService.hasAuthorities(authority.ORGANIZATION_ADMIN)"
+                    :rules="[rules.required]" />
                 <q-toggle v-model="menuItem.enable" label="Enable" type="number" class="q-mb-md" />
-                
+
 
 
                 <q-card-actions align="right">
-                    <q-btn color="primary" label="Add" @click="addItem" />
+                    <q-btn color="primary" label="Add" @click="validateForm" />
                     <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
                 </q-card-actions>
             </q-card-section>
@@ -32,8 +33,8 @@ import AccountService from "../../Login/api/account.service.js";
 import { Authority } from "../../../utils/authority.js";
 export default {
     props: {
-    shops: [],
-  },
+        shops: [],
+    },
     data() {
         return {
             showDialog: false,
@@ -44,12 +45,44 @@ export default {
                 poster: null,
 
             },
+            rules: {
+                required: val => !!val || 'Field is required',
+                email: val => /.+@.+\..+/.test(val) || 'Email must be valid',
+                minLength: len => val => (val && val.length >= len) || `Minimum ${len} characters required`,
+                onlyAlphabets: val => /^[a-zA-Z]+$/.test(val) || 'Only alphabets are allowed',
+                onlyNumbers: val => /^[0-9]+$/.test(val) || 'Only numbers are allowed',
+                validImage: file => {
+                    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                    const maxSize = 2 * 1024 * 1024; // 2MB
+
+                    if (!file) return 'Image is required';
+                    if (!allowedTypes.includes(file.type)) return 'Only JPEG, PNG, and GIF formats are allowed';
+                    if (file.size > maxSize) return 'Image size must be less than 2MB';
+
+                    return true;
+                }
+            },
             productCatalogService: new ProductCatalogService(),
             authority: new Authority(),
             accountService: new AccountService(),
         };
     },
     methods: {
+        validateForm() {
+
+            // Perform form validation
+            const inputs = [
+                this.$refs.name,
+                this.$refs.shop
+
+            ];
+
+            const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
+
+            if (valid) {
+                this.addItem();
+            }
+        },
         async addItem() {
             console.log('Adding new ProductCatalog item:', this.menuItem);
 
