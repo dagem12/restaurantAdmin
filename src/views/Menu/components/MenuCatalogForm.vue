@@ -19,7 +19,7 @@
 
 
                 <q-card-actions align="right">
-                    <q-btn color="primary" label="Add" @click="validateForm" />
+                    <q-btn color="primary" label="Add" :loading="loading" @click="validateForm" />
                     <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
                 </q-card-actions>
             </q-card-section>
@@ -31,12 +31,14 @@
 import ProductCatalogService from '../menuCatalog/Api/index'
 import AccountService from "../../Login/api/account.service.js";
 import { Authority } from "../../../utils/authority.js";
+import { Notify } from 'quasar';
 export default {
     props: {
         shops: [],
     },
     data() {
         return {
+            loading: false,
             showDialog: false,
             menuItem: {
                 name: '',
@@ -68,6 +70,23 @@ export default {
         };
     },
     methods: {
+        notifySuccess(message) {
+            Notify.create({
+                message: message,
+                timeout: 3000,
+                position: 'center',
+                color: 'green'
+            });
+        },
+        notifyError(message) {
+            Notify.create({
+
+                message: message,
+                timeout: 3000,
+                position: 'center',
+                color: 'red'
+            });
+        },
         validateForm() {
 
             // Perform form validation
@@ -84,6 +103,7 @@ export default {
             }
         },
         async addItem() {
+            this.loading = true;
             console.log('Adding new ProductCatalog item:', this.menuItem);
 
 
@@ -99,10 +119,14 @@ export default {
                 .then(() => {
                     console.log('New product  Menu Catalog successfully.');
                     this.showDialog = false;
+                    this.loading = false;
+                    this.notifySuccess('New Product Catalog Created successfully ')
                     this.$emit('getMenuCatalog');
                     this.resetMenuItem();
                 })
                 .catch(error => {
+                    this.loading = false;
+                    this.notifyError('Server Error')
                     console.error('Error adding new Menu Catalog:', error);
                 });
         },

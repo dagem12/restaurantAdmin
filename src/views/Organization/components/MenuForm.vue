@@ -36,7 +36,7 @@
       </div> -->
 
       <q-card-actions align="right">
-        <q-btn color="primary" label="Add" @click="validateForm" />
+        <q-btn color="primary" label="Add" :loading="loading" @click="validateForm" />
         <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
       </q-card-actions>
     </q-card>
@@ -56,6 +56,7 @@ export default {
   data() {
     return {
       showDialog: false,
+      loading: false,
       organizationService: new OrganizationService(),
       alertSuccuss: false,
       rules: {
@@ -115,7 +116,7 @@ export default {
 
     async addItem() {
       console.log('Adding new Organization item:', this.organizationItem);
-
+      this.loading = true;
 
       const newOrganization = {
         name: this.organizationItem.name,
@@ -132,11 +133,13 @@ export default {
         .then(() => {
           console.log('New Organization added successfully.');
           this.showDialog = false;
+          this.loading = false;
           this.notifySuccess('Organization added successfully');
           this.$emit('getOrganizations');
           this.resetMenuItem();
         })
         .catch(error => {
+          this.loading = false;
           console.error('Error adding new Organization:', error);
           this.notifyError("error happen")
         });

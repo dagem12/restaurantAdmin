@@ -17,9 +17,9 @@
                 <q-input v-model="shop.address" label="Address" type="text" class="q-mb-md" />
                 <q-toggle v-model="shop.orderService" label="Order Service" class="q-mb-md" />
 
-                <q-uploader url="http://localhost:8081/upload" label="Click or Drag logo " @added="onFileAdded"
-                    @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
-
+                <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo "
+                    @added="onFileAdded" @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
+                <label></label>
 
             </q-card-section>
 
@@ -50,6 +50,25 @@ export default {
     },
     data() {
         return {
+            imageError: '',
+            rules: {
+                required: val => !!val || 'Field is required',
+                email: val => /.+@.+\..+/.test(val) || 'Email must be valid',
+                minLength: len => val => (val && val.length >= len) || `Minimum ${len} characters required`,
+                onlyAlphabets: val => /^[a-zA-Z]+$/.test(val) || 'Only alphabets are allowed',
+                onlyNumbers: val => /^[0-9]+$/.test(val) || 'Only numbers are allowed',
+                validImage: file => {
+                    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                    const maxSize = 2 * 1024 * 1024; // 2MB
+
+                    if (!file) return 'Image is required';
+                    if (!allowedTypes.includes(file.type)) return 'Only JPEG, PNG, and GIF formats are allowed';
+                    if (file.size > maxSize) return 'Image size must be less than 2MB';
+
+                    return true;
+                }
+
+            },
             showDialogEdit: false,
             showDialog: false,
             shopService: new ShopService(),
@@ -80,6 +99,7 @@ export default {
         };
     },
     methods: {
+
         async updateItem() {
             this.loading = true;
             console.log('Updating shopItem item:', this.shop);
