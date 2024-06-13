@@ -31,6 +31,19 @@ export default class ProductCatalogService {
     });
   }
 
+  searchMenuCat(name) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`/product-catalog` + `?name=${name}`)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
   delete(id) {
     return new Promise((resolve, reject) => {
       axios

@@ -35,6 +35,10 @@
           <md-card-content>
             <dynamic-table table-header-color="red" :columns="columns" :data-items="productOrders" :actions="actions" />
           </md-card-content>
+          <div v-if="productOrders.length == 0">
+            <md-empty-state md-rounded md-icon="description" md-label="Not Found !" md-description="No record founded">
+            </md-empty-state>
+          </div>
         </md-card>
       </div>
     </div>
