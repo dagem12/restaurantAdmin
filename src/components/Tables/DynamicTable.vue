@@ -5,7 +5,7 @@
         <md-table-cell v-for="column in columns" :key="column.label" :md-label="column.label">
           <template v-if="column.isImage">
             <img :src="`https://localhost:8080/api/images/${item[column.field]}`" style="height: 50px; width: 50px;"
-              alt="Image" />
+              alt="Image" @error="handleImageError" />
           </template>
           <template v-else-if="column.isCreateTime">
             {{ formatDate(item[column.field]) }}
@@ -94,6 +94,9 @@ export default {
 
   },
   methods: {
+    handleImageError(event) {
+      event.target.src = 'https://via.placeholder.com/70';
+    },
     formatDate(timestamp) {
       if (timestamp == null || timestamp == '') {
         return "Not Setted"
