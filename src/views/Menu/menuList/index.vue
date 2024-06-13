@@ -287,7 +287,7 @@ export default {
       }
     },
     transition() {
-      this.retrieveAllShops();
+      this.retrieveAllProducts();
     },
     changeOrder(propOrder) {
       this.propOrder = propOrder;

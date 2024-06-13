@@ -334,7 +334,7 @@ export default {
       }
     },
     transition() {
-      this.retrieveAllShops();
+      this.loadAll();
     },
   },
 };
