@@ -42,7 +42,7 @@
                 </span>
                 <div class="media-body">
                   <h3 class="mb-0 text-black">
-                    <span class="counter ml-0">{{ formattedCount}}</span>
+                    <span class="counter ml-0">{{ formattedCount }}</span>
                   </h3>
                   <p class="mb-0 sub-title">Total Revenue</p>
                   <small :class="percentageClass(cards[1].percentage)">
@@ -146,148 +146,138 @@
               <small class="mb-0">A quick overview of your orders' statuses and progress.</small>
             </div>
             <div class="card-action card-tabs mt-3 mt-sm-0">
-              <q-tabs
-            v-model="activeTab"
-            class="q-tabs-card"
-            dense
-            align="left"
-            indicator-color="primary"
-            active-color="primary"
-          >
-            <q-tab
-              v-for="tab in tabs"
-              :key="tab.id"
-              :label="tab.label"
-              :name="tab.id"
-              :active-class="'text-primary'"
-              @click="handleTabChange(tab)"
-              :disable="activeTab !== tab.id && tabLoading"
-            />
-          </q-tabs>
+              <q-tabs v-model="activeTab" class="q-tabs-card" dense align="left" indicator-color="primary"
+                active-color="primary">
+                <q-tab v-for="tab in tabs" :key="tab.id" :label="tab.label" :name="tab.id"
+                  :active-class="'text-primary'" @click="handleTabChange(tab)"
+                  :disable="activeTab !== tab.id && tabLoading" />
+              </q-tabs>
             </div>
           </div>
           <div class="card-body orders-summary">
             <template v-if="tabLoading">
-      <div class="skeleton-loader">
-        <div class="d-flex order-manage p-3 align-items-center mb-4">
-          <div class="skeleton-block skeleton-btn"></div>
-          <div class="skeleton-block skeleton-heading"></div>
-          <div class="skeleton-block skeleton-btn"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-3 mb-4">
-            <div class="skeleton-block skeleton-order-summary"></div>
-          </div>
-          <div class="col-sm-3 mb-4">
-            <div class="skeleton-block skeleton-order-summary"></div>
-          </div>
-          <div class="col-sm-3 mb-4">
-            <div class="skeleton-block skeleton-order-summary"></div>
-          </div>
-          <div class="col-sm-3 mb-4">
-            <div class="skeleton-block skeleton-order-summary"></div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xl-3 col-lg-4 col-xxl-4 col-sm-4 px-0 my-2 text-center text-sm-left "style="margin-right: 40px;">
-            <div class="skeleton-block skeleton-pie-chart"></div>
-          </div>
-          <div class="col-xl-8 col-lg-7 col-xxl-7 col-sm-7 px-0">
-            <div class="skeleton-row">
-              <div class="skeleton-block skeleton-progress-bar"></div>
-              <div class="skeleton-block skeleton-progress-bar"></div>
-            </div>
-            <div class="skeleton-row">
-              <div class="skeleton-block skeleton-progress-bar"></div>
-              <div class="skeleton-block skeleton-progress-bar"></div>
-            </div>
-          </div>
-        </div>
-     
-      </div>
-    </template>
-        <template v-else >
-          <div class="d-flex order-manage p-3 align-items-center mb-4">
-              <q-btn to="/order" color="green" :label="orderSummary.open" class="btn text-white fs-22 py-1 px-4 mr-3" />
-              <h4 class="mb-0">
-                <router-link to="/order">
-                  New Orders <q-icon name="fiber_manual_record" class=" fs-15 ml-1"
-                    style="color: #e7faec !important;"></q-icon>
-                </router-link>
-              </h4>
-              <router-link to="/order" class="ml-auto text-blue-500 font-semibold">
-                Manage orders <q-icon name="arrow_forward" class="text-blue-500 ml-1"></q-icon>
-              </router-link>
-            </div>
-            <div class="row">
-              <div class="col-sm-3 mb-4">
-                <div class="border px-3 py-3 rounded-xl">
-                  <h2 class="fs-20 font-w600 counter">{{orderSummary.open}}</h2>
-                  <p class="fs-12 mb-0">Open</p>
+              <div class="skeleton-loader">
+                <div class="d-flex order-manage p-3 align-items-center mb-4">
+                  <div class="skeleton-block skeleton-btn"></div>
+                  <div class="skeleton-block skeleton-heading"></div>
+                  <div class="skeleton-block skeleton-btn"></div>
                 </div>
-              </div>
-              <div class="col-sm-3 mb-4">
-                <div class="border px-3 py-3 rounded-xl">
-                  <h2 class="fs-20 font-w600 counter">{{orderSummary.preparing}}</h2>
-                  <p class="fs-12 mb-0">Preparing</p>
+                <div class="row">
+                  <div class="col-sm-3 mb-4">
+                    <div class="skeleton-block skeleton-order-summary"></div>
+                  </div>
+                  <div class="col-sm-3 mb-4">
+                    <div class="skeleton-block skeleton-order-summary"></div>
+                  </div>
+                  <div class="col-sm-3 mb-4">
+                    <div class="skeleton-block skeleton-order-summary"></div>
+                  </div>
+                  <div class="col-sm-3 mb-4">
+                    <div class="skeleton-block skeleton-order-summary"></div>
+                  </div>
                 </div>
-              </div>
+                <div class="row">
+                  <div class="col-xl-3 col-lg-4 col-xxl-4 col-sm-4 px-0 my-2 text-center text-sm-left "
+                    style="margin-right: 40px;">
+                    <div class="skeleton-block skeleton-pie-chart"></div>
+                  </div>
+                  <div class="col-xl-8 col-lg-7 col-xxl-7 col-sm-7 px-0">
+                    <div class="skeleton-row">
+                      <div class="skeleton-block skeleton-progress-bar"></div>
+                      <div class="skeleton-block skeleton-progress-bar"></div>
+                    </div>
+                    <div class="skeleton-row">
+                      <div class="skeleton-block skeleton-progress-bar"></div>
+                      <div class="skeleton-block skeleton-progress-bar"></div>
+                    </div>
+                  </div>
+                </div>
 
-              <div class="col-sm-3 mb-4">
-                <div class="border px-3 py-3 rounded-xl">
-                  <h2 class="fs-20 font-w600 counter">{{orderSummary.delivered}}</h2>
-                  <p class="fs-12 mb-0">Delivered</p>
-                </div>
               </div>
-              <div class="col-sm-3 mb-4">
-                <div class="border px-3 py-3 rounded-xl">
-                  <h2 class="fs-20 font-w600 counter">{{orderSummary.paid}}</h2>
-                  <p class="fs-12 mb-0">Paid</p>
-                </div>
+            </template>
+            <template v-else>
+              <div class="d-flex order-manage p-3 align-items-center mb-4">
+                <q-btn to="/order" color="green" :label="orderSummary.open"
+                  class="btn text-white fs-22 py-1 px-4 mr-3" />
+                <h4 class="mb-0">
+                  <router-link to="/order">
+                    New Orders <q-icon name="fiber_manual_record" class=" fs-15 ml-1"
+                      style="color: #e7faec !important;"></q-icon>
+                  </router-link>
+                </h4>
+                <router-link to="/order" class="ml-auto text-blue-500 font-semibold">
+                  Manage orders <q-icon name="arrow_forward" class="text-blue-500 ml-1"></q-icon>
+                </router-link>
               </div>
-              <div class="col-sm-3 mb-4">
-                <div class="border px-3 py-3 rounded-xl">
-                  <h2 class="fs-20 font-w600 counter">{{orderSummary.cancelled}}</h2>
-                  <p class="fs-12 mb-0">Cancelled</p>
+              <div class="row">
+                <div class="col-sm-3 mb-4">
+                  <div class="border px-3 py-3 rounded-xl">
+                    <h2 class="fs-20 font-w600 counter">{{ orderSummary.open }}</h2>
+                    <p class="fs-12 mb-0">Open</p>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="widget-timeline-icon">
-              <div class="row align-items-center mx-0">
-                <div class="col-xl-3 col-lg-4 col-xxl-4 col-sm-4 px-0 my-2 text-center text-sm-left">
-                  <PieChart :orderSummary="orderSummary"></PieChart>
+                <div class="col-sm-3 mb-4">
+                  <div class="border px-3 py-3 rounded-xl">
+                    <h2 class="fs-20 font-w600 counter">{{ orderSummary.preparing }}</h2>
+                    <p class="fs-12 mb-0">Preparing</p>
+                  </div>
                 </div>
-                <div class="col-xl-9 col-lg-8 col-xxl-8 col-sm-8 px-0">
-                  <div class="d-flex" style="margin-bottom: 10px !important;">
-                    <p class="mb-0 fs-14 col-4 px-0">Open ({{ percentages.open }}%)</p>
-                    <q-linear-progress stripe rounded size="20px" :value="progressValues.open" color="green" />
-                    <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.open }}</span>
+
+                <div class="col-sm-3 mb-4">
+                  <div class="border px-3 py-3 rounded-xl">
+                    <h2 class="fs-20 font-w600 counter">{{ orderSummary.delivered }}</h2>
+                    <p class="fs-12 mb-0">Delivered</p>
                   </div>
-                  <div class="d-flex" style="margin-bottom: 10px !important;">
-                    <p class="mb-0 fs-14 col-4 px-0">Preparing ({{ percentages.preparing }}%)</p>
-                    <q-linear-progress stripe rounded size="20px" :value="progressValues.preparing" color="blue" />
-                    <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.preparing }}</span>
+                </div>
+                <div class="col-sm-3 mb-4">
+                  <div class="border px-3 py-3 rounded-xl">
+                    <h2 class="fs-20 font-w600 counter">{{ orderSummary.paid }}</h2>
+                    <p class="fs-12 mb-0">Paid</p>
                   </div>
-                  <div class="d-flex" style="margin-bottom: 10px !important;">
-                    <p class="mb-0 fs-14 col-4 px-0">Delivered ({{ percentages.delivered }}%)</p>
-                    <q-linear-progress stripe rounded size="20px" :value="progressValues.delivered" color="yellow" />
-                    <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.delivered }}</span>
-                  </div>
-                  <div class="d-flex" style="margin-bottom: 10px !important;">
-                    <p class="mb-0 fs-14 col-4 px-0">Paid ({{ percentages.paid }}%)</p>
-                    <q-linear-progress stripe rounded size="20px" :value="progressValues.paid" color="orange" />
-                    <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.paid }}</span>
-                  </div>
-                  <div class="d-flex" style="margin-bottom: 10px !important;">
-                    <p class="mb-0 fs-14 col-4 px-0">Cancelled ({{ percentages.cancelled }}%)</p>
-                    <q-linear-progress stripe rounded size="20px" :value="progressValues.cancelled" color="red" />
-                    <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.cancelled }}</span>
+                </div>
+                <div class="col-sm-3 mb-4">
+                  <div class="border px-3 py-3 rounded-xl">
+                    <h2 class="fs-20 font-w600 counter">{{ orderSummary.cancelled }}</h2>
+                    <p class="fs-12 mb-0">Cancelled</p>
                   </div>
                 </div>
               </div>
-            </div>
-        </template>
-           
+              <div class="widget-timeline-icon">
+                <div class="row align-items-center mx-0">
+                  <div class="col-xl-3 col-lg-4 col-xxl-4 col-sm-4 px-0 my-2 text-center text-sm-left">
+                    <PieChart :orderSummary="orderSummary"></PieChart>
+                  </div>
+                  <div class="col-xl-9 col-lg-8 col-xxl-8 col-sm-8 px-0">
+                    <div class="d-flex" style="margin-bottom: 10px !important;">
+                      <p class="mb-0 fs-14 col-4 px-0">Open ({{ percentages.open }}%)</p>
+                      <q-linear-progress stripe rounded size="20px" :value="progressValues.open" color="green" />
+                      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.open }}</span>
+                    </div>
+                    <div class="d-flex" style="margin-bottom: 10px !important;">
+                      <p class="mb-0 fs-14 col-4 px-0">Preparing ({{ percentages.preparing }}%)</p>
+                      <q-linear-progress stripe rounded size="20px" :value="progressValues.preparing" color="blue" />
+                      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.preparing }}</span>
+                    </div>
+                    <div class="d-flex" style="margin-bottom: 10px !important;">
+                      <p class="mb-0 fs-14 col-4 px-0">Delivered ({{ percentages.delivered }}%)</p>
+                      <q-linear-progress stripe rounded size="20px" :value="progressValues.delivered" color="yellow" />
+                      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.delivered }}</span>
+                    </div>
+                    <div class="d-flex" style="margin-bottom: 10px !important;">
+                      <p class="mb-0 fs-14 col-4 px-0">Paid ({{ percentages.paid }}%)</p>
+                      <q-linear-progress stripe rounded size="20px" :value="progressValues.paid" color="orange" />
+                      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.paid }}</span>
+                    </div>
+                    <div class="d-flex" style="margin-bottom: 10px !important;">
+                      <p class="mb-0 fs-14 col-4 px-0">Cancelled ({{ percentages.cancelled }}%)</p>
+                      <q-linear-progress stripe rounded size="20px" :value="progressValues.cancelled" color="red" />
+                      <span class="pull-right ml-auto col-1 px-0 text-right">{{ orderSummary.cancelled }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+
           </div>
         </div>
       </div>
@@ -302,30 +292,41 @@
           <div class="card-header border-0 pb-0 d-sm-flex d-block">
             <div>
               <h4 class="card-title mb-1">Customer Map</h4>
-              <small class="mb-0">Lorem ipsum dolor sit amet, consectetur</small>
+              <small class="mb-0">Top customers and their orders/spending</small>
             </div>
             <div class="card-action card-tabs mt-3 mt-sm-0">
-              <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#user" role="tab" aria-selected="false">
-                    Monthly
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#bounce" role="tab" aria-selected="false">
-                    Weekly
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link active" data-toggle="tab" href="#session-duration" role="tab" aria-selected="true">
-                    Daily
-                  </a>
-                </li>
-              </ul>
+              <q-tabs v-model="customerActiveTab" class="q-tabs-card" dense align="left" indicator-color="primary"
+                active-color="primary">
+                <q-tab v-for="tab in tabs" :key="tab.id" :label="tab.label" :name="tab.id"
+                  :active-class="'text-primary'" @click="handleCustomerTabChange(tab)"
+                  :disable="customerActiveTab !== tab.id && customerTabLoading" />
+              </q-tabs>
             </div>
           </div>
           <div class="card-body orders-summary">
-            <Revenue />
+
+
+            <template v-if="customerTabLoading">
+              <div class="skeleton-loader">
+                <q-card>
+                  <q-card-section class="row items-center justify-center q-mb-md">
+                    <q-skeleton class="q-mx-md" style="width: 100%; height: 400px;" />
+                  </q-card-section>
+                </q-card>
+              </div>
+            </template>
+            <template v-else>
+              <template v-if="topSpendersData.length === 0">
+                <md-empty-state md-icon="access_time" md-label="No Data Found"
+                  md-description="Currently, there are no data please check again after a while."></md-empty-state>
+              </template>
+              <template v-else>
+                <CustomerMap :data="topSpendersData" />
+              </template>
+
+
+            </template>
+
           </div>
         </div>
       </div>
@@ -336,34 +337,44 @@
           <div class="card-header border-0 pb-0 d-sm-flex d-block">
             <div>
               <h4 class="card-title mb-1">Revenue</h4>
-              <small class="mb-0">Lorem ipsum dolor sit amet, consectetur</small>
+              <small class="mb-0">Track your revenue and amount of orders</small>
             </div>
             <div class="card-action card-tabs mt-3 mt-sm-0">
-              <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#user" role="tab" aria-selected="false">
-                    Monthly
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#bounce" role="tab" aria-selected="false">
-                    Weekly
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link active" data-toggle="tab" href="#session-duration" role="tab" aria-selected="true">
-                    Daily
-                  </a>
-                </li>
-              </ul>
+              <q-tabs v-model="revenueActiveTab" class="q-tabs-card" dense align="left" indicator-color="primary"
+                active-color="primary">
+                <q-tab v-for="tab in tabs" :key="tab.id" :label="tab.label" :name="tab.id"
+                  :active-class="'text-primary'" @click="handleRevenueTabChange(tab)"
+                  :disable="revenueActiveTab !== tab.id && revenueTabLoading" />
+              </q-tabs>
             </div>
           </div>
           <div class="card-body orders-summary">
-            <Revenue />
+            <template v-if="revenueTabLoading">
+              <div class="skeleton-loader">
+                <q-card>
+                  <q-card-section class="row items-center justify-center q-mb-md">
+                    <q-skeleton class="q-mx-md" style="width: 100%; height: 400px;" />
+                  </q-card-section>
+                </q-card>
+              </div>
+            </template>
+            <template v-else>
+              <template
+                v-if="(revenueActiveTab == 'daily' && dailyRevenueData.length === 0) || (revenueActiveTab == 'weekly' && weeklyRevenueData.length === 0) || (revenueActiveTab == 'monthly' && monthlyRevenueData.length === 0)">
+                <md-empty-state md-icon="access_time" md-label="No Data Found"
+                  md-description="Currently, there are no data please check again after a while."></md-empty-state>
+              </template>
+              <template v-else>
+                <RevenueChart :dailyData="aggregatedDailyRevenueData" :weeklyData="weeklyRevenueData"
+                  :monthlyData="monthlyRevenueData" :selectedPeriod="revenueActiveTab" />
+              </template>
+
+            </template>
+
           </div>
         </div>
       </div>
-    
+
     </div>
   </div>
 </template>
@@ -372,6 +383,8 @@
 import PieChart from "@/components/Dashboard/pie-chart/index.vue";
 import MostSells from "@/components/Dashboard/most-trend/index.vue";
 import Revenue from "@/components/Dashboard/revenue/index.vue";
+import RevenueChart from "@/components/Dashboard/RevenueChart/index.vue";
+import CustomerMap from "@/components/Dashboard/CustomerMap/index.vue";
 import TableChair from "@/components/TableChair/index.vue";
 import DashBoardManagementService from "./Api/index.js"
 import { gsap } from 'gsap';
@@ -380,20 +393,30 @@ export default {
     MostSells,
     PieChart,
     Revenue,
-    TableChair
+    TableChair,
+    CustomerMap,
+    RevenueChart
   },
   mounted() {
     this.cardData()
-    this.summaryData("daily")
+    this.summaryData(this.activeTab)
+    this.revenueData(this.revenueActiveTab)
+    this.customerData(this.customerActiveTab)
     const dashboardbox = this.$refs.dashboardbox;
-      
     // Using GSAP to animate the row
     gsap.from(dashboardbox, { duration: 1, opacity: 0, y: 1000, ease: "power1.out" });
   },
   data() {
     return {
-      activeTab: 'daily', 
-      tabLoading:false,
+      dailyRevenueData: [],
+      weeklyRevenueData: [],
+      monthlyRevenueData: [],
+      activeTab: 'daily',
+      revenueActiveTab: 'daily',
+      customerActiveTab: 'daily',
+      tabLoading: false,
+      revenueTabLoading: false,
+      customerTabLoading: false,
       tabs: [
         { id: 'monthly', label: 'Monthly' },
         { id: 'weekly', label: 'Weekly' },
@@ -487,101 +510,103 @@ export default {
       },
       cards: [
         {
-          id:0,
+          id: 0,
           count: 0,
           title: "Total Menus",
           percentage: 0,
         },
         {
-          id:1,
+          id: 1,
           count: 0,
           title: "Total Revenue",
           percentage: 0,
         },
         {
-          id:2,
+          id: 2,
           count: 0,
           title: "Total Orders",
           percentage: 0,
         },
         {
-          id:3,
+          id: 3,
           count: 0,
           title: "Total Client",
           percentage: 0,
         },
-        
+
       ],
-      orderSummary:{
-        open:0,
-        preparing:0,
-        delivered:0,
-        paid:0,
-        cancelled:0
+      orderSummary: {
+        open: 0,
+        preparing: 0,
+        delivered: 0,
+        paid: 0,
+        cancelled: 0
       },
-      mostSells:{
+      mostSells: {
         title: "Most Trending Dishes",
-      description: "Discover the most popular and highly rated dishes currently trending.",
-      tabs: [
-        {
-          id: "monthly",
-          label: "Monthly",
-          active: true,
-          items: [
-            {
-              id: 1,
-              title: "Meidum Spicy Spagethi Italiano",
-              category: "Spagethi",
-              imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLuyV_ExtmCl2_VqmL_1u2FmDNBO813EUhlQ&s",
-              serving: "Serves for 4 Person",
-              preparationTime: "24mins",
-              price: "$12.56"
-            },
-            // Add more items as needed
-          ]
-        },
-        {
-          id: "weekly",
-          label: "Weekly",
-          active: false,
-          items: [
-            {
-              id: 2,
-              title: "Pizza Meal for Kids (Small size)",
-              category: "MAIN COURSE",
-              imageUrl: "../../../assets/img/pic4.jpg",
-              serving: "Serves for 4 Person",
-              preparationTime: "24mins",
-              price: "$5.67"
-            },
-            // Add more items as needed
-          ]
-        },
-        {
-          id: "today",
-          label: "Today",
-          active: false,
-          items: [
-            {
-              id: 3,
-              title: "Another Item",
-              category: "Category",
-              imageUrl: "path/to/image.jpg",
-              serving: "Serves for X Person",
-              preparationTime: "X mins",
-              price: "$X.XX"
-            },
-            // Add more items as needed
-          ]
-        }
-      ],
-      loading: false // Set to true when data is fetched
+        description: "Discover the most popular and highly rated dishes currently trending.",
+        tabs: [
+          {
+            id: "monthly",
+            label: "Monthly",
+            active: true,
+            items: [
+              {
+                id: 1,
+                title: "Meidum Spicy Spagethi Italiano",
+                category: "Spagethi",
+                imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLuyV_ExtmCl2_VqmL_1u2FmDNBO813EUhlQ&s",
+                serving: "Serves for 4 Person",
+                preparationTime: "24mins",
+                price: "$12.56"
+              },
+              // Add more items as needed
+            ]
+          },
+          {
+            id: "weekly",
+            label: "Weekly",
+            active: false,
+            items: [
+              {
+                id: 2,
+                title: "Pizza Meal for Kids (Small size)",
+                category: "MAIN COURSE",
+                imageUrl: "../../../assets/img/pic4.jpg",
+                serving: "Serves for 4 Person",
+                preparationTime: "24mins",
+                price: "$5.67"
+              },
+              // Add more items as needed
+            ]
+          },
+          {
+            id: "today",
+            label: "Today",
+            active: false,
+            items: [
+              {
+                id: 3,
+                title: "Another Item",
+                category: "Category",
+                imageUrl: "path/to/image.jpg",
+                serving: "Serves for X Person",
+                preparationTime: "X mins",
+                price: "$X.XX"
+              },
+              // Add more items as needed
+            ]
+          }
+        ],
+        loading: false // Set to true when data is fetched
       },
+      topSpendersData: [
+      ],
       API: new DashBoardManagementService(),
     };
   },
 
-  methods:{
+  methods: {
     percentageClass(percentage) {
       if (percentage > 0) {
         return 'text-green';
@@ -600,9 +625,9 @@ export default {
         return 'arrow_downward';
       }
     },
-    cardData(){
-      this.API.getDashBoardData().then((res =>{
-        console.log(res)
+    cardData() {
+      this.API.getDashBoardData().then((res => {
+        // console.log(res)
         this.cards[0].count = res.data.totalMenus
         this.cards[1].count = res.data.totalRevenue.todayRevenue
         this.cards[2].count = res.data.totalOrders.todayCount
@@ -610,40 +635,113 @@ export default {
         this.cards[1].percentage = res.data.totalRevenue.percentageChange
         this.cards[2].percentage = res.data.totalOrders.percentageChange
         this.cards[3].percentage = res.data.totalClients.percentageChange
-      })).catch(err =>{
+      })).catch(err => {
         console.log(err)
       })
     },
-    summaryData(tab){
+    summaryData(tab) {
       this.tabLoading = true;
-      this.API.getDashBoardDataSummaryData(tab).then((res =>{
-       
-      this.orderSummary.open = res.data.orderSummary.open || 0;
-      this.orderSummary.preparing = res.data.orderSummary.preparing || 0;
-      this.orderSummary.delivered = res.data.orderSummary.delivered || 0;
-      this.orderSummary.paid = res.data.orderSummary.paid || 0;
-      this.orderSummary.cancelled = res.data.orderSummary.cancelled || 0;
-      console.log("thisordersummary",this.orderSummary)
-      })).catch(err =>{
+      this.API.getDashBoardDataSummaryData(tab).then((res => {
+
+        this.orderSummary.open = res.data.orderSummary.open || 0;
+        this.orderSummary.preparing = res.data.orderSummary.preparing || 0;
+        this.orderSummary.delivered = res.data.orderSummary.delivered || 0;
+        this.orderSummary.paid = res.data.orderSummary.paid || 0;
+        this.orderSummary.cancelled = res.data.orderSummary.cancelled || 0;
+        // console.log("thisordersummary", this.orderSummary)
+      })).catch(err => {
         console.log(err)
-      }).finally(_=>{
+      }).finally(_ => {
         this.tabLoading = false;
       })
     },
     handleTabChange(tab) {
-  
+
       this.activeTab = tab.id; // Set active tab
       this.tabs.forEach(t => {
         if (t.id !== tab.id) {
           t.disabled = true;
         }
       });
-    
-      this.summaryData(tab.id)
-     
-    },
 
-    
+      this.summaryData(tab.id)
+
+    },
+    handleRevenueTabChange(tab) {
+
+      this.revenueActiveTab = tab.id; // Set active tab
+      this.tabs.forEach(t => {
+        if (t.id !== tab.id) {
+          t.disabled = true;
+        }
+      });
+
+      this.revenueData(tab.id)
+
+    },
+    revenueData(tab) {
+      this.revenueTabLoading = true;
+      this.API.getDashBoardRevenueData(tab).then((res => {
+
+        let revenueData = [];
+        
+        const data = res.data.revenueData;
+
+        for (const [key, value] of Object.entries(data)) {
+            revenueData.push({
+                period: key,
+                revenue: value.revenue,
+                orders: value.orders
+            });
+        }
+        if (tab === 'daily') {
+            this.dailyRevenueData = revenueData;
+        } else if (tab === 'weekly') {
+            this.weeklyRevenueData = revenueData;
+        } else if (tab === 'monthly') {
+            this.monthlyRevenueData = revenueData;
+        }
+
+       
+      })).catch(err => {
+        console.log(err)
+      }).finally(_ => {
+        this.revenueTabLoading = false;
+      })
+    },
+    handleCustomerTabChange(tab) {
+
+      this.customerActiveTab = tab.id; // Set active tab
+      this.tabs.forEach(t => {
+        if (t.id !== tab.id) {
+          t.disabled = true;
+        }
+      });
+
+      this.customerData(tab.id)
+
+    },
+    customerData(tab) {
+      this.customerTabLoading = true;
+      this.API.getDashBoardCustomerMapData(tab).then((res => {
+        // console.log("customerMapdata", res)
+        const topCustomersData = res.data.topCustomers.map(customer => ({
+          name: customer.name,
+          amountSpent: customer.totalSpent,
+          numberOfOrders: customer.orderCount
+        }));
+        // console.log("topSpendersData", topCustomersData)
+        this.topSpendersData = topCustomersData;
+      })).catch(err => {
+        console.log(err)
+      }).finally(_ => {
+        this.customerTabLoading = false;
+      })
+    }
+
+
+
+
   },
   computed: {
     totalOrders() {
@@ -651,14 +749,14 @@ export default {
     },
     percentages() {
       if (this.totalOrders === 0) {
-    return {
-      open: 0,
-      preparing: 0,
-      delivered: 0,
-      paid: 0,
-      cancelled: 0
-    };
-  }
+        return {
+          open: 0,
+          preparing: 0,
+          delivered: 0,
+          paid: 0,
+          cancelled: 0
+        };
+      }
       return {
         open: ((this.orderSummary.open / this.totalOrders) * 100).toFixed(2),
         preparing: ((this.orderSummary.preparing / this.totalOrders) * 100).toFixed(2),
@@ -680,11 +778,48 @@ export default {
       let count = this.cards[1].count;
       if (count >= 1000000) {
         return (count / 1000000).toFixed(2) + "M";
-      } else  {
+      } else {
         return (count / 1000).toFixed(2) + "K";
-      } 
-  },
-}
+      }
+    },
+    aggregatedDailyRevenueData() {
+      const aggregatedData = [
+        { period: '0-8', revenue: 0, orders: 0 },
+        { period: '9:00', revenue: 0, orders: 0 },
+        { period: '10:00', revenue: 0, orders: 0 },
+        { period: '11:00', revenue: 0, orders: 0 },
+        { period: '12:00', revenue: 0, orders: 0 },
+        { period: '13:00', revenue: 0, orders: 0 },
+        { period: '14:00', revenue: 0, orders: 0 },
+        { period: '15:00', revenue: 0, orders: 0 },
+        { period: '16:00', revenue: 0, orders: 0 },
+        { period: '17:00', revenue: 0, orders: 0 },
+        { period: '18:00', revenue: 0, orders: 0 },
+        { period: '19:00', revenue: 0, orders: 0 },
+        { period: '20:00', revenue: 0, orders: 0 },
+        { period: '21-24', revenue: 0, orders: 0 },
+      ];
+
+      // Iterate over dailyRevenueData and aggregate based on periods
+      this.dailyRevenueData.forEach(item => {
+        const hour = parseInt(item.period.split(':')[0]); // Extract hour from period
+
+        if (hour >= 0 && hour < 9) {
+          aggregatedData[0].revenue += item.revenue;
+          aggregatedData[0].orders += item.orders;
+        } else if (hour >= 9 && hour < 21) {
+          // Map to corresponding index in aggregatedData array
+          aggregatedData[hour - 8].revenue += item.revenue;
+          aggregatedData[hour - 8].orders += item.orders;
+        } else if (hour >= 21 && hour <= 23) {
+          aggregatedData[13].revenue += item.revenue;
+          aggregatedData[13].orders += item.orders;
+        }
+      });
+
+      return aggregatedData;
+    }
+  }
 }
 </script>
 
@@ -723,17 +858,19 @@ export default {
 .skeleton-order-summary {
   height: 100px;
 }
+
 .text-green {
   color: green;
 }
 
 .text-black {
-  color:black;
+  color: black;
 }
 
 .text-red {
   color: red;
 }
+
 .card {
   margin-bottom: 1.875rem;
   background-color: #fff;

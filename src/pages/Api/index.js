@@ -11,4 +11,10 @@ export default class DashBoardManagementService {
   getDashBoardDataTrendingOrders(tab){
     return axios.get(`/dashboarData/trendingData/${tab}`);
   }
+  getDashBoardCustomerMapData(tab){
+    return axios.get(`/dashboarData/customerMapData/${tab}`);
+  }
+  getDashBoardRevenueData(tab){
+    return axios.get(`/dashboarData/revenueData/${tab}`);
+  }
 }

@@ -45,10 +45,10 @@
        </template>
        <template  v-else >
                       <md-empty-state v-if="trendingData.length === 0"
-    md-rounded
+    
     md-icon="access_time"
-    md-label="No Orders Found"
-    md-description="Currently, there are no orders please check again after a while.">
+    md-label="No Data Found"
+    md-description="Currently, there is no data please check again after a while.">
   </md-empty-state>
           <div v-else
             v-for="item in trendingData"
@@ -121,7 +121,6 @@ export default {
   },
     notifySuccess(message) {
       Notify.create({
-
         message: message,
         timeout: 3000,
         position: 'center',
@@ -131,7 +130,6 @@ export default {
 
     notifyError(message) {
       Notify.create({
-
         message: message,
         timeout: 3000,
         position: 'center',
@@ -143,70 +141,19 @@ export default {
     },
     trendingDataFetch(tab){
       this.tabLoading=true
-    // setTimeout(() =>{
-    //   this.trendingData = [
-    //       {
-    //         id: 1,
-    //         imageUrl: 'https://via.placeholder.com/85',
-    //         title: 'Dish 1',
-    //         category: 'Category 1',
-    //         serving: '2 servings',
-    //         preparationTime: 30,
-    //         price: '$15.00'
-    //       },
-    //       {
-    //         id: 2,
-    //         imageUrl: 'https://via.placeholder.com/85',
-    //         title: 'Dish 2',
-    //         category: 'Category 2',
-    //         serving: '1 serving',
-    //         preparationTime: 20,
-    //         price: '$10.00'
-    //       },
-    //       {
-    //         id: 3,
-    //         imageUrl: 'https://via.placeholder.com/85',
-    //         title: 'Dish 3',
-    //         category: 'Category 3',
-    //         serving: '3 servings',
-    //         preparationTime: 40,
-    //         price: '$20.00'
-    //       },
-    //       {
-    //         id: 4,
-    //         imageUrl: 'https://via.placeholder.com/85',
-    //         title: 'Dish 4',
-    //         category: 'Category 4',
-    //         serving: '2 servings',
-    //         preparationTime: 25,
-    //         price: '$12.00'
-    //       },
-    //       {
-    //         id: 5,
-    //         imageUrl: 'https://via.placeholder.com/85',
-    //         title: 'Dish 5',
-    //         category: 'Category 5',
-    //         serving: '4 servings',
-    //         preparationTime: 50,
-    //         price: '$25.00'
-    //       }
-    //     ];
-    // this.tabLoading=false
-
-    // },3000)
     this.API.getDashBoardDataTrendingOrders(tab).then( res =>{
          console.log(res)
       this.trendingData = res.data.trendingData.topProducts.map((product, index) => ({
                 id: index + 1,
-                imageUrl: process.env.VUE_APP_SERVER_URL+'/api/images/'+ product.imageUrl || 'https://via.placeholder.com/70',
+                imageUrl:'/api/images/'+ product.imageUrl || 'https://via.placeholder.com/70',
                 title: product.name,
                 category: product.category,
                 serving: `${product.count} servings`,
-                preparationTime: product.preparationTime || 30,  // Assuming `preparationTime` is part of your backend response
-                price: `Br ${(product.amount).toFixed(2)}`  // Assuming `amount` is already in correct currency format
+                preparationTime: product.preparationTime || 30,
+                price: `Br ${(product.amount).toFixed(2)}`  
             }));
             this.tabLoading = false;
-
+          console.log("trending data" , this.trendingData)
     }).catch(err =>{
      this.notifyError('Error Occured Please Contact System Administrator')
      this.tabLoading = false;
@@ -397,7 +344,7 @@ export default {
   }
   .img-fluid {
     max-width: 100%;
-    height: auto;
+    height: 75px;
   }
   img {
     vertical-align: middle;
