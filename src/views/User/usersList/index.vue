@@ -8,7 +8,14 @@
               <h4 class="title">Users</h4>
               <p class="category">Explore and manage your users</p>
             </div>
-            <div style="display: flex;">
+            <div style="display: flex;justify-content: space-between;">
+              <div class="sort-container">
+                <q-select  style="color:white !important;width:150px" v-model="selectedSort"  :options="sortModel" label="Sort By" @input="handleSortSelection"  class="custom-select">
+                  <template v-slot:prepend>
+                    <q-icon  style="color:white !important" name="sort" />
+                  </template>
+                </q-select>
+              </div>
               <div class="search-container">
                 <div v-show="showSearchInput" style="padding: 10px;" @click="clear">
                   <md-icon label="Search" style="color:white !important">close</md-icon>
@@ -33,7 +40,7 @@
           </md-card-header>
           <md-card-content>
             <dynamic-table table-header-color="red" :columns="columns" :data-items="users" :actions="actions" />
-            <q-pagination v-model="current" :max="totalPages" @update:model-value="loadPage" direction-links flat
+            <q-pagination style="display: flex;justify-content: center;"  v-model="current" :max="totalPages" @update:model-value="loadPage" direction-links flat
               color="grey" active-color="primary" />
           </md-card-content>
           <div v-if="users.length == 0">
@@ -93,6 +100,14 @@ export default {
         { label: "Create By", field: "createdBy" },
         { label: "Activated", field: "activated" },
       ],
+      sortModel: [
+        'id',
+        'login',
+              'email',
+      
+      
+      ],
+      selectedSort:'id',
       dataItems: [
         {
           email: "kebeded@gmail.com",
@@ -158,6 +173,11 @@ export default {
 
   },
   methods: {
+     handleSortSelection(value) {
+      console.log('Selected sort option:', value);
+      this.changeOrder(value);
+      // Implement your logic based on the selected value (e.g., update sorting order)
+    },
     toggleSearch() {
       this.showSearchInput = !this.showSearchInput;
       if (this.showSearchInput) {
@@ -167,6 +187,11 @@ export default {
     clear() {
       this.searchKeyword = '';
       this.loadAll();
+    },
+     changeOrder(propOrder) {
+      this.propOrder = propOrder;
+      this.reverse = !this.reverse;
+      this.transition();
     },
     performSearch() {
       // Your search logic here
@@ -358,5 +383,32 @@ export default {
 
 .md-button {
   background-color: #5335AB !important;
+}
+
+
+
+.custom-select {
+  width: 150px;
+  color: white !important;
+  --q-select--text-color: white;
+  --q-select--label-color: white;
+  --q-select--background-color: transparent;
+  --q-select--focus-border-color: white;
+}
+
+.custom-select .q-field__native {
+  color: white !important;
+}
+
+.custom-select .q-field__control-container .q-field__control {
+  color: white !important;
+}
+
+.custom-select .q-field__label {
+  color: white !important;
+}
+
+.custom-icon {
+  color: white !important;
 }
 </style>

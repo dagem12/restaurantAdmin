@@ -8,7 +8,14 @@
               <h4 class="title">Menu Catalog</h4>
               <p class="category">Explore and manage your menu catalogs</p>
             </div>
-            <div style="display: flex;">
+            <div style="display: flex;justify-content: space-between;">
+               <div class="sort-container">
+                <q-select  style="color:white !important;width:150px" v-model="selectedSort"  :options="sortModel" label="Sort By" @input="handleSortSelection" class="custom-select">
+                  <template v-slot:prepend>
+                    <q-icon  style="color:white !important" name="sort" />
+                  </template>
+                </q-select>
+              </div>
               <div class="search-container">
                 <div v-show="showSearchInput" style="padding: 10px;" @click="clear2">
                   <md-icon label="Search" style="color:white !important">close</md-icon>
@@ -34,7 +41,7 @@
           <md-card-content>
             <dynamic-table table-header-color="red" :columns="columns" :data-items="productCatalogs"
               :actions="actions" />
-            <q-pagination v-if="productCatalogs.length > 0" v-model="current" :max="totalPages"
+            <q-pagination style="display: flex;justify-content: center;"  v-if="productCatalogs.length > 0" v-model="current" :max="totalPages"
               @update:model-value="loadPage" direction-links flat color="grey" active-color="primary" />
           </md-card-content>
           <div v-if="productCatalogs.length == 0">
@@ -91,6 +98,13 @@ export default {
         // { label: "Shop", field: "shop" },
         // { label: "Poster", field: "poster" },
       ],
+         sortModel: [
+        'id',
+        'name'
+
+        
+      ],
+      selectedSort:'id',
 
       actions: [
         {
@@ -150,6 +164,11 @@ export default {
     gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
+     handleSortSelection(value) {
+      console.log('Selected sort option:', value);
+      this.changeOrder(value);
+      // Implement your logic based on the selected value (e.g., update sorting order)
+    },
     clear2() {
       this.searchKeyword = '';
       this.retrieveAllProductCatalogs();
@@ -355,5 +374,31 @@ export default {
 
 .md-card-header {
   background-color: #5335AB !important;
+}
+
+
+.custom-select {
+  width: 150px;
+  color: white !important;
+  --q-select--text-color: white;
+  --q-select--label-color: white;
+  --q-select--background-color: transparent;
+  --q-select--focus-border-color: white;
+}
+
+.custom-select .q-field__native {
+  color: white !important;
+}
+
+.custom-select .q-field__control-container .q-field__control {
+  color: white !important;
+}
+
+.custom-select .q-field__label {
+  color: white !important;
+}
+
+.custom-icon {
+  color: white !important;
 }
 </style>

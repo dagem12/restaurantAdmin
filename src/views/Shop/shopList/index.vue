@@ -9,12 +9,19 @@
               <p class="category">Explore and manage your shops</p>
             </div>
             <!-- Add Item button -->
-            <div style="display: flex;">
+            <div style="display: flex;justify-content: space-between;">
+              <div class="sort-container">
+                <q-select  v-model="selectedSort"  :options="sortModel" label="Sort By" @input="handleSortSelection"  style="color:white !important;width:150px;"  class="custom-select">
+                  <template v-slot:prepend>
+                    <q-icon  style="color:white !important" name="sort" />
+                  </template>
+                </q-select>
+              </div>
               <div class="search-container">
-                <div v-show="showSearchInput" style="padding: 10px;" @click="clear2">
+                <div  v-show="showSearchInput" style="padding: 10px;" @click="clear2">
                   <md-icon label="Search" style="color:white !important">close</md-icon>
                 </div>
-                <q-input v-model="searchKeyword" v-show="showSearchInput" @keyup.enter="performSearch"
+                <q-input style="color:white !important" v-model="searchKeyword" v-show="showSearchInput" @keyup.enter="performSearch"
                   placeholder="Enter search keyword" class="custom-input"></q-input>
                 <div style="padding: 10px;" @click="toggleSearch">
                   <md-icon label="Search" style="color:white !important">search</md-icon>
@@ -33,7 +40,7 @@
           </md-card-header>
           <md-card-content>
             <dynamic-table table-header-color="red" :columns="columns" :data-items="shops" :actions="actions" />
-            <q-pagination v-if="shops.length > 0" v-model="current" :max="totalPages" @update:model-value="loadPage"
+            <q-pagination style="display: flex;justify-content: center;"  v-if="shops.length > 0" v-model="current" :max="totalPages" @update:model-value="loadPage"
               direction-links flat color="grey" active-color="primary" />
           </md-card-content>
           <div v-if="shops.length == 0">
@@ -89,9 +96,15 @@ export default {
         { label: "Name", field: "name" },
         { label: "Description", field: "description" },
         { label: "Enable", field: "enable" },
-        { label: "CreateTime", field: "createTime", isCreateTime: true },
+        { label: "CreateTime", field: "createTime", isCreateTime: true   },
         { label: "Address", field: "address" },
       ],
+      sortModel: [
+        'createTime',
+        'name',
+        'id'
+      ],
+      selectedSort:'id',
       actions: [
         {
           label: "Edit",
@@ -104,7 +117,7 @@ export default {
           method: this.deleteItem,
           icon: "delete",
           color: "red",
-        },
+        }
       ],
       removeId: null,
       loading: false,
@@ -136,6 +149,11 @@ export default {
     gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
+     handleSortSelection(value) {
+      console.log('Selected sort option:', value);
+      this.changeOrder(value);
+      // Implement your logic based on the selected value (e.g., update sorting order)
+    },
     clear2() {
       this.searchKeyword = '';
       this.retrieveAllShops();
@@ -322,6 +340,9 @@ export default {
   align-items: end;
   text-align: end;
 }
+.search-container{
+  
+}
 
 ::v-deep .md-card-header {
   justify-content: space-between;
@@ -338,5 +359,31 @@ export default {
 
 .md-button {
   background-color: #5335AB !important;
+}
+
+
+.custom-select {
+  width: 150px;
+  color: white !important;
+  --q-select--text-color: white;
+  --q-select--label-color: white;
+  --q-select--background-color: transparent;
+  --q-select--focus-border-color: white;
+}
+
+.custom-select .q-field__native {
+  color: white !important;
+}
+
+.custom-select .q-field__control-container .q-field__control {
+  color: white !important;
+}
+
+.custom-select .q-field__label {
+  color: white !important;
+}
+
+.custom-icon {
+  color: white !important;
 }
 </style>
