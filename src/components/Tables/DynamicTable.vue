@@ -3,12 +3,14 @@
     <md-table v-model="localDataItems" :table-header-color="tableHeaderColor">
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell v-for="column in columns" :key="column.label" :md-label="column.label">
+       
           <template v-if="column.isImage">
             <img :src="`https://localhost:8080/api/images/${item[column.field]}`" style="height: 50px; width: 50px;"
               alt="Image" @error="handleImageError" />
           </template>
           <template v-else-if="column.isCreateTime">
             {{ formatDate(item[column.field]) }}
+           
           </template>
           <template v-else>
             {{ column.isRelation ? (item[column.field]?.name ? item[column.field]?.name : item[column.field]?.value) :
