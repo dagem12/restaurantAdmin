@@ -8,10 +8,10 @@
             </q-card-section>
 
             <q-card-section>
-                <q-input v-model="user.login" label="User Name" class="q-mb-md" />
-                <q-input v-model="user.firstName" label="First Name" class="q-mb-md" />
-                <q-input v-model="user.lastName" label="Last Name" class="q-mb-md" />
-                <q-input v-model="user.email" label="Email" class="q-mb-md" />
+                <q-input ref="login" v-model="user.login" label="User Name" class="q-mb-md" :rules="[rules.required]" />
+                <q-input ref="firstName" v-model="user.firstName" label="First Name" class="q-mb-md"  :rules="[rules.required, rules.onlyAlphabets]"  />
+                <q-input ref="lastName" v-model="user.lastName" label="Last Name" class="q-mb-md"  :rules="[rules.required, rules.onlyAlphabets]" />
+                <q-input  ref="email" v-model="user.email" label="Email" class="q-mb-md" :rules="[rules.required, rules.email]" />
                 <q-toggle v-model="user.activated" label="Activated" class="q-mb-md" />
 
                 <q-select v-if="this.accountService.hasAuthorities(this.authority.ADMIN)" v-model="user.orgId"
@@ -20,13 +20,13 @@
 
                 <q-select v-model="user.shopId" label="Shop" :options="shops" option-label="name" option-value="id"
                     class="q-mb-md" />
-                <q-select v-model="user.authorities" label="Authority" :options="authorities" option-label="label"
-                    option-value="value" multiple class="q-mb-md" />
+                <q-select ref="authority" v-model="user.authorities" label="Authority" :options="authorities" option-label="label"
+                    option-value="value" multiple class="q-mb-md" :rules="[rules.required]"/>
 
             </q-card-section>
 
             <q-card-actions align="right">
-                <q-btn color="primary" label="Update" :loading="loading" @click="addItem" />
+                <q-btn color="primary" label="Update" :loading="loading" @click="validateForm" />
                 <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
             </q-card-actions>
         </q-card>
@@ -49,6 +49,12 @@ export default {
             accountService: new AccountService(),
             loading: false,
             showDialogEdit: false,
+            rules: {
+        required: val => !!val || 'Field is required',
+        email: val => /.+@.+\..+/.test(val) || 'Email must be valid',
+        minLength: len => val => (val && val.length >= len) || `Minimum ${len} characters required`,
+        onlyAlphabets: val => /^[a-zA-Z]+$/.test(val) || 'Only alphabets are allowed'
+      },
             
 
         };
@@ -79,6 +85,24 @@ export default {
                 position: 'center',
                 color: 'red'
             });
+        },
+        validateForm() {
+
+        // Perform form validation
+        const inputs = [
+        this.$refs.login,
+        this.$refs.firstName,
+        this.$refs.lastName,
+        this.$refs.email,
+        this.$refs.authority
+
+        ];
+
+        const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
+
+        if (valid) {
+        this.addItem();
+        }
         },
         async addItem() {
             console.log('updating new New User item:', this.user);

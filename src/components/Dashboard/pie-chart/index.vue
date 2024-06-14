@@ -10,88 +10,71 @@ import * as echarts from "echarts";
 export default {
   name: "PieChart",
   props: {
-    //   count: {
-    //     type: Number,
-    //     required: true
-    //   },
-    //   status: {
-    //     type: String,
-    //     required: true
-    //   }
+    orderSummary: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {
       option: {
         tooltip: {
           trigger: "item",
+          formatter: "{a} <br/>{b}: {c} ({d}%)"
         },
-        //   legend: {
-        //     top: '5%',
-        //     left: 'center'
-        //   },
         series: [
           {
-            name: "Access From",
+            name: "Order Status",
             type: "pie",
-            radius: ["40%", "80%"],
+            radius: ["30%", "60%"],
             avoidLabelOverlap: false,
             label: {
               show: false,
-              position: "center",
-            },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: 20,
-                fontWeight: "bold",
-              },
+              position: "inside",
+              formatter: "{b} ({c})"
             },
             labelLine: {
               show: false,
             },
-            data: [
-              { value: 1048, name: "Open" },
-              { value: 735, name: "Preparing" },
-              { value: 580, name: "Delivered" },
-              { value: 484, name: "Canceled" },
-            ],
+            data: []
           },
         ],
       },
+      colorMap: {
+        open: "#309330",
+        preparing: "#3366FF",
+        delivered: "#FFFF33",
+        paid: "#FF9900",
+        cancelled: "#FF0000"
+      }
     };
   },
   watch: {
-    count(newCount) {
-      this.option.series[0].data[0].value = newCount;
-      this.option.title.text = newCount.toString();
-      this.renderChart();
-    },
+    orderSummary: {
+      handler(newOrderSummary) {
+        this.updateChart(newOrderSummary);
+      },
+      deep: true
+    }
   },
   mounted() {
-    this.renderChart();
+    this.updateChart(this.orderSummary);
   },
   methods: {
-    renderChart() {
+    updateChart(orderSummary) {
       const chartContainer = this.$refs.chart;
       const chart = echarts.init(chartContainer);
+      const statusNames = Object.keys(orderSummary);
+      const chartData = statusNames.map(status => ({
+        name: status,
+        value: orderSummary[status],
+        itemStyle: {
+          color: this.colorMap[status]
+        }
+      }));
+      this.option.series[0].data = chartData;
       chart.setOption(this.option);
-    },
-    getColor(status) {
-      switch (status) {
-        case "Cancelled":
-          return "#FFCD7F";
-        case "Open":
-          return "#7FD1FF";
-        case "Ongoing":
-          return "#343aeb";
-        case "Complete":
-          return "#00FF00";
-        case "Expired":
-          return "#FF7F7F";
-        default:
-          return "#000000";
-      }
-    },
+    }
   },
 };
 </script>
@@ -104,13 +87,7 @@ export default {
 }
 
 .chart-container {
-  width: 200px;
-  height: 200px;
-}
-
-.count {
-  font-size: 24px;
-  font-weight: bold;
-  margin-top: 10px;
+  width: 250px;
+  height: 250px;
 }
 </style>

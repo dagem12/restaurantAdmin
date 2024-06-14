@@ -8,8 +8,18 @@
               <h4 class="title">Organization</h4>
               <p class="category">Explore and manage your organizations</p>
             </div>
-            <div style="display: flex;">
+            <div style="display: flex;justify-content: space-between;">
+                    <div class="sort-container">
+                <q-select  style="color:white !important;width:150px" v-model="selectedSort"  :options="sortModel" label="Sort By" @input="handleSortSelection" class="custom-select">
+                  <template v-slot:prepend>
+                    <q-icon  style="color:white !important" name="sort" />
+                  </template>
+                </q-select>
+              </div>
               <div class="search-container">
+                <div v-show="showSearchInput" style="padding: 10px;" @click="clear2">
+                  <md-icon label="Search" style="color:white !important">close</md-icon>
+                </div>
                 <q-input v-model="searchKeyword" v-show="showSearchInput" @keyup.enter="performSearch"
                   placeholder="Enter search keyword" class="custom-input"></q-input>
                 <div style="padding: 10px;" @click="toggleSearch">
@@ -30,7 +40,14 @@
           </md-card-header>
           <md-card-content>
             <dynamic-table table-header-color="red" :columns="columns" :data-items="organizations" :actions="actions" />
+               <q-pagination style="display: flex;justify-content: center;" v-if="organizations.length > 0" v-model="current" :max="totalPages" @update:model-value="loadPage"
+              direction-links flat color="grey" active-color="primary" />
           </md-card-content>
+          <div v-if="organizations.length == 0">
+            <md-empty-state md-rounded md-icon="description" md-label="Not Found !" md-description="No record founded">
+            </md-empty-state>
+          </div>
+
         </md-card>
       </div>
     </div>
@@ -72,6 +89,7 @@ export default {
 
   data() {
     return {
+    current:1,
       showSearchInput: false,
       searchKeyword: '',
       loading: false,
@@ -93,13 +111,21 @@ export default {
       organization: {},
       columns: [
         { label: "Id", field: "id" },
-       
+
         { label: "Name", field: "name" },
         { label: "Description", field: "description" },
         { label: "Enable", field: "enable" },
         { label: "CreateTime", field: "createTime", isCreateTime: true },
 
       ],
+      sortModel: [
+        'id',
+                  'name',
+        'createTime',
+ 
+       
+      ],
+      selectedSort:'id',
       dataItems: [
         {
           name: "Et Restaurant",
@@ -136,6 +162,11 @@ export default {
       ],
     };
   },
+   computed: {
+    totalPages() {
+      return Math.ceil(this.totalItems / this.itemsPerPage);
+    }
+  },
   mounted() {
     this.retrieveAllOrganizations();
     const box = this.$refs.box;
@@ -146,6 +177,24 @@ export default {
   },
 
   methods: {
+       handleSortSelection(value) {
+      console.log('Selected sort option:', value);
+      this.changeOrder(value);
+      // Implement your logic based on the selected value (e.g., update sorting order)
+    },
+    clear2() {
+      this.searchKeyword = '';
+      this.retrieveAllShops();
+    },
+    notifyNotfound(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'blue'
+      });
+    },
     toggleSearch() {
       this.showSearchInput = !this.showSearchInput;
       if (this.showSearchInput) {
@@ -155,6 +204,18 @@ export default {
     performSearch() {
       // Your search logic here
       console.log('Search performed:', this.searchKeyword);
+      this.organizationService.searchOrg(this.searchKeyword).then(res => {
+
+        if (res.data.length == 0) {
+          this.notifyNotfound("Not Found");
+        }
+        // Clear the users array
+        this.organizations = [];
+        // Assign the new data to the users array
+        this.organizations = [...res.data];
+      }).catch(err => {
+        console.log(err)
+      })
     }
     ,
     initRelationships() {
@@ -224,9 +285,10 @@ export default {
       }
       return result;
     },
-    loadPage(page) {
+   loadPage(page) {
       if (page !== this.previousPage) {
         this.previousPage = page;
+        this.current = page;
         this.transition();
       }
     },
@@ -295,5 +357,30 @@ export default {
 
 .md-card-header {
   background-color: #5335AB !important;
+}
+
+.custom-select {
+  width: 150px;
+  color: white !important;
+  --q-select--text-color: white;
+  --q-select--label-color: white;
+  --q-select--background-color: transparent;
+  --q-select--focus-border-color: white;
+}
+
+.custom-select .q-field__native {
+  color: white !important;
+}
+
+.custom-select .q-field__control-container .q-field__control {
+  color: white !important;
+}
+
+.custom-select .q-field__label {
+  color: white !important;
+}
+
+.custom-icon {
+  color: white !important;
 }
 </style>

@@ -5,9 +5,9 @@ import buildPaginationQueryOpts from '@/utils/sorts';
 const baseApiUrl = '/shops';
 
 export default class ShopService {
-    constructor( ) {
-  
-      }
+    constructor() {
+
+    }
     find(id) {
         return new Promise((resolve, reject) => {
             axios
@@ -25,6 +25,18 @@ export default class ShopService {
         return new Promise((resolve, reject) => {
             axios
                 .get(`/shops?${buildPaginationQueryOpts(paginationQuery)}`)
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    }
+    searchShop(name) {
+        return new Promise((resolve, reject) => {
+            axios
+                .get(`/shop?name=${name}`)
                 .then(res => {
                     resolve(res);
                 })

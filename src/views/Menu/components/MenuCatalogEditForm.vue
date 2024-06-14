@@ -8,17 +8,17 @@
             </q-card-section>
 
             <q-card-section>
-                <q-input v-model="menu.name" label="Name" class="q-mb-md" />
+                <q-input ref="name" v-model="menu.name" label="Name" class="q-mb-md" :rules="[rules.required]"/>
 
                 <q-input v-model="menu.description" label="Description" type="textarea" class="q-mb-md" />
-                <q-select v-model="menu.shop" :options="shops" option-label="name" option-value="id" label="Shop"
-                    class="q-mb-md" v-if="accountService.hasAuthorities(authority.ORGANIZATION_ADMIN)" />
+                <q-select ref="shop" v-model="menu.shop" :options="shops" option-label="name" option-value="id" label="Shop"
+                    class="q-mb-md" v-if="accountService.hasAuthorities(authority.ORGANIZATION_ADMIN)"    :rules="[rules.required]" />
                 <q-toggle v-model="menu.enable" label="Enable" type="number" class="q-mb-md" />
 
 
 
                 <q-card-actions align="right">
-                    <q-btn color="primary" label="Update" :loading="loading" @click="addItem" />
+                    <q-btn color="primary" label="Update" :loading="loading" @click="validateForm" />
                     <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
                 </q-card-actions>
             </q-card-section>
@@ -50,10 +50,42 @@ export default {
             productCatalogService: new ProductCatalogService(),
             authority: new Authority(),
             accountService: new AccountService(),
-            loading: false
+            loading: false,
+            rules: {
+                required: val => !!val || 'Field is required',
+                email: val => /.+@.+\..+/.test(val) || 'Email must be valid',
+                minLength: len => val => (val && val.length >= len) || `Minimum ${len} characters required`,
+                onlyAlphabets: val => /^[a-zA-Z]+$/.test(val) || 'Only alphabets are allowed',
+                onlyNumbers: val => /^[0-9]+$/.test(val) || 'Only numbers are allowed',
+                validImage: file => {
+                    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                    const maxSize = 2 * 1024 * 1024; // 2MB
+
+                    if (!file) return 'Image is required';
+                    if (!allowedTypes.includes(file.type)) return 'Only JPEG, PNG, and GIF formats are allowed';
+                    if (file.size > maxSize) return 'Image size must be less than 2MB';
+
+                    return true;
+                }
+            },
         };
     },
     methods: {
+        validateForm() {
+
+        // Perform form validation
+        const inputs = [
+            this.$refs.name,
+            this.$refs.shop
+
+        ];
+
+        const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
+
+        if (valid) {
+            this.addItem();
+        }
+        },
         async addItem() {
             console.log('Updating new ProductCatalog item:', this.menu);
 

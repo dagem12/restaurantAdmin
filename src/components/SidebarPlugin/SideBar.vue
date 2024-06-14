@@ -1,16 +1,11 @@
 <template>
-  <div
-    class="sidebar"
-    :data-color="sidebarItemColor"
-    :data-image="sidebarBackgroundImage"
-    :style="sidebarStyle"
-  >
+  <div class="sidebar" :data-color="sidebarItemColor" :data-image="sidebarBackgroundImage" :style="sidebarStyle">
     <div :class="sidebarClass">
       <div class="logo">
         <div class="imags">
           <a href="#" class="simple-text logo-mini">
             <div class="logo-img">
-              <img :src="imgLogo" alt="" />
+              <img src="../../assets/img/BM-Logo.png" alt="" />
             </div>
           </a>
         </div>
@@ -20,10 +15,7 @@
             {{ title }}
           </a>
         </div>
-        <div
-          :class="{ 'sidebar-toggle': true, collapsed: !isExpanded }"
-          @click="toggleSidebar"
-        >
+        <div :class="{ 'sidebar-toggle': true, collapsed: !isExpanded }" @click="toggleSidebar">
           <md-icon> menu_open </md-icon>
         </div>
       </div>
@@ -33,12 +25,7 @@
         <md-list class="nav">
           <!--By default vue-router adds an active class to each route link. This way the links are colored when clicked-->
           <slot>
-            <sidebar-link
-              v-for="(link, index) in sidebarLinks"
-              :key="link.name + index"
-              :to="link.path"
-              :link="link"
-            >
+            <sidebar-link v-for="(link, index) in sidebarLinks" :key="link.name + index" :to="link.path" :link="link">
             </sidebar-link>
           </slot>
         </md-list>
@@ -76,7 +63,7 @@ export default {
       type: String,
       default: "va",
       validator: (value) => {
-        let acceptedValues = ["va", "purple", "blue", "green", "orange", "red",""];
+        let acceptedValues = ["va", "purple", "blue", "green", "orange", "red", ""];
         return acceptedValues.indexOf(value) !== -1;
       },
     },
@@ -130,6 +117,13 @@ export default {
   }
 }
 
+@media only screen and (max-width: 768px) {
+  .sidebar-toggle {
+    display: none;
+  }
+}
+
+
 .sidebar-wrapper {
   width: 100% !important;
   /* Allow sidebar to adjust based on content */
@@ -145,11 +139,43 @@ export default {
 }
 
 .sidebar-collapsed {
-  width: 90px;
+  width: 80px;
   /* Adjust as needed */
   transition: width 0.3s ease;
 
+
   color: black !important;
+}
+
+
+
+
+
+
+::v-deep .md-list-item .md-icon {
+  display: flex !important;
+  transition-property: color;
+  padding-right: 9px !important;
+  justify-content: center !important;
+
+}
+
+
+::v-deep .md-list-item-content .md-ripple {
+  display: flex !important;
+  justify-content: start !important;
+}
+
+::v-deep .md-list .nav .md-theme-default {
+  padding-left: 0px !important;
+
+}
+
+::v-deep .md-list-item.collapsed {
+  width: 90px !important;
+  padding-right: 17px !important;
+  justify-content: start !important;
+  padding-left: 0px !important;
 }
 
 .icon-expanded {

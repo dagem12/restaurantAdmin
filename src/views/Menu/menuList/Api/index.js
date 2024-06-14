@@ -16,6 +16,19 @@ export default class ProductService {
         });
     });
   }
+  searchMenu(name) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`/product` + `?name=${name}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
 
   retrieve(paginationQuery) {
     return new Promise((resolve, reject) => {
