@@ -8,8 +8,8 @@
             </q-card-section>
 
             <q-card-section>
-                <q-input v-model="menu.name" label="Name" class="q-mb-md" />
-                <q-input v-model="menu.unitPrice" label="Price" type="number" class="q-mb-md" />
+                <q-input ref="name" v-model="menu.name" label="Name" class="q-mb-md" :rules="[rules.required]"/>
+                <q-input ref="price" v-model="menu.unitPrice" label="Price" type="number" class="q-mb-md" :rules="[rules.required, rules.onlyNumbers]"/>
                 <q-input v-model="menu.description" label="Description" type="textarea" class="q-mb-md" />
                 <!-- <q-select v-model="menuItem.category" :options="categoryOptions" label="Category" class="q-mb-md" /> -->
                 <!-- <q-select
@@ -21,17 +21,17 @@
                 <q-input v-model="menu.prepTime" label="Preparation Time (minutes)" type="number" class="q-mb-md" />
                 <q-input v-model="menu.calories" label="Calories" type="number" class="q-mb-md" />
                 <q-toggle v-model="menu.enable" label="Is Visible" class="q-mb-md" />
-                <q-select v-model="menu.shop" :options="shops" option-label="name" option-value="id" label="Shop"
-                    class="q-mb-md" v-if="accountService.hasAuthorities(authority.ORGANIZATION_ADMIN)" />
-                <q-select v-model="menu.catalog" :options="productCatalogs" option-label="name" option-value="id"
-                    label="Product Catalog" class="q-mb-md" />
+                <q-select  ref="shop" v-model="menu.shop" :options="shops" option-label="name" option-value="id" label="Shop"
+                    class="q-mb-md" v-if="accountService.hasAuthorities(authority.ORGANIZATION_ADMIN)"  :rules="[rules.required]" />
+                <q-select ref="catalog"  v-model="menu.catalog" :options="productCatalogs" option-label="name" option-value="id"
+                    label="Product Catalog" class="q-mb-md"  :rules="[rules.required]"  />
                 <q-uploader url="http://localhost:8081/upload" label="Click or Drag image of menu " @added="onFileAdded"
                     @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
 
             </q-card-section>
 
             <q-card-actions align="right">
-                <q-btn color="primary" label="Update" :loading="loading" @click="addItem" />
+                <q-btn color="primary" label="Update" :loading="loading" @click="validateForm" />
                 <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
             </q-card-actions>
         </q-card>
@@ -86,10 +86,44 @@ export default {
                 { label: 'Gluten-Free', value: 'gluten_free' },
                 { label: 'Nut-Free', value: 'nut_free' },
                 { label: 'Dairy-Free', value: 'dairy_free' }
-            ]
+            ],
+            rules: {
+        required: val => !!val || 'Field is required',
+        email: val => /.+@.+\..+/.test(val) || 'Email must be valid',
+        minLength: len => val => (val && val.length >= len) || `Minimum ${len} characters required`,
+        onlyAlphabets: val => /^[a-zA-Z]+$/.test(val) || 'Only alphabets are allowed',
+        onlyNumbers: val => /^[0-9]+$/.test(val) || 'Only numbers are allowed',
+        validImage: file => {
+          const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+          const maxSize = 2 * 1024 * 1024; // 2MB
+
+          if (!file) return 'Image is required';
+          if (!allowedTypes.includes(file.type)) return 'Only JPEG, PNG, and GIF formats are allowed';
+          if (file.size > maxSize) return 'Image size must be less than 2MB';
+
+          return true;
+        }
+      },
         };
     },
     methods: {
+        validateForm() {
+
+            // Perform form validation
+            const inputs = [
+                this.$refs.name,
+                this.$refs.shop,
+                this.$refs.catalog,
+                this.$refs.price
+
+            ];
+
+            const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
+
+            if (valid) {
+                this.addItem();
+            }
+            },
         addItem() {
             this.loading = true;
             console.log('updateing new menu item:', this.menu);

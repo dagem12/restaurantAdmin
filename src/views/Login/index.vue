@@ -9,7 +9,8 @@
     <input type="text" placeholder="User Name" v-model="login">
     <input type="password" placeholder="Password" v-model="password">
     <router-link to="/forgotPassword">Forget Your Password?</router-link>
-    <button type="submit">Sign In</button>
+    <!-- <button type="submit"></button> -->
+    <q-btn type="submit" :loading="loading" class="sinButton" label="Sign In" />
   </form>
 
        </div>
@@ -32,6 +33,7 @@
   
   import axios from '../../axios/axios';
 import AccountService from './api/account.service';
+import { Notify } from 'quasar';
 import { gsap } from 'gsap';
 export default {
     name:"Login",
@@ -45,6 +47,7 @@ export default {
       login: null,
       password: null,
       rememberMe: null,
+      loading:false
     };
   },
   mounted() {
@@ -61,7 +64,17 @@ gsap.from(box, { duration: 1, x: -1000, opacity: 0, ease: "power1.out" });
    
   },
   methods: {
+    notifyError(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'red'
+      });
+    },
     doLogin() {
+      this.loading=true;
       const data = { username: this.login, password: this.password, rememberMe: this.rememberMe };
       axios
         .post('/authenticate', data)
@@ -90,12 +103,15 @@ gsap.from(box, { duration: 1, x: -1000, opacity: 0, ease: "power1.out" });
         }).then(data=>{
           console.log("data",data)
           new AccountService().retrieveAccount().then(res=>{
+            this.loading=false;
             this.$router.push('/');
           }).catch(err=>{
 
           });
         })
         .catch(() => {
+          this.loading=false;
+          this.notifyError('Invalid Credentials')
           this.authenticationError = true;
         });
     },
@@ -152,6 +168,20 @@ gsap.from(box, { duration: 1, x: -1000, opacity: 0, ease: "power1.out" });
 }
 
 .container button {
+  background-color: #512da8;
+  color: #fff;
+  font-size: 12px;
+  padding: 10px 45px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.sinButton{
   background-color: #512da8;
   color: #fff;
   font-size: 12px;

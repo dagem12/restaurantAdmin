@@ -11,7 +11,7 @@
         <q-input ref="login" v-model="user.login" label="User Name" class="q-mb-md" :rules="[rules.required]" />
         <q-input ref="firstName" v-model="user.firstName" label="First Name" class="q-mb-md"
           :rules="[rules.required, rules.onlyAlphabets]" />
-        <q-input v-model="user.lastName" label="Last Name" class="q-mb-md"
+        <q-input ref="lastName" v-model="user.lastName" label="Last Name" class="q-mb-md"
           :rules="[rules.required, rules.onlyAlphabets]" />
         <q-input ref="email" v-model="user.email" label="Email" class="q-mb-md"
           :rules="[rules.required, rules.email]" />
@@ -96,6 +96,7 @@ export default {
       const inputs = [
         this.$refs.login,
         this.$refs.firstName,
+        this.$refs.lastName,
         this.$refs.email,
         this.$refs.password,
         this.$refs.authority

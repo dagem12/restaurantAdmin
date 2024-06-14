@@ -8,13 +8,13 @@
             </q-card-section>
 
             <q-card-section>
-                <q-input v-model="shop.name" label="Name" class="q-mb-md" />
+                <q-input ref="name" v-model="shop.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
 
                 <q-input v-model="shop.description" label="Description" type="textarea" class="q-mb-md" />
                 <q-select v-model="shop.contact" :options="contactOptions" label="Contact" class="q-mb-md" />
                 <q-select v-model="shop.tenant" :options="tenantOptions" label="Tenant" type="select" class="q-mb-md" />
                 <q-toggle v-model="shop.enable" label="Enable" type="number" class="q-mb-md" />
-                <q-input v-model="shop.address" label="Address" type="text" class="q-mb-md" />
+                <q-input  ref="address" v-model="shop.address" label="Address" type="text" class="q-mb-md" :rules="[rules.required]" />
                 <q-toggle v-model="shop.orderService" label="Order Service" class="q-mb-md" />
 
                 <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo "
@@ -26,7 +26,7 @@
 
 
             <q-card-actions align="right">
-                <q-btn color="primary" label="Update" :loading="loading" @click="updateItem" />
+                <q-btn color="primary" label="Update" :loading="loading" @click="validateForm" />
                 <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
             </q-card-actions>
 
@@ -99,6 +99,21 @@ export default {
         };
     },
     methods: {
+        validateForm() {
+
+        // Perform form validation
+        const inputs = [
+            this.$refs.name,
+            this.$refs.address,
+
+        ];
+
+        const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
+
+        if (valid) {
+            this.updateItem();
+        }
+        },
 
         async updateItem() {
             this.loading = true;
