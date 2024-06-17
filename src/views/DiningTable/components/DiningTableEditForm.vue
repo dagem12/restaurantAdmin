@@ -96,12 +96,22 @@ export default {
         },
         validateForm() {
 
-            // Perform form validation
-            const inputs = [
-            this.$refs.name,
-            this.$refs.shop
+            let inputs=[];
+      if(this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)){
+             inputs = [
+        this.$refs.name,
+        this.$refs.shop,
 
-            ];
+
+
+        ];
+        }else if(this.accountService.hasAuthorities(this.authority.SHOP_ADMIN)){
+            inputs = [
+        this.$refs.name,
+      
+
+        ];
+        }
 
             const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
 
@@ -113,16 +123,9 @@ export default {
             console.log('Updating new Dining item:', this.dining);
             this.loading = true;
 
-            const newDining = {
-                id: this.dining?.id,
-                name: this.dining?.name,
-                shop: this.dining?.shop,
-                description: this.dining?.description,
-                enable: this.dining?.enable,
-                tenant: this.dining?.tenant
-            };
+       
 
-            this.diningService.update(newDining)
+            this.diningService.update(this.dining)
                 .then(() => {
                     this.loading = false;
                     this.showDialogEdit = false;

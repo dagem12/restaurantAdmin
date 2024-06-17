@@ -80,9 +80,9 @@
     background-color: #fff;
   }
   
-  .table {
+  /* .table {
     background-color: lightblue;
-  }
+  } */
   
   .chair {
     background-color: lightgreen;

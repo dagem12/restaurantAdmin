@@ -1,7 +1,7 @@
 <template>
   <div>
     <md-table v-model="localDataItems" :table-header-color="tableHeaderColor">
-      <md-table-row slot="md-table-row" slot-scope="{ item }">
+      <md-table-row slot="md-table-row" slot-scope="{ item }" :class="{ 'selected-row': selectedRow === item }" @click="selectRow(item)">
         <md-table-cell v-for="column in columns" :key="column.label" :md-label="column.label">
        
           <template v-if="column.isImage">
@@ -13,9 +13,15 @@
            
           </template>
           <template v-else>
-            {{ column.isRelation ? (item[column.field]?.name ? item[column.field]?.name : item[column.field]?.value) :
-              item[column.field] }}
-
+            {{ column.isRelation 
+    ? (item[column.field]?.name 
+        ? item[column.field]?.name 
+        : item[column.field]?.value) 
+    : (column.isRelationPO 
+        ? item[column.field]?.amount 
+        : item[column.field]) 
+}}
+            
           </template>
         </md-table-cell>
         <md-table-cell md-label="Actions">
@@ -34,8 +40,6 @@
                   <q-item-label>{{ option }}</q-item-label>
                 </q-item-section>
               </q-item>
-
-
             </q-list>
           </q-btn-dropdown>
           <q-btn style="margin-left: 10px;" v-for="action in actions" v-if="action.label22 != null && action.label22"
@@ -83,6 +87,7 @@ export default {
   },
   data() {
     return {
+      selectedRow: null, 
       localDataItems: [...this.dataItems],
     };
   },
@@ -96,6 +101,9 @@ export default {
 
   },
   methods: {
+    selectRow(item) {
+      this.selectedRow = item;
+    },
     handleImageError(event) {
       event.target.src = 'https://via.placeholder.com/70';
     },
@@ -116,6 +124,16 @@ export default {
   padding: 8px;
   color: white;
 }
+.selected-row {
+  color:white !important;
+  background-color: #5335AB; /* Change this color to your preference */
+}
+
+.q-item-selected {
+  font-weight: bold;
+  background-color: #5335AB; /* Change this color to your preference */
+}
+
 
 .q-item-selected {
   background-color: #5335AB;

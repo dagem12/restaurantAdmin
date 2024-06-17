@@ -11,8 +11,7 @@
                 <q-input ref="name" v-model="shop.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
 
                 <q-input v-model="shop.description" label="Description" type="textarea" class="q-mb-md" />
-                <q-select v-model="shop.contact" :options="contactOptions" label="Contact" class="q-mb-md" />
-                <q-select v-model="shop.tenant" :options="tenantOptions" label="Tenant" type="select" class="q-mb-md" />
+               
                 <q-toggle v-model="shop.enable" label="Enable" type="number" class="q-mb-md" />
                 <q-input  ref="address" v-model="shop.address" label="Address" type="text" class="q-mb-md" :rules="[rules.required]" />
                 <q-toggle v-model="shop.orderService" label="Order Service" class="q-mb-md" />
@@ -119,23 +118,7 @@ export default {
             this.loading = true;
             console.log('Updating shopItem item:', this.shop);
 
-
-            const newShop = {
-                id: this.shop?.id,
-                name: this.shop?.name,
-                tenant: this.shop?.tenant,
-                description: this.shop?.description,
-                address: this.shop?.address,
-                enable: this.shop?.enable,
-                orderService: this.shop?.orderService,
-                contact: this.shop?.contact?.name,
-                createTime: this.shop?.createTime,
-                shortcutIcon: this.shop?.shortcutIcon,
-                code: this.shop?.name,
-                shopKey: this.shop?.shopKey
-            };
-
-            this.shopService.update(newShop)
+            this.shopService.update(this.shop)
                 .then(() => {
                     console.log(' Shop Updated successfully.');
                     this.loading = false;

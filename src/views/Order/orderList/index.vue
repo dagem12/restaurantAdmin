@@ -41,8 +41,8 @@
           </md-card-header>
           <md-card-content>
             <dynamic-table table-header-color="red" :columns="columns" :data-items="productOrders" :actions="actions" />
-            <q-pagination style="display: flex;justify-content: center;"  v-if="productOrders.length > 0" v-model="current" :max="totalPages"
-              @update:model-value="loadPage" direction-links flat color="grey" active-color="primary" />
+              <q-pagination style="display: flex;justify-content: center;"  v-if="productOrders.length > 0" v-model="page" :max="totalPages"
+                @input="onPageChange"  direction-links flat color="grey" active-color="primary" />
           </md-card-content>
           <div v-if="productOrders.length == 0">
             <md-empty-state md-rounded md-icon="description" md-label="Not Found !" md-description="No record founded">
@@ -58,6 +58,7 @@ import DynamicTable from "../../../components/Tables/DynamicTable.vue";
 import ProductOrderService from "./Api/index";
 import { Notify } from 'quasar';
 import { gsap } from 'gsap';
+import { TRUE } from "sass";
 export default {
   name: "orderList",
   components: {
@@ -69,16 +70,16 @@ export default {
       showSearchInput: false,
       searchKeyword: '',
       columns: [
-        { label: "Id", field: "id", isRelation: false },
         { label: "Code", field: "code", isRelation: false },
-        { label: "Name", field: "name", isRelation: false },
         { label: "Status", field: "status", isRelation: true },
+        { label: "Total Price", field: "payment", isRelationPO: true },
+        { label: "Additional Note", field: "addtionalNote" },
         { label: "CreateBy", field: "createBy" },
         { label: "CreateTime", field: "createTime", isRelation: false, isCreateTime: true },
         { label: "DiningTable", field: "diningTable", isRelation: true },
       ],
       sortModel: [
-        'id',
+  
         'createTime',
         'createBy',
         'status',
@@ -86,7 +87,7 @@ export default {
 
         
       ],
-      selectedSort:'id',
+      selectedSort:'',
       dataItems: [
         {
           name: "Bureger",
@@ -140,7 +141,7 @@ export default {
       page: 1,
       previousPage: 1,
       propOrder: 'createTime',
-      reverse: false,
+      reverse: true,
       totalItems: 0,
       productOrders: [],
       isFetching: false,
@@ -160,6 +161,14 @@ export default {
     gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
+    onPageChange(page) {
+      console.log(`Page changed to: ${page}`);
+      if (page !== this.previousPage) {
+        this.previousPage = page;
+        this.page = page;
+        this.transition(); // Ensure this method is defined and works as expected
+      }
+    },
      handleSortSelection(value) {
       console.log('Selected sort option:', value);
       this.changeOrder(value);
@@ -280,25 +289,19 @@ export default {
         });
     },
     sort() {
-      const result = [this.propOrder + ',' + (this.reverse ? 'asc' : 'desc')];
+      const result = [this.propOrder + ',' + (this.reverse ? 'desc' : 'asc')];
       if (this.propOrder !== 'id') {
         result.push('id');
       }
       return result;
     },
-    loadPage(page) {
-      if (page !== this.previousPage) {
-        this.previousPage = page;
-        this.current = page;
-        this.transition();
-      }
-    },
+    
     transition() {
       this.retrieveAllProductOrders();
     },
     changeOrder(propOrder) {
       this.propOrder = propOrder;
-      this.reverse = !this.reverse;
+      // this.reverse = !this.reverse;
       this.transition();
     },
     closeDialog() {

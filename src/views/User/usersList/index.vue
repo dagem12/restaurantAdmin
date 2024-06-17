@@ -40,7 +40,7 @@
           </md-card-header>
           <md-card-content>
             <dynamic-table table-header-color="red" :columns="columns" :data-items="users" :actions="actions" />
-            <q-pagination style="display: flex;justify-content: center;"  v-model="current" :max="totalPages" @update:model-value="loadPage" direction-links flat
+            <q-pagination style="display: flex;justify-content: center;"  v-model="page" :max="totalPages"  @input="onPageChange" direction-links flat
               color="grey" active-color="primary" />
           </md-card-content>
           <div v-if="users.length == 0">
@@ -94,20 +94,18 @@ export default {
       showSearchInput: false,
       searchKeyword: '',
       columns: [
-        { label: "Id", field: "id" },
         { label: "Login", field: "login" },
         { label: "Email", field: "email" },
         { label: "Create By", field: "createdBy" },
         { label: "Activated", field: "activated" },
       ],
       sortModel: [
-        'id',
         'login',
-              'email',
+        'email',
       
       
       ],
-      selectedSort:'id',
+      selectedSort:'',
       dataItems: [
         {
           email: "kebeded@gmail.com",
@@ -153,7 +151,7 @@ export default {
       page: 1,
       previousPage: 1,
       propOrder: 'id',
-      reverse: false,
+      reverse: true,
       totalItems: 0,
       isLoading: false,
       users: [],
@@ -173,6 +171,14 @@ export default {
 
   },
   methods: {
+    onPageChange(page) {
+      console.log(`Page changed to: ${page}`);
+      if (page !== this.previousPage) {
+        this.previousPage = page;
+        this.page = page;
+        this.transition(); // Ensure this method is defined and works as expected
+      }
+    },
      handleSortSelection(value) {
       console.log('Selected sort option:', value);
       this.changeOrder(value);
@@ -190,7 +196,7 @@ export default {
     },
      changeOrder(propOrder) {
       this.propOrder = propOrder;
-      this.reverse = !this.reverse;
+      // this.reverse = !this.reverse;
       this.transition();
     },
     performSearch() {
@@ -351,13 +357,7 @@ export default {
           this.shops = res.data;
         });
     },
-    loadPage(page) {
-      if (page !== this.previousPage) {
-        this.previousPage = page;
-        this.current = page;
-        this.transition();
-      }
-    },
+   
     transition() {
       this.loadAll();
     },

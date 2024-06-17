@@ -14,11 +14,11 @@
                 <q-input  ref="email" v-model="user.email" label="Email" class="q-mb-md" :rules="[rules.required, rules.email]" />
                 <q-toggle v-model="user.activated" label="Activated" class="q-mb-md" />
 
-                <q-select v-if="this.accountService.hasAuthorities(this.authority.ADMIN)" v-model="user.orgId"
+                <q-select ref="org" :rules="[rules.required]"  v-if="this.accountService.hasAuthorities(this.authority.ADMIN)" v-model="user.orgId"
                     label="Organization" :options="organizations" option-label="name" option-value="id"
                     class="q-mb-md" />
 
-                <q-select v-model="user.shopId" label="Shop" :options="shops" option-label="name" option-value="id"
+                <q-select ref="shop"  v-model="user.shopId"   :rules="[rules.required]" v-if="this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)" label="Shop" :options="shops" option-label="name" option-value="id"
                     class="q-mb-md" />
                 <q-select ref="authority" v-model="user.authorities" label="Authority" :options="authorities" option-label="label"
                     option-value="value" multiple class="q-mb-md" :rules="[rules.required]"/>
@@ -87,16 +87,30 @@ export default {
             });
         },
         validateForm() {
-
+         let inputs=[]
         // Perform form validation
-        const inputs = [
+        if(this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)){
+             inputs = [
         this.$refs.login,
         this.$refs.firstName,
         this.$refs.lastName,
         this.$refs.email,
+        this.$refs.authority,
+        this.$refs.shop
+
+        ];
+        }else if(this.accountService.hasAuthorities(this.authority.ADMIN)){
+            inputs = [
+        this.$refs.login,
+        this.$refs.firstName,
+        this.$refs.lastName,
+        this.$refs.email,
+        this.$refs.org,
         this.$refs.authority
 
         ];
+        }
+       
 
         const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
 
@@ -111,21 +125,9 @@ export default {
         let orgId=this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)?this.$store.getters.account.orgId:this.user.orgId.id
         console.log("data data ",orgId)  
            
-        const newUser = {
-                id: this.user?.id,
-                login: this.user?.login,
-                firstName: this.user?.firstName,
-                lastName: this.user?.lastName,
-                email: this.user?.email,
-                activated: this.user?.activated,
-                shopId: this.user?.shopId?.id,
-                orgId:orgId,
-                langKey: this.user?.langKey,
-                authorities: this.user?.authorities,
+     
 
-            };
-
-            this.userService.update(newUser)
+            this.userService.update(this.user)
                 .then(() => {
                     console.log('User Updated successfully.');
                     this.showDialogEdit = false;

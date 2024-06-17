@@ -89,12 +89,17 @@ export default {
         },
         validateForm() {
 
-            // Perform form validation
-            const inputs = [
-                this.$refs.name,
-                this.$refs.shop
-
-            ];
+            let inputs=[];
+      if(this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)){
+             inputs = [
+        this.$refs.name,
+        this.$refs.shop,
+        ];
+        }else if(this.accountService.hasAuthorities(this.authority.SHOP_ADMIN)){
+            inputs = [
+        this.$refs.name,
+        ];
+        }
 
             const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
 
