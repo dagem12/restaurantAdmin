@@ -29,7 +29,7 @@
                                         <tr v-for="order in orderItems" :key="order.id">
                                             <td style>
                                                 <div class="media">
-                                                    <img class="mr-3 img-fluid rounded" width="85" :src="imageUrl(order?.product?.imageUrl)"
+                                                    <img class="mr-3 img-fluid rounded" width="85"    :src="`/api/images/${order?.product?.imageUrl}`" 
                                                         alt="DexignZone" @error="handleImageError" />
                                                     <div class="media-body">
 
