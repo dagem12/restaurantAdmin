@@ -19,10 +19,10 @@
         <q-toggle v-model="shopItem.orderService" label="Order Service" class="q-mb-md" />
 
         <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo "
-          @added="onFileAdded" @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
-
+          @added="onFileAdded" :rules="[rules.validImage]" @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
 
       </q-card-section>
+      <label v-if="imageError" style="color:red">{{ imageError }}</label>
 
 
 

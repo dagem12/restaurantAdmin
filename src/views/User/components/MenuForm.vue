@@ -17,14 +17,14 @@
           :rules="[rules.required, rules.email]" />
         <q-toggle v-model="user.activated" label="Activated" class="q-mb-md" />
 
-        <q-select v-if="this.accountService.hasAuthorities(this.authority.ADMIN)" v-model="user.orgId"
+        <q-select ref="org"   :rules="[rules.required]" v-if="this.accountService.hasAuthorities(this.authority.ADMIN)" v-model="user.orgId"
           label="Organization" :options="organizations" option-label="name" option-value="id" class="q-mb-md" />
 
-        <q-select v-model="user.shopId" label="Shop" :options="shops" option-label="name" option-value="id"
+        <q-select ref="shop"   :rules="[rules.required]"  v-if="this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)" v-model="user.shopId" label="Shop" :options="shops" option-label="name" option-value="id"
           class="q-mb-md" />
         <q-select ref="authority" v-model="user.authorities" label="Authority" :options="authorities"
           option-label="label" option-value="value" multiple class="q-mb-md" :rules="[rules.required]" />
-        <q-input ref="password" v-model="user.password" label="Password" class="q-mb-md"
+        <q-input ref="password"  v-model="user.password" label="Password" class="q-mb-md"
           :rules="[rules.required, rules.minLength(6)]" />
 
       </q-card-section>
@@ -91,17 +91,31 @@ export default {
       });
     },
     validateForm() {
-
-      // Perform form validation
-      const inputs = [
+      let inputs=[]
+        // Perform form validation
+        if(this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)){
+             inputs = [
         this.$refs.login,
         this.$refs.firstName,
         this.$refs.lastName,
         this.$refs.email,
-        this.$refs.password,
-        this.$refs.authority
+        this.$refs.authority,
+        this.$refs.shop,
+        this.$refs.password
 
-      ];
+        ];
+        }else if(this.accountService.hasAuthorities(this.authority.ADMIN)){
+            inputs = [
+        this.$refs.login,
+        this.$refs.firstName,
+        this.$refs.lastName,
+        this.$refs.email,
+        this.$refs.org,
+        this.$refs.authority,
+        this.$refs.password
+
+        ];
+        }
 
       const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
 

@@ -40,8 +40,8 @@
           </md-card-header>
           <md-card-content>
             <dynamic-table table-header-color="red" :columns="columns" :data-items="diningTables" :actions="actions" />
-            <q-pagination style="display: flex;justify-content: center;"  v-if="diningTables.length > 0" v-model="current" :max="totalPages"
-              @update:model-value="loadPage" direction-links flat color="grey" active-color="primary" />
+            <q-pagination style="display: flex;justify-content: center;"  v-if="diningTables.length > 0" v-model="page" :max="totalPages"
+              @input="onPageChange" direction-links flat color="grey" active-color="primary" />
           </md-card-content>
           <div v-if="diningTables.length == 0">
             <md-empty-state md-rounded md-icon="description" md-label="Not Found !" md-description="No record founded">
@@ -96,7 +96,6 @@ export default {
       showSearchInput: false,
       searchKeyword: '',
       columns: [
-        { label: "Id", field: "id" },
         { label: "Name", field: "name" },
         { label: "Description", field: "description" },
         { label: "CreateTime", field: "createTime", isCreateTime: true },
@@ -104,14 +103,13 @@ export default {
         { label: "CreateBy", field: "createBy" },
       ],
        sortModel: [
-         'id',
             'name',
         'createTime'
     
 
         
       ],
-      selectedSort:'id',
+      selectedSort:'',
 
       actions: [
         {
@@ -192,6 +190,14 @@ export default {
     }
   },
   methods: {
+    onPageChange(page) {
+      console.log(`Page changed to: ${page}`);
+      if (page !== this.previousPage) {
+        this.previousPage = page;
+        this.page = page;
+        this.transition(); // Ensure this method is defined and works as expected
+      }
+    },
       handleSortSelection(value) {
       console.log('Selected sort option:', value);
       this.changeOrder(value);
@@ -243,8 +249,9 @@ export default {
     },
     async generateQR(item) {
       this.actions[2].loadingS = true;
-      const tableId = item?.tableId;
+      const tableId = item?.id;
       const shopKey = item?.shop?.shopKey;
+      console.log("dinin",tableId,shopKey); 
       try {
         const qrText = `${shopKey}/${tableId}`;
         const qrCodeImage = await QRCode.toDataURL(qrText);
@@ -319,19 +326,12 @@ export default {
       }
       return result;
     },
-    loadPage(page) {
-      if (page !== this.previousPage) {
-        this.previousPage = page;
-        this.current = page;
-        this.transition();
-      }
-    },
     transition() {
       this.retrieveAllDiningTables();
     },
     changeOrder(propOrder) {
       this.propOrder = propOrder;
-      this.reverse = !this.reverse;
+      // this.reverse = !this.reverse;
       this.transition();
     },
     closeDialog() {

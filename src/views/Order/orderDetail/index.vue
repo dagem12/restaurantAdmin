@@ -29,7 +29,7 @@
                                         <tr v-for="order in orderItems" :key="order.id">
                                             <td style>
                                                 <div class="media">
-                                                    <img class="mr-3 img-fluid rounded" width="85" src=""
+                                                    <img class="mr-3 img-fluid rounded" width="85" :src="imageUrl(order?.product?.imageUrl)"
                                                         alt="DexignZone" @error="handleImageError" />
                                                     <div class="media-body">
 
@@ -97,12 +97,18 @@ export default {
 
         };
     },
+    computed: {
+  
+  },
     mounted() {
         const orderId = this.$route.params.orderId;
         this.retrieveProductOrder(orderId);
         this.retrieveAllOrderItems(orderId);
     },
     methods: {
+        imageUrl(url) {
+      return process.env.VUE_APP_SERVER_URL+`/api/images/`+url;
+    },
         handleImageError(event) {
             event.target.src = 'https://via.placeholder.com/70';
         },

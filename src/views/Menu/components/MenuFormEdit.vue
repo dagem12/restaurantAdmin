@@ -108,15 +108,21 @@ export default {
     },
     methods: {
         validateForm() {
-
-            // Perform form validation
-            const inputs = [
-                this.$refs.name,
-                this.$refs.shop,
-                this.$refs.catalog,
-                this.$refs.price
-
-            ];
+            let inputs=[];
+      if(this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)){
+             inputs = [
+             this.$refs.name,
+        this.$refs.price,
+        this.$refs.shop,
+        this.$refs.catalog
+        ];
+        }else if(this.accountService.hasAuthorities(this.authority.SHOP_ADMIN)){
+            inputs = [
+            this.$refs.name,
+        this.$refs.price,
+        this.$refs.catalog
+        ];
+        }
 
             const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
 
@@ -129,22 +135,7 @@ export default {
             console.log('updateing new menu item:', this.menu);
 
 
-            const newProduct = {
-                id: this.menu?.id,
-                code: this.menu?.code,
-                name: this.menu?.name,
-                description: this.menu?.description,
-                unitPrice: this.menu?.unitPrice,
-                prepTime: this.menu?.prepTime,
-                enable: this.menu?.enable,
-                catalog: this.menu?.catalog,
-                imageUrl: this.menu?.imageUrl,
-                createTime: this.menu?.createTime,
-                createBy: this.menu?.createBy
-
-            };
-
-            this.productService.update(newProduct)
+            this.productService.update(this.menu)
                 .then(() => {
                     console.log(' Menu Item Updated successfully.');
                     this.loading = false;

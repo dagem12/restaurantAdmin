@@ -40,7 +40,7 @@
           </md-card-header>
           <md-card-content>
             <dynamic-table table-header-color="red" :columns="columns" :data-items="shops" :actions="actions" />
-            <q-pagination style="display: flex;justify-content: center;"  v-if="shops.length > 0" v-model="current" :max="totalPages" @update:model-value="loadPage"
+            <q-pagination style="display: flex;justify-content: center;"  v-if="shops.length > 0" v-model="page" :max="totalPages" @input="onPageChange"
               direction-links flat color="grey" active-color="primary" />
           </md-card-content>
           <div v-if="shops.length == 0">
@@ -92,7 +92,7 @@ export default {
       showSearchInput: false,
       searchKeyword: '',
       columns: [
-        { label: "Id", field: "id" },
+  
         { label: "Name", field: "name" },
         { label: "Description", field: "description" },
         { label: "Enable", field: "enable" },
@@ -101,10 +101,9 @@ export default {
       ],
       sortModel: [
         'createTime',
-        'name',
-        'id'
+        'name'
       ],
-      selectedSort:'id',
+      selectedSort:'',
       actions: [
         {
           label: "Edit",
@@ -149,6 +148,14 @@ export default {
     gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
+    onPageChange(page) {
+      console.log(`Page changed to: ${page}`);
+      if (page !== this.previousPage) {
+        this.previousPage = page;
+        this.page = page;
+        this.transition(); // Ensure this method is defined and works as expected
+      }
+    },
      handleSortSelection(value) {
       console.log('Selected sort option:', value);
       this.changeOrder(value);
@@ -275,19 +282,13 @@ export default {
       }
       return result;
     },
-    loadPage(page) {
-      if (page !== this.previousPage) {
-        this.previousPage = page;
-        this.current = page;
-        this.transition();
-      }
-    },
+   
     transition() {
       this.retrieveAllShops();
     },
     changeOrder(propOrder) {
       this.propOrder = propOrder;
-      this.reverse = !this.reverse;
+      // this.reverse = !this.reverse;
       this.transition();
     },
     closeDialog() {
