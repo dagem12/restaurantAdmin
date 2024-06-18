@@ -19,7 +19,7 @@ module.exports = defineConfig({
     proxy: {
       '/api': { //   若请求的前缀不是这个'/api'，那请求就不会走代理服务器
         // target: 'http://127.0.0.1:5000',  //这里写路径 
-        target: "https://localhost:8080", //这里写路径 
+        target: process.env.VUE_APP_SERVER_URL, //这里写路径 
         pathRewrite: {
           '^/api': '/api'
         }, //将所有含/api路径的，去掉/api转发给服务器

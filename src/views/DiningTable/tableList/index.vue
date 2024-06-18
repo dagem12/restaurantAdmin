@@ -243,7 +243,7 @@ export default {
     },
     async generateQR(item) {
       this.actions[2].loadingS = true;
-      const tableId = item?.tableId;
+      const tableId = item?.id;
       const shopKey = item?.shop?.shopKey;
       try {
         const qrText = `${shopKey}/${tableId}`;
