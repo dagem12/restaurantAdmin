@@ -69,6 +69,7 @@ export default {
 
             },
             showDialogEdit: false,
+          
             showDialog: false,
             shopService: new ShopService(),
             uploadHeaders: {
@@ -175,7 +176,7 @@ export default {
             formDataFile.append('file', files[0]);
             fileService.createFile(formDataFile).then(res => {
 
-                this.shop.shortcutIcon = res.data.fileUrl
+                this.shop.shortcutIcon = res.data.fileName
             }).catch(err => {
                 console.log("err", err)
             })

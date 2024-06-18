@@ -1387,7 +1387,7 @@ a {
 .col-xxl,
 .col-xxl-auto {
   position: relative;
-  /* width: 100%; */
+  width: 100%;
   padding-right: 15px;
   padding-left: 15px;
 }
