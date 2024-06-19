@@ -74,6 +74,7 @@ export default {
         { label: "Status", field: "status", isRelation: true },
         { label: "Total Price", field: "payment", isRelationPO: true },
         { label: "Additional Note", field: "addtionalNote" },
+        { label: "Payment Status", field: "payment",isRelationPOP: true  },
         { label: "CreateBy", field: "createBy" },
         { label: "CreateTime", field: "createTime", isRelation: false, isCreateTime: true },
         { label: "DiningTable", field: "diningTable", isRelation: true },
