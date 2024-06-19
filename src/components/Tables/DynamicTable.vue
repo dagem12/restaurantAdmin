@@ -19,7 +19,9 @@
         : item[column.field]?.value) 
     : (column.isRelationPO 
         ? item[column.field]?.amount 
-        : item[column.field]) 
+        : (column.isRelationPOP
+            ? item[column.field]?.status?.value 
+            : item[column.field]))
 }}
             
           </template>

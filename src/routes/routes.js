@@ -6,6 +6,7 @@ import TableList from "@/pages/TableList.vue";
 import Typography from "@/pages/Typography.vue";
 import Icons from "@/pages/Icons.vue";
 import OrderList from "@/views/Order/orderList";
+import FeedbackList from "@/views/Feedback/feedbackList";
 import DiningTableList from "@/views/DiningTable/tableList";
 import MenuCatalogList from "@/views/Menu/menuCatalog";
 import MenuList from "@/views/Menu/menuList";
@@ -63,6 +64,12 @@ const routes = [
         path: "order",
         name: "Order List",
         component: OrderList,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "feedBack",
+        name: "Feedback List",
+        component: FeedbackList,
         meta: { requiresAuth: true },
       },
       {
