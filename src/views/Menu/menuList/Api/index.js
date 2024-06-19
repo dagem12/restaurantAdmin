@@ -43,6 +43,10 @@ export default class ProductService {
     });
   }
 
+  retrieveFilter(filter) {
+    return axios.get(`/products?${filter}&sort=id,desc`);
+  }
+
   delete(id) {
     return new Promise((resolve, reject) => {
       axios

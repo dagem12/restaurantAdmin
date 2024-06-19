@@ -33,6 +33,9 @@ export default class ShopService {
                 });
         });
     }
+    retrieveFilter(filter) {
+        return axios.get(`/shops?${filter}&sort=id,desc`);
+      }
     searchShop(name) {
         return new Promise((resolve, reject) => {
             axios

@@ -30,7 +30,9 @@ export default class ProductCatalogService {
         });
     });
   }
-
+  retrieveFilter(filter) {
+    return axios.get(`/product-catalogs?${filter}&sort=id,desc`);
+  }
   searchMenuCat(name) {
     return new Promise((resolve, reject) => {
       axios

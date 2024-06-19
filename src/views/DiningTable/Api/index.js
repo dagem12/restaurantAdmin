@@ -29,6 +29,9 @@ class DiningTableService {
         });
     });
   }
+  retrieveFilter(filter) {
+    return axios.get(`/dining-tables?${filter}&sort=id,desc`);
+  }
 
   searchDine(name) {
     return new Promise((resolve, reject) => {

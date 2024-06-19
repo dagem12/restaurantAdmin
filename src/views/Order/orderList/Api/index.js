@@ -73,6 +73,9 @@ export default class ProductOrderService {
         });
     });
   }
+  retrieveFilter(filter) {
+    return axios.get(`/product-orders?${filter}&sort=id,desc`);
+  }
 
   topDish(paginationQuery) {
     return new Promise((resolve, reject) => {

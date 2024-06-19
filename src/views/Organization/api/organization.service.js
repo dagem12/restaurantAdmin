@@ -33,6 +33,10 @@ export default class OrganizationService {
         });
     });
   }
+  
+  retrieveFilter(filter) {
+    return axios.get(`/organizations?${filter}&sort=id,desc`);
+  }
   searchOrg(name) {
     return new Promise((resolve, reject) => {
 
