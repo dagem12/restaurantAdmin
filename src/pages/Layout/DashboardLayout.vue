@@ -36,6 +36,11 @@
         <md-icon>list_alt</md-icon>
         <p v-if="isExpanded">Product Order</p>
       </sidebar-link>
+      <sidebar-link to="/feedBack"
+        v-if="accountService.hasAuthorities(Authority.SHOP_ADMIN)">
+        <md-icon>reviews</md-icon>
+        <p v-if="isExpanded">Rating & Feedback</p>
+      </sidebar-link>
       <sidebar-link to="/users"
         v-if="accountService.hasAuthorities(Authority.ADMIN) || accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN)">
         <md-icon>person</md-icon>
