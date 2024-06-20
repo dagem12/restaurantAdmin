@@ -19,7 +19,7 @@
                   <h3 class="mb-0 text-black">
                     <span class="counter ml-0">{{ cards[0].count }}</span>
                   </h3>
-                  <p class="mb-0 sub-title">Total Menus</p>
+                  <p class="mb-0 sub-title">Active Menus</p>
 
                 </div>
               </div>
@@ -342,7 +342,7 @@
             <div class="card-action card-tabs mt-3 mt-sm-0">
               <q-tabs v-model="revenueActiveTab" class="q-tabs-card" dense align="left" indicator-color="primary"
                 active-color="primary">
-                <q-tab v-for="tab in tabs" :key="tab.id" :label="tab.label" :name="tab.id"
+                <q-tab v-for="tab in RevenueTabs" :key="tab.id" :label="tab.label" :name="tab.id"
                   :active-class="'text-primary'" @click="handleRevenueTabChange(tab)"
                   :disable="revenueActiveTab !== tab.id && revenueTabLoading" />
               </q-tabs>
@@ -360,12 +360,12 @@
             </template>
             <template v-else>
               <template
-                v-if="(revenueActiveTab == 'daily' && dailyRevenueData.length === 0) || (revenueActiveTab == 'weekly' && weeklyRevenueData.length === 0) || (revenueActiveTab == 'monthly' && monthlyRevenueData.length === 0)">
+                v-if="(revenueActiveTab == 'hourly' && hourlyRevenueData.length === 0) ||(revenueActiveTab == 'daily' && dailyRevenueData.length === 0) || (revenueActiveTab == 'weekly' && weeklyRevenueData.length === 0) || (revenueActiveTab == 'monthly' && monthlyRevenueData.length === 0)">
                 <md-empty-state md-icon="access_time" md-label="No Data Found"
                   md-description="Currently, there are no data please check again after a while."></md-empty-state>
               </template>
               <template v-else>
-                <RevenueChart :dailyData="aggregatedDailyRevenueData" :weeklyData="weeklyRevenueData"
+                <RevenueChart :hourlyData="aggregatedHourlyRevenueData" :dailyData="dailyRevenueData" :weeklyData="weeklyRevenueData"
                   :monthlyData="monthlyRevenueData" :selectedPeriod="revenueActiveTab" />
               </template>
 
@@ -386,8 +386,9 @@ import Revenue from "@/components/Dashboard/revenue/index.vue";
 import RevenueChart from "@/components/Dashboard/RevenueChart/index.vue";
 import CustomerMap from "@/components/Dashboard/CustomerMap/index.vue";
 import TableChair from "@/components/TableChair/index.vue";
-import DashBoardManagementService from "./Api/index.js"
+import DashBoardManagementService from "./Api/index.js";
 import { gsap } from 'gsap';
+
 export default {
   components: {
     MostSells,
@@ -398,16 +399,16 @@ export default {
     RevenueChart
   },
   mounted() {
-    this.cardData()
-    this.summaryData(this.activeTab)
-    this.revenueData(this.revenueActiveTab)
-    this.customerData(this.customerActiveTab)
+    this.cardData();
+    this.summaryData(this.activeTab);
+    this.revenueData(this.revenueActiveTab);
+    this.customerData(this.customerActiveTab);
     const dashboardbox = this.$refs.dashboardbox;
-    // Using GSAP to animate the row
     gsap.from(dashboardbox, { duration: 1, opacity: 0, y: 1000, ease: "power1.out" });
   },
   data() {
     return {
+      hourlyRevenueData: [],
       dailyRevenueData: [],
       weeklyRevenueData: [],
       monthlyRevenueData: [],
@@ -420,25 +421,26 @@ export default {
       tabs: [
         { id: 'monthly', label: 'Monthly' },
         { id: 'weekly', label: 'Weekly' },
-        { id: 'daily', label: 'Daily' }
+        { id: 'daily', label: 'Daily' },
+     
       ],
+      RevenueTabs: [
+        { id: 'monthly', label: 'Monthly' },
+        { id: 'weekly', label: 'Weekly' },
+        { id: 'daily', label: 'Daily' },
+        { id: 'hourly', label: 'Hourly' }
+      ],
+      
       dailySalesChart: {
         data: {
           labels: ["M", "T", "W", "T", "F", "S", "S"],
           series: [[12, 17, 7, 17, 23, 18, 38]],
         },
         options: {
-          lineSmooth: this.$Chartist.Interpolation.cardinal({
-            tension: 0,
-          }),
+          lineSmooth: this.$Chartist.Interpolation.cardinal({ tension: 0 }),
           low: 0,
-          high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-          chartPadding: {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-          },
+          high: 50,
+          chartPadding: { top: 0, right: 0, bottom: 0, left: 0 },
         },
       },
       dataCompletedTasksChart: {
@@ -446,53 +448,23 @@ export default {
           labels: ["12am", "3pm", "6pm", "9pm", "12pm", "3am", "6am", "9am"],
           series: [[230, 750, 450, 300, 280, 240, 200, 190]],
         },
-
         options: {
-          lineSmooth: this.$Chartist.Interpolation.cardinal({
-            tension: 0,
-          }),
+          lineSmooth: this.$Chartist.Interpolation.cardinal({ tension: 0 }),
           low: 0,
-          high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-          chartPadding: {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-          },
+          high: 1000,
+          chartPadding: { top: 0, right: 0, bottom: 0, left: 0 },
         },
       },
       emailsSubscriptionChart: {
         data: {
-          labels: [
-            "Ja",
-            "Fe",
-            "Ma",
-            "Ap",
-            "Mai",
-            "Ju",
-            "Jul",
-            "Au",
-            "Se",
-            "Oc",
-            "No",
-            "De",
-          ],
-          series: [
-            [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895],
-          ],
+          labels: ["Ja", "Fe", "Ma", "Ap", "Mai", "Ju", "Jul", "Au", "Se", "Oc", "No", "De"],
+          series: [[542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]],
         },
         options: {
-          axisX: {
-            showGrid: false,
-          },
+          axisX: { showGrid: false },
           low: 0,
           high: 1000,
-          chartPadding: {
-            top: 0,
-            right: 5,
-            bottom: 0,
-            left: 0,
-          },
+          chartPadding: { top: 0, right: 5, bottom: 0, left: 0 },
         },
         responsiveOptions: [
           [
@@ -509,31 +481,10 @@ export default {
         ],
       },
       cards: [
-        {
-          id: 0,
-          count: 0,
-          title: "Total Menus",
-          percentage: 0,
-        },
-        {
-          id: 1,
-          count: 0,
-          title: "Total Revenue",
-          percentage: 0,
-        },
-        {
-          id: 2,
-          count: 0,
-          title: "Total Orders",
-          percentage: 0,
-        },
-        {
-          id: 3,
-          count: 0,
-          title: "Total Client",
-          percentage: 0,
-        },
-
+        { id: 0, count: 0, title: "Total Menus", percentage: 0 },
+        { id: 1, count: 0, title: "Total Revenue", percentage: 0 },
+        { id: 2, count: 0, title: "Total Orders", percentage: 0 },
+        { id: 3, count: 0, title: "Total Client", percentage: 0 },
       ],
       orderSummary: {
         open: 0,
@@ -553,14 +504,13 @@ export default {
             items: [
               {
                 id: 1,
-                title: "Meidum Spicy Spagethi Italiano",
-                category: "Spagethi",
+                title: "Medium Spicy Spaghetti Italiano",
+                category: "Spaghetti",
                 imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLuyV_ExtmCl2_VqmL_1u2FmDNBO813EUhlQ&s",
                 serving: "Serves for 4 Person",
                 preparationTime: "24mins",
                 price: "$12.56"
               },
-              // Add more items as needed
             ]
           },
           {
@@ -577,11 +527,10 @@ export default {
                 preparationTime: "24mins",
                 price: "$5.67"
               },
-              // Add more items as needed
             ]
           },
           {
-            id: "today",
+            id: "hourly",
             label: "Today",
             active: false,
             items: [
@@ -594,154 +543,149 @@ export default {
                 preparationTime: "X mins",
                 price: "$X.XX"
               },
-              // Add more items as needed
             ]
           }
         ],
-        loading: false // Set to true when data is fetched
+        loading: false
       },
-      topSpendersData: [
-      ],
+      topSpendersData: [],
       API: new DashBoardManagementService(),
     };
   },
 
   methods: {
     percentageClass(percentage) {
-      if (percentage > 0) {
-        return 'text-green';
-      } else if (percentage === 0) {
-        return 'text-black';
-      } else {
-        return 'text-red';
-      }
+      if (percentage > 0) return 'text-green';
+      else if (percentage === 0) return 'text-black';
+      else return 'text-red';
     },
     percentageIcon(percentage) {
-      if (percentage > 0) {
-        return 'arrow_upward';
-      } else if (percentage === 0) {
-        return 'drag_handle';
-      } else {
-        return 'arrow_downward';
-      }
+      if (percentage > 0) return 'arrow_upward';
+      else if (percentage === 0) return 'drag_handle';
+      else return 'arrow_downward';
     },
     cardData() {
-      this.API.getDashBoardData().then((res => {
-        // console.log(res)
-        this.cards[0].count = res.data.totalMenus
-        this.cards[1].count = res.data.totalRevenue.todayRevenue
-        this.cards[2].count = res.data.totalOrders.todayCount
-        this.cards[3].count = res.data.totalClients.todayCount
-        this.cards[1].percentage = res.data.totalRevenue.percentageChange
-        this.cards[2].percentage = res.data.totalOrders.percentageChange
-        this.cards[3].percentage = res.data.totalClients.percentageChange
-      })).catch(err => {
-        console.log(err)
-      })
+      this.API.getDashBoardData().then((res) => {
+        this.cards[0].count = res.data.totalMenus;
+        this.cards[1].count = res.data.totalRevenue.todayRevenue;
+        this.cards[2].count = res.data.totalOrders.todayCount;
+        this.cards[3].count = res.data.totalClients.todayCount;
+        this.cards[1].percentage = res.data.totalRevenue.percentageChange;
+        this.cards[2].percentage = res.data.totalOrders.percentageChange;
+        this.cards[3].percentage = res.data.totalClients.percentageChange;
+      }).catch(err => {
+        console.log(err);
+      });
     },
     summaryData(tab) {
       this.tabLoading = true;
-      this.API.getDashBoardDataSummaryData(tab).then((res => {
-
+      this.API.getDashBoardDataSummaryData(tab).then((res) => {
         this.orderSummary.open = res.data.orderSummary.open || 0;
         this.orderSummary.preparing = res.data.orderSummary.preparing || 0;
         this.orderSummary.delivered = res.data.orderSummary.delivered || 0;
         this.orderSummary.paid = res.data.orderSummary.paid || 0;
         this.orderSummary.cancelled = res.data.orderSummary.cancelled || 0;
-        // console.log("thisordersummary", this.orderSummary)
-      })).catch(err => {
-        console.log(err)
-      }).finally(_ => {
+      }).catch(err => {
+        console.log(err);
+      }).finally(() => {
         this.tabLoading = false;
-      })
+      });
     },
     handleTabChange(tab) {
-
-      this.activeTab = tab.id; // Set active tab
+      this.activeTab = tab.id;
       this.tabs.forEach(t => {
-        if (t.id !== tab.id) {
-          t.disabled = true;
-        }
+        t.disabled = t.id !== tab.id;
       });
-
-      this.summaryData(tab.id)
-
+      this.summaryData(tab.id);
     },
     handleRevenueTabChange(tab) {
-
-      this.revenueActiveTab = tab.id; // Set active tab
-      this.tabs.forEach(t => {
-        if (t.id !== tab.id) {
-          t.disabled = true;
-        }
+      this.revenueActiveTab = tab.id;
+      this.RevenueTabs.forEach(t => {
+        t.disabled = t.id !== tab.id;
       });
-
-      this.revenueData(tab.id)
-
+      this.revenueData(tab.id);
     },
     revenueData(tab) {
-      this.revenueTabLoading = true;
-      this.API.getDashBoardRevenueData(tab).then((res => {
+  this.revenueTabLoading = true;
+  this.API.getDashBoardRevenueData(tab)
+    .then((res) => {
+      let revenueData = [];
+      const data = res.data.revenueData;
 
-        let revenueData = [];
-        
-        const data = res.data.revenueData;
-
-        for (const [key, value] of Object.entries(data)) {
-            revenueData.push({
-                period: key,
-                revenue: value.revenue,
-                orders: value.orders
-            });
-        }
-        if (tab === 'daily') {
-            this.dailyRevenueData = revenueData;
+      for (const [key, value] of Object.entries(data)) {
+        let periodLabel = key;
+        let formattedPeriod=periodLabel;
+        if (tab === 'monthly') {
+          formattedPeriod = `${new Date(periodLabel + '-01').toLocaleString('en-us', { month: 'long' })} ${new Date(periodLabel + '-01').getFullYear()}`;
         } else if (tab === 'weekly') {
-            this.weeklyRevenueData = revenueData;
-        } else if (tab === 'monthly') {
-            this.monthlyRevenueData = revenueData;
+          let [year, week] = periodLabel.split('-');
+          formattedPeriod = `Week ${parseInt(week)}`;
         }
+        revenueData.push({ period: formattedPeriod, revenue: value.revenue, orders: value.orders });
+      }
 
-       
-      })).catch(err => {
-        console.log(err)
-      }).finally(_ => {
-        this.revenueTabLoading = false;
-      })
-    },
-    handleCustomerTabChange(tab) {
-
-      this.customerActiveTab = tab.id; // Set active tab
-      this.tabs.forEach(t => {
-        if (t.id !== tab.id) {
-          t.disabled = true;
+      // Sort revenueData by period in chronological order
+      revenueData.sort((a, b) => {
+        // Assuming 'period' is a string in the format "Month Year" or "Week X"
+        let dateA, dateB;
+        if (tab === 'monthly') {
+          dateA = new Date(`${a.period.split(' ')[0]} 1, ${a.period.split(' ')[1]}`);
+          dateB = new Date(`${b.period.split(' ')[0]} 1, ${b.period.split(' ')[1]}`);
+        } else if (tab === 'weekly') {
+          // Extract week number and compare numerically
+          dateA = parseInt(a.period.split(' ')[1]);
+          dateB = parseInt(b.period.split(' ')[1]);
         }
+        return dateA - dateB;
       });
+      if (tab === 'daily' || tab === 'hourly') {
+        revenueData.reverse();
+      }
 
-      this.customerData(tab.id)
 
+      // Assign sorted revenueData to respective properties based on tab
+      if (tab === 'hourly') {
+        this.hourlyRevenueData = revenueData;
+      } else if (tab === 'daily') {
+        this.dailyRevenueData = revenueData;
+      } else if (tab === 'weekly') {
+        this.weeklyRevenueData = revenueData;
+      } else if (tab === 'monthly') {
+        this.monthlyRevenueData = revenueData;
+      }
+
+      console.log(`${tab} Revenue Data:`, this.dailyRevenueData); // Log the sorted data
+
+    })
+    .catch(err => {
+      console.error('Error fetching revenue data:', err);
+    })
+    .finally(() => {
+      this.revenueTabLoading = false;
+    });
+},
+    handleCustomerTabChange(tab) {
+      this.customerActiveTab = tab.id;
+      this.tabs.forEach(t => {
+        t.disabled = t.id !== tab.id;
+      });
+      this.customerData(tab.id);
     },
     customerData(tab) {
       this.customerTabLoading = true;
-      this.API.getDashBoardCustomerMapData(tab).then((res => {
-        // console.log("customerMapdata", res)
+      this.API.getDashBoardCustomerMapData(tab).then((res) => {
         const topCustomersData = res.data.topCustomers.map(customer => ({
           name: customer.name,
           amountSpent: customer.totalSpent,
           numberOfOrders: customer.orderCount
         }));
-        // console.log("topSpendersData", topCustomersData)
         this.topSpendersData = topCustomersData;
-      })).catch(err => {
-        console.log(err)
-      }).finally(_ => {
+      }).catch(err => {
+        console.log(err);
+      }).finally(() => {
         this.customerTabLoading = false;
-      })
+      });
     }
-
-
-
-
   },
   computed: {
     totalOrders() {
@@ -782,7 +726,7 @@ export default {
         return (count / 1000).toFixed(2) + "K";
       }
     },
-    aggregatedDailyRevenueData() {
+    aggregatedHourlyRevenueData() {
       const aggregatedData = [
         { period: '0-8', revenue: 0, orders: 0 },
         { period: '9:00', revenue: 0, orders: 0 },
@@ -800,15 +744,12 @@ export default {
         { period: '21-24', revenue: 0, orders: 0 },
       ];
 
-      // Iterate over dailyRevenueData and aggregate based on periods
-      this.dailyRevenueData.forEach(item => {
-        const hour = parseInt(item.period.split(':')[0]); // Extract hour from period
-
+      this.hourlyRevenueData.forEach(item => {
+        const hour = parseInt(item.period.split(':')[0]);
         if (hour >= 0 && hour < 9) {
           aggregatedData[0].revenue += item.revenue;
           aggregatedData[0].orders += item.orders;
         } else if (hour >= 9 && hour < 21) {
-          // Map to corresponding index in aggregatedData array
           aggregatedData[hour - 8].revenue += item.revenue;
           aggregatedData[hour - 8].orders += item.orders;
         } else if (hour >= 21 && hour <= 23) {
@@ -820,7 +761,7 @@ export default {
       return aggregatedData;
     }
   }
-}
+};
 </script>
 
 <style scoped>
