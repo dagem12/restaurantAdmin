@@ -109,7 +109,7 @@ export default {
         },
         async addItem() {
             this.loading = true;
-            console.log('Adding new ProductCatalog item:', this.menuItem);
+            // console.log('Adding new ProductCatalog item:', this.menuItem);
 
 
             const newProduct = {
@@ -122,7 +122,7 @@ export default {
 
             this.productCatalogService.create(newProduct)
                 .then(() => {
-                    console.log('New product  Menu Catalog successfully.');
+                    // console.log('New product  Menu Catalog successfully.');
                     this.showDialog = false;
                     this.loading = false;
                     this.notifySuccess('New Product Catalog Created successfully ')

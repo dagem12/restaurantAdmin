@@ -157,7 +157,7 @@ export default {
   },
   methods: {
     onPageChange(page) {
-      console.log(`Page changed to: ${page}`);
+      // console.log(`Page changed to: ${page}`);
       if (page !== this.previousPage) {
         this.previousPage = page;
         this.page = page;
@@ -165,7 +165,7 @@ export default {
       }
     },
      handleSortSelection(value) {
-      console.log('Selected sort option:', value);
+      // console.log('Selected sort option:', value);
       this.changeOrder(value);
       // Implement your logic based on the selected value (e.g., update sorting order)
     },
@@ -190,7 +190,7 @@ export default {
     },
     performSearch() {
       // Your search logic here
-      console.log('Search performed:', this.searchKeyword);
+      // console.log('Search performed:', this.searchKeyword);
       this.advertService.searchShop(this.searchKeyword).then(res => {
 
         if (res.data.length == 0) {
@@ -209,7 +209,7 @@ export default {
       // Define your add item logic here
     },
     editItem(item) {
-      console.log("editing", item)
+      // console.log("editing", item)
       this.shop = item;
       this.$refs.editFormDialog.showDialogEdit = true;
 
@@ -226,7 +226,7 @@ export default {
       this.retrieveAllShops();
     },
     retrieveAllShops() {
-      console.log("data ", this.advertisements)
+      // console.log("data ", this.advertisements)
       this.isFetching = true;
       const paginationQuery = {
         page: this.page - 1,
@@ -237,12 +237,12 @@ export default {
       this.advertService.retrieve(paginationQuery)
         .then(
           res => {
-            console.log(res)
+            // console.log(res)
             this.advertisements = res.data;
             this.totalItems = Number(res.headers['x-total-count']);
             this.queryCount = this.totalItems;
             this.isFetching = false;
-            console.log("data ", this.advertisements)
+            // console.log("data ", this.advertisements)
           },
 
         ).catch(err => {
@@ -250,7 +250,7 @@ export default {
           this.isFetching = false;
 
         });
-      console.log("data data")
+      // console.log("data data")
     },
     handleSyncList() {
       this.clear();

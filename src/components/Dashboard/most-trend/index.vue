@@ -142,7 +142,7 @@ export default {
     trendingDataFetch(tab){
       this.tabLoading=true
     this.API.getDashBoardDataTrendingOrders(tab).then( res =>{
-         console.log(res)
+        //  console.log(res)
       this.trendingData = res.data.trendingData.topProducts.map((product, index) => ({
                 id: index + 1,
                 imageUrl:'/api/images/'+ product.imageUrl || 'https://via.placeholder.com/70',

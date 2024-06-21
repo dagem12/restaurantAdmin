@@ -21,11 +21,11 @@ export default class OrganizationService {
 
   retrieve(paginationQuery) {
     return new Promise((resolve, reject) => {
-      console.log("out side service")
+      // console.log("out side service")
       axios
         .get(`/organizations?${buildPaginationQueryOpts(paginationQuery)}`)
         .then((res) => {
-          console.log("res ", res)
+          // console.log("res ", res)
           resolve(res);
         })
         .catch((err) => {
@@ -46,7 +46,7 @@ export default class OrganizationService {
       axios
         .get(`/organization?name=${name}`)
         .then((res) => {
-          console.log("res ", res)
+          // console.log("res ", res)
           resolve(res);
         })
         .catch((err) => {

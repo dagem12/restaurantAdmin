@@ -132,12 +132,12 @@ export default {
             },
         addItem() {
             this.loading = true;
-            console.log('updateing new menu item:', this.menu);
+            // console.log('updateing new menu item:', this.menu);
 
 
             this.productService.update(this.menu)
                 .then(() => {
-                    console.log(' Menu Item Updated successfully.');
+                    // console.log(' Menu Item Updated successfully.');
                     this.loading = false;
                     this.showDialogEdit = false;
                     this.notifySuccess('Menu Item updated successfully');
@@ -148,7 +148,7 @@ export default {
                     this.showDialogEdit = false;
                     this.loading = false;
                     this.notifyError('Error Happens');
-                    console.error('Error updating  Menu ITem:', error);
+                    // console.error('Error updating  Menu ITem:', error);
                 });
         },
         cancelAddItem() {
@@ -156,7 +156,7 @@ export default {
             this.resetMenuItem();
         },
         onFileAdded(files) {
-            console.log('Files added:', files);
+            // console.log('Files added:', files);
             const formDataFile = new FormData();
             formDataFile.append('file', files[0]);
             fileService.createFile(formDataFile).then(res => {
@@ -167,7 +167,7 @@ export default {
             })
         },
         onFileUploaded(response) {
-            console.log('File uploaded:', response);
+            // console.log('File uploaded:', response);
         },
         uploadFactory(files) {
             // Customize how files are uploaded, if necessary

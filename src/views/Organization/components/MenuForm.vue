@@ -115,7 +115,7 @@ export default {
     },
 
     async addItem() {
-      console.log('Adding new Organization item:', this.organizationItem);
+      //console.log('Adding new Organization item:', this.organizationItem);
       this.loading = true;
 
       const newOrganization = {
@@ -131,7 +131,7 @@ export default {
 
       this.organizationService.create(newOrganization)
         .then(() => {
-          console.log('New Organization added successfully.');
+          ////console.log('New Organization added successfully.');
           this.showDialog = false;
           this.loading = false;
           this.notifySuccess('Organization added successfully');
@@ -140,7 +140,7 @@ export default {
         })
         .catch(error => {
           this.loading = false;
-          console.error('Error adding new Organization:', error);
+          //console.error('Error adding new Organization:', error);
           this.notifyError("error happen")
         });
     },

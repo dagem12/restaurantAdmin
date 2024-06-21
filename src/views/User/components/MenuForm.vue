@@ -135,7 +135,7 @@ export default {
     },
     async addItem() {
       this.loading = true;
-      console.log('Adding new New User item:', this.user);
+      // console.log('Adding new New User item:', this.user);
 
 
       const newUser = {
@@ -151,11 +151,11 @@ export default {
         password: this.user.password,
 
       };
-      console.log("new user ", newUser)
+      // console.log("new user ", newUser)
 
       this.userService.create(newUser)
         .then(() => {
-          console.log('New User added successfully.');
+          // console.log('New User added successfully.');
           this.showDialog = false;
           this.$emit('getUsers');
           this.loading = false;

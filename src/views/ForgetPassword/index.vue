@@ -47,7 +47,7 @@ export default {
     };
   },
   mounted() {
-    console.log("data",this.$store.state)
+    // console.log("data",this.$store.state)
 
     const box = this.$refs.box;
 

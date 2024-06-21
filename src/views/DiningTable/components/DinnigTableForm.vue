@@ -118,7 +118,7 @@ export default {
     },
     async addItem() {
       this.loading = true;
-      console.log('Adding new Dinind item:', this.diningItem);
+      // console.log('Adding new Dinind item:', this.diningItem);
 
 
       const newDining = {

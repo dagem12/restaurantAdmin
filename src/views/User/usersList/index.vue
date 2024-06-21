@@ -196,7 +196,7 @@ export default {
   },
   methods: {
     onPageChange(page) {
-      console.log(`Page changed to: ${page}`);
+      // console.log(`Page changed to: ${page}`);
       if (page !== this.previousPage) {
         this.previousPage = page;
         this.page = page;
@@ -204,7 +204,7 @@ export default {
       }
     },
      handleSortSelection(value) {
-      console.log('Selected sort option:', value);
+      // console.log('Selected sort option:', value);
       this.changeOrder(value);
       // Implement your logic based on the selected value (e.g., update sorting order)
     },
@@ -260,7 +260,7 @@ export default {
     },
     performSearch() {
       // Your search logic here
-      console.log('Search performed:', this.searchKeyword);
+      // console.log('Search performed:', this.searchKeyword);
       this.userManagementService.searchUser(this.searchKeyword).then(res => {
 
         if (res.data.length == 0) {
@@ -276,21 +276,21 @@ export default {
     }
     ,
     editItem(item) {
-      console.log("Editing item:", item);
+      // console.log("Editing item:", item);
       this.user = item;
       this.$refs.editFormDialog.showDialogEdit = true;
 
     },
     deleteItem(item) {
-      console.log("Deleting item:", item);
+      // console.log("Deleting item:", item);
       this.prepareRemove(item);
     },
     viewItem(item) {
-      console.log("Viewing item:", item);
+      // console.log("Viewing item:", item);
 
     },
     addItem() {
-      console.log("Adding new item");
+      // console.log("Adding new item");
       // Add your logic here to handle adding a new item
     },
     prepareRemove(instance) {
@@ -374,7 +374,7 @@ export default {
           this.users = res.data;
           this.totalItems = Number(res.headers['x-total-count']);
           this.queryCount = this.totalItems;
-          console.log("users", this.users);
+          // console.log("users", this.users);
         })
         .catch(() => {
           this.isLoading = false;

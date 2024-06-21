@@ -89,13 +89,13 @@ export default {
   },
   methods: {
     editItem(item) {
-      console.log("Editing item:", item);
+      // console.log("Editing item:", item);
     },
     deleteItem(item) {
-      console.log("Deleting item:", item);
+      // console.log("Deleting item:", item);
     },
     viewItem(item) {
-      console.log("Viewing item:", item);
+      // console.log("Viewing item:", item);
     },
   },
 };

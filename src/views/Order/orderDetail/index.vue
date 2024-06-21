@@ -118,7 +118,7 @@ export default {
                 .find(productOrderId)
                 .then((res) => {
                     this.productOrder = res;
-                    console.log("productOrder".this.productOrder);
+                    // console.log("productOrder".this.productOrder);
 
                 })
                 .catch(error => {
@@ -131,7 +131,7 @@ export default {
             this.orderItemService.findByProductOrder(productOrderId).then(
                 res => {
                     this.orderItems = res.data;
-                    console.log("Order Items", this.orderItems)
+                    // console.log("Order Items", this.orderItems)
                     this.totalItems = Number(res.headers['x-total-count']);
                     this.queryCount = this.totalItems;
                     this.isFetching = false;

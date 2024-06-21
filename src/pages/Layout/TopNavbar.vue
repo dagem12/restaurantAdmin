@@ -198,7 +198,7 @@ export default {
       label: 'Dismiss',
       color: 'yellow',
       handler: () => {
-        console.log('Dismiss clicked');
+        // console.log('Dismiss clicked');
       }
     }
   ]
