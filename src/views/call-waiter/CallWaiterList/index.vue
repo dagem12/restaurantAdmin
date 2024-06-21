@@ -5,8 +5,8 @@
         <md-card>
           <md-card-header data-background-color="" class="header-with-button">
             <div>
-              <h4 class="title">Advertisement</h4>
-              <p class="category"> manage your Advertisement</p>
+              <h4 class="title">Waiter Call</h4>
+              <p class="category"> manage your Waiter Call</p>
             </div>
             <!-- Add Item button -->
             <div style="display: flex;justify-content: space-between;">
@@ -29,61 +29,40 @@
 
                 <!-- <q-btn @click="toggleSearch" label="Search" color="primary"></q-btn> -->
               </div>
-              <div class="add-item-button">
-                <md-button md-theme="" style="background-color: white !important;color:black !important"
-                  @click="this.showAddItemDialog">
-                  <md-icon style="color:black !important">add</md-icon>
-                  <span>Add Item</span>
-                </md-button>
-              </div>
+             
             </div>
           </md-card-header>
           <md-card-content>
-            <dynamic-table table-header-color="red" :columns="columns" :data-items="advertisements" :actions="actions" />
-            <q-pagination style="display: flex;justify-content: center;"  v-if="advertisements.length > 0" v-model="page" :max="totalPages" @input="onPageChange"
+            <dynamic-table table-header-color="red" :columns="columns" :data-items="waiterCalls" :actions="actions" />
+            <q-pagination style="display: flex;justify-content: center;"  v-if="waiterCalls.length > 0" v-model="page" :max="totalPages" @input="onPageChange"
               direction-links flat color="grey" active-color="primary" />
           </md-card-content>
-          <div v-if="advertisements.length == 0">
+          <div v-if="waiterCalls.length == 0">
             <md-empty-state md-rounded md-icon="description" md-label="Not Found !" md-description="No record founded">
             </md-empty-state>
           </div>
         </md-card>
       </div>
     </div>
-    <AdvertForm ref="AdvertFormDialog" @getShop="retrieveAllShops" />
-    <ShopEditForm ref="editFormDialog" :shop="shop" @getShop="retrieveAllShops" />
-    <q-dialog v-model="confirm" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="delete" color="primary" text-color="white" />
-          <span class="q-ml-sm">Are you sure to delete this Advertisement</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
-          <q-btn flat label="Confirm" :loading="loading" @click="removeShop()" color="primary" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+   
+   
   </div>
 </template>
 
 
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
-import { mapActions, mapState } from 'vuex';
-import AdvertService from '../Api/index';
-import AdvertForm from "../components/AdvertForm.vue";
-import ShopEditForm from "../components/ShopEditForm.vue";
+
+import WaiterCallService from '../Api/index';
+
 import { gsap } from 'gsap';
-import { Notify } from 'quasar';
+
 
 export default {
   name: "shopList",
   components: {
     DynamicTable,
-    AdvertForm,
-    ShopEditForm
+   
   },
 
 
@@ -94,17 +73,16 @@ export default {
       searchKeyword: '',
       columns: [
   
-        { label: "title", field: "title", },
-        { label: "organization", field: "organization", isRelation:true  },
-        { label: "imageUrl", field: "imageUrl",  isImage:true },
+        
+        { label: "dinningTable", field: "dinningTable", isRelation:true  },
+  
         { label: "createTime", field: "createTime", isCreateTime: true   },
-        { label: "startDate", field: "startDate", isCreateTime: true   },
-        { label: "endDate", field: "endDate", isCreateTime: true   },
+       
          { label: "status", field: "status", isRelation:true },
       ],
       sortModel: [
         'createTime',
-        'title'
+        
       ],
       selectedSort:'',
       actions: [
@@ -122,8 +100,8 @@ export default {
         {
           label: "Delete",
           method: this.deleteItem,
-          icon: "delete",
-          color: "red",
+          icon: "edit",
+          color: "blue",
         }
       ],
       removeId: null,
@@ -135,9 +113,9 @@ export default {
       propOrder: 'createTime',
       reverse: true,
       totalItems: 0,
-      advertisements: [],
+      waiterCalls: [],
       isFetching: false,
-      advertService: new AdvertService(),
+      waiterCallService: new WaiterCallService(),
       confirm: false,
       shop: {},
       searchWord: ''
@@ -191,30 +169,21 @@ export default {
     performSearch() {
       // Your search logic here
       console.log('Search performed:', this.searchKeyword);
-      this.advertService.searchShop(this.searchKeyword).then(res => {
+      this.waiterCallService.searchWaiterCalls(this.searchKeyword).then(res => {
 
         if (res.data.length == 0) {
           this.notifyNotfound("Not Found");
         }
         // Clear the users array
-        this.advertisements = [];
+        this.waiterCalls = [];
         // Assign the new data to the users array
-        this.advertisements = [...res.data];
+        this.waiterCalls = [...res.data];
       }).catch(err => {
         console.log(err)
       })
     }
     ,
-    addItem() {
-      // Define your add item logic here
-    },
-    editItem(item) {
-      console.log("editing", item)
-      this.shop = item;
-      this.$refs.editFormDialog.showDialogEdit = true;
-
-      // Define your edit item logic here
-    },
+   
     deleteItem(item) {
       this.prepareRemove(item);
     },
@@ -226,7 +195,7 @@ export default {
       this.retrieveAllShops();
     },
     retrieveAllShops() {
-      console.log("data ", this.advertisements)
+      console.log("data ", this.waiterCalls)
       this.isFetching = true;
       const paginationQuery = {
         page: this.page - 1,
@@ -234,15 +203,15 @@ export default {
         sort: this.sort(),
       };
 
-      this.advertService.retrieve(paginationQuery)
+      this.waiterCallService.retrieve(paginationQuery)
         .then(
           res => {
             console.log(res)
-            this.advertisements = res.data;
+            this.waiterCalls = res.data;
             this.totalItems = Number(res.headers['x-total-count']);
             this.queryCount = this.totalItems;
             this.isFetching = false;
-            console.log("data ", this.advertisements)
+            console.log("data ", this.waiterCalls)
           },
 
         ).catch(err => {
@@ -262,27 +231,7 @@ export default {
         this.confirm = true;
       }
     },
-    removeShop() {
-      this.loading = true;
-      this.advertService.delete(this.removeId)
-        .then(() => {
-
-          this.loading = false;
-          this.confirm = false;
-          this.notifySuccess('advert deleted succuessfuly!')
-          this.removeId = null;
-
-          this.retrieveAllShops();
-
-        })
-        .catch(error => {
-          this.loading = false;
-          this.confirm = false;
-
-          this.notifyError('Error happens on Deleting shop')
-
-        });
-    },
+   
     sort() {
       const result = [this.propOrder + ',' + (this.reverse ? 'desc' : 'asc')];
       if (this.propOrder !== 'id') {
