@@ -34,9 +34,12 @@ export default class OrganizationService {
     });
   }
   
-  retrieveFilter(filter) {
-    return axios.get(`/organizations?${filter}&sort=id,desc`);
+  retrieveFilter(paginationQuery,reqFilter) {
+    const filterKey = Object.keys(reqFilter)[0]; 
+    const filterValue = reqFilter[filterKey]; 
+    return axios.get(`/organizationsFilter?${buildPaginationQueryOpts(paginationQuery)}&${filterKey}=${filterValue}`);
   }
+
   searchOrg(name) {
     return new Promise((resolve, reject) => {
 

@@ -101,11 +101,31 @@ export default {
       ],
       filter:null,
       filterModel: [
-        {
-          label: 'Enable True',
-          value:'enable=true'
+      {
+          label: 'Open Orders',
+          colmun:`statusId.equals`,
+          value:7001
         },
-        // Add more categories and options as needed
+        {
+          label: 'Preparing Orders',
+          colmun:`statusId.equals`,
+          value:7002
+        },
+        {
+          label: 'Deliverd Orders',
+          colmun:`statusId.equals`,
+          value:7003 
+        },
+        {
+          label: 'Paid Orders',
+          colmun:`statusId.equals`,
+          value:7004 
+        },
+        {
+          label: 'Cancelled Orders',
+          colmun:`statusId.equals`,
+          value:7005 
+        },
       ],
       selectedSort:'',
       dataItems: [
@@ -182,11 +202,22 @@ export default {
   },
   methods: {
     handleFilterSelection(value){
-         this.filter=value.value;
-         
-         console.log("Filter Value",this.filter);
+      const key = value?.colmun; 
+      const val = value?.value; 
+   
 
-         this.productOrderService.retrieveFilter(this.filter).then(res => {
+      const reqFilter = {
+          [key]: val
+      };
+   
+      const paginationQuery = {
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort()
+  
+      };
+
+         this.productOrderService.retrieveFilter(paginationQuery,reqFilter).then(res => {
 
             if (res.data.length == 0) {
               this.notifyNotfound("Not Found");

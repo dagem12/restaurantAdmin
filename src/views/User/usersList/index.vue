@@ -111,9 +111,15 @@ export default {
       ],
       filter:null,
       filterModel: [
+      {
+          label: 'Active Users',
+          colmun:`activated.equals`,
+          value:true
+        },
         {
-          label: 'Activated True',
-          value:'activated=true'
+          label: 'Deactive Users ',
+          colmun:`activated.equals`,
+          value:false  
         },
         // Add more categories and options as needed
       ],
@@ -203,11 +209,22 @@ export default {
       // Implement your logic based on the selected value (e.g., update sorting order)
     },
     handleFilterSelection(value){
-         this.filter=value.value;
-         
-         console.log("Filter Value",this.filter);
+      const key = value?.colmun; 
+      const val = value?.value; 
+   
 
-         this.userManagementService.retrieveFilter(this.filter).then(res => {
+      const reqFilter = {
+          [key]: val
+      };
+   
+      const paginationQuery = {
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort()
+  
+      };
+
+         this.userManagementService.retrieveFilter(paginationQuery,reqFilter).then(res => {
 
             if (res.data.length == 0) {
               this.notifyNotfound("Not Found");

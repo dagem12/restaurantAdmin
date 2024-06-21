@@ -29,8 +29,10 @@ class DiningTableService {
         });
     });
   }
-  retrieveFilter(filter) {
-    return axios.get(`/dining-tables?${filter}&sort=id,desc`);
+  retrieveFilter(paginationQuery,reqFilter) {
+    const filterKey = Object.keys(reqFilter)[0]; 
+    const filterValue = reqFilter[filterKey]; 
+    return axios.get(`/dining-tablesFilter?${buildPaginationQueryOpts(paginationQuery)}&${filterKey}=${filterValue}`);
   }
 
   searchDine(name) {

@@ -73,8 +73,10 @@ export default class ProductOrderService {
         });
     });
   }
-  retrieveFilter(filter) {
-    return axios.get(`/product-orders?${filter}&sort=id,desc`);
+  retrieveFilter(paginationQuery,reqFilter) {
+    const filterKey = Object.keys(reqFilter)[0];
+    const filterValue = reqFilter[filterKey]; 
+    return axios.get(`/product-ordersFilter?${buildPaginationQueryOpts(paginationQuery)}&${filterKey}=${filterValue}`);
   }
 
   topDish(paginationQuery) {

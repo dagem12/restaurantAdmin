@@ -122,11 +122,16 @@ export default {
       ],
       filter:null,
       filterModel: [
-        {
-          label: 'Enable True',
-          value:'enable=true'
+      {
+          label: 'Active Tables',
+          colmun:`enable.equals`,
+          value:true
         },
-        // Add more categories and options as needed
+        {
+          label: 'Deactive Tables ',
+          colmun:`enable.equals`,
+          value:false  
+        },
       ],
       selectedSort:'',
 
@@ -210,18 +215,28 @@ export default {
   },
   methods: {
     handleFilterSelection(value){
-         this.filter=value.value;
-         
-         console.log("Filter Value",this.filter);
+      const key = value?.colmun; 
+      const val = value?.value; 
+   
 
-         this.diningTableService.retrieveFilter(this.filter).then(res => {
+      const reqFilter = {
+          [key]: val
+      };
+   
+      const paginationQuery = {
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort()
+  
+      };
+         
+         this.diningTableService.retrieveFilter(paginationQuery,reqFilter).then(res => {
 
             if (res.data.length == 0) {
               this.notifyNotfound("Not Found");
             }
-            // Clear the users array
+            
             this.diningTables = [];
-            // Assign the new data to the users array
             this.diningTables = [...res.data];
             }).catch(err => {
             console.log(err)

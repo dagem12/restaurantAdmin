@@ -23,9 +23,12 @@ export default class UserManagementService {
   retrieve(req) {
     return axios.get(`/admin/users?${buildPaginationQueryOpts(req)}`);
   }
-  retrieveFilter(filter) {
-    return axios.get(`/admin/users?${filter}&sort=id,desc`);
+  retrieveFilter(paginationQuery,reqFilter) {
+    const filterKey = Object.keys(reqFilter)[0]; 
+    const filterValue = reqFilter[filterKey]; 
+    return axios.get(`/admin/usersFilter?${buildPaginationQueryOpts(paginationQuery)}&${filterKey}=${filterValue}`);
   }
+
 
   retrieveAuthorities() {
     return axios.get("/authorities");

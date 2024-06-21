@@ -1,5 +1,6 @@
 import axios from '../../../axios/axios';
 import buildPaginationQueryOpts from '@/utils/sorts';
+import buildFilterQuery from '@/utils/filter';
 
 
 const baseApiUrl = '/shops';
@@ -33,8 +34,10 @@ export default class ShopService {
                 });
         });
     }
-    retrieveFilter(filter) {
-        return axios.get(`/shops?${filter}&sort=id,desc`);
+    retrieveFilter(paginationQuery,reqFilter) {
+        const filterKey = Object.keys(reqFilter)[0]; // Get the first key from reqFilter
+        const filterValue = reqFilter[filterKey]; 
+        return axios.get(`/shopsFilter?${buildPaginationQueryOpts(paginationQuery)}&${filterKey}=${filterValue}`);
       }
     searchShop(name) {
         return new Promise((resolve, reject) => {

@@ -42,10 +42,12 @@ export default class ProductService {
         });
     });
   }
-
-  retrieveFilter(filter) {
-    return axios.get(`/products?${filter}&sort=id,desc`);
+  retrieveFilter(paginationQuery,reqFilter) {
+    const filterKey = Object.keys(reqFilter)[0];
+    const filterValue = reqFilter[filterKey]; 
+    return axios.get(`/productsFilter?${buildPaginationQueryOpts(paginationQuery)}&${filterKey}=${filterValue}`);
   }
+
 
   delete(id) {
     return new Promise((resolve, reject) => {
