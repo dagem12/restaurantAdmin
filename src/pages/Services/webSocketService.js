@@ -2,7 +2,8 @@ const WebSocketService = {
   socket: null,
 
   connect(token) {
-    const wsUrl = `ws://localhost:19213/ws/waitercall/admin/1?token=${token}`;
+ 
+    const wsUrl = `${process.env.VUE_APP_WS_URL}/ws/waitercall/admin/1?token=${token}`
     this.socket = new WebSocket(wsUrl);
 
     this.socket.onopen = () => {
