@@ -9,7 +9,7 @@
               <p class="category"> manage your Advertisement</p>
             </div>
             <!-- Add Item button -->
-            <div style="display: flex;justify-content: space-between;">
+            <div style="display: flex;justify-content: space-between;" class="sortHolder">
               <div class="sort-container">
                 <q-select  v-model="selectedSort"  :options="sortModel" label="Sort By" @input="handleSortSelection"  style="color:white !important;width:150px;"  class="custom-select">
                   <template v-slot:prepend>
@@ -374,6 +374,21 @@ this.actions[1].specificItem = item;
 <style>
 .table {
   padding: 1%;
+}
+@media (max-width: 768px) {
+  .sortHolder {
+    flex-direction: column !important; /* Stack items vertically */
+    align-items: flex-end; /* Align items to the start of the flex container */
+  
+    justify-content: end;
+
+  }
+  .category{
+    display: none;
+  }
+  .title{
+   font-size: large !important;
+  }
 }
 
 .search-container {

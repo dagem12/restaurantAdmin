@@ -8,7 +8,7 @@
               <h4 class="title">Users</h4>
               <p class="category">Explore and manage your users</p>
             </div>
-            <div style="display: flex;justify-content: space-between;">
+            <div style="display: flex;justify-content: space-between;" class="sortHolder">
               <div class="filter-container" style="display: flex;" >
                 <div style="padding: 10px;" @click="clearFilter">
                   <md-icon label="Filter" style="color:white !important">close</md-icon>
@@ -424,6 +424,21 @@ export default {
 };
 </script>
 <style>
+@media (max-width: 768px) {
+  .sortHolder {
+    flex-direction: column !important; /* Stack items vertically */
+    align-items: flex-end; /* Align items to the start of the flex container */
+  
+    justify-content: end;
+ 
+  }
+  .category{
+    display: none;
+  }
+  .title{
+   font-size: x-large;
+  }
+}
 .table {
   padding: 1%;
 }
