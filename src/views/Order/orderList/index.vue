@@ -11,6 +11,17 @@
               </p>
             </div>
             <div style="display: flex;justify-content: space-between;">
+              <div class="filter-container" style="display: flex;" >
+                <div style="padding: 10px;" @click="clearFilter">
+                  <md-icon label="Filter" style="color:white !important">close</md-icon>
+                </div>
+                <q-select  v-model="filter"  :options="filterModel" label="Filter By" @input="handleFilterSelection"  style="color:white !important;width:150px;"  class="custom-select">
+                  <template v-slot:prepend>
+                    <q-icon  style="color:white !important" name="filter" />
+                  </template>
+                </q-select>
+              </div>
+            
                 <div class="sort-container">
                 <q-select  style="color:white !important;width:150px" v-model="selectedSort"  :options="sortModel" label="Sort By" @input="handleSortSelection" class="custom-select">
                   <template v-slot:prepend>
@@ -88,6 +99,34 @@ export default {
 
         
       ],
+      filter:null,
+      filterModel: [
+      {
+          label: 'Open Orders',
+          colmun:`statusId.equals`,
+          value:7001
+        },
+        {
+          label: 'Preparing Orders',
+          colmun:`statusId.equals`,
+          value:7002
+        },
+        {
+          label: 'Deliverd Orders',
+          colmun:`statusId.equals`,
+          value:7003 
+        },
+        {
+          label: 'Paid Orders',
+          colmun:`statusId.equals`,
+          value:7004 
+        },
+        {
+          label: 'Cancelled Orders',
+          colmun:`statusId.equals`,
+          value:7005 
+        },
+      ],
       selectedSort:'',
       dataItems: [
         {
@@ -162,6 +201,40 @@ export default {
     gsap.from(box, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
+    handleFilterSelection(value){
+      const key = value?.colmun; 
+      const val = value?.value; 
+   
+
+      const reqFilter = {
+          [key]: val
+      };
+   
+      const paginationQuery = {
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort()
+  
+      };
+
+         this.productOrderService.retrieveFilter(paginationQuery,reqFilter).then(res => {
+
+            if (res.data.length == 0) {
+              this.notifyNotfound("Not Found");
+            }
+            // Clear the users array
+            this.productOrders = [];
+            // Assign the new data to the users array
+            this.productOrders = [...res.data];
+            }).catch(err => {
+            console.log(err)
+            })
+     
+    },
+    clearFilter() {
+      this.filter = null;
+      this.retrieveAllProductOrders();
+    },
     onPageChange(page) {
       console.log(`Page changed to: ${page}`);
       if (page !== this.previousPage) {

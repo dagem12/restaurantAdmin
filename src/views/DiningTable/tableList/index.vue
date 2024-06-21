@@ -9,6 +9,17 @@
               <p class="category">Explore and manage your Dining Tables</p>
             </div>
             <div style="display: flex;justify-content: space-between;">
+              <div class="filter-container" style="display: flex;" >
+                <div style="padding: 10px;" @click="clearFilter">
+                  <md-icon label="Filter" style="color:white !important">close</md-icon>
+                </div>
+                <q-select  v-model="filter"  :options="filterModel" label="Filter By" @input="handleFilterSelection"  style="color:white !important;width:150px;"  class="custom-select">
+                  <template v-slot:prepend>
+                    <q-icon  style="color:white !important" name="filter" />
+                  </template>
+                </q-select>
+              </div>
+             
                   <div class="sort-container">
                 <q-select  style="color:white !important;width:150px" v-model="selectedSort"  :options="sortModel" label="Sort By" @input="handleSortSelection" class="custom-select">
                   <template v-slot:prepend>
@@ -109,6 +120,19 @@ export default {
 
         
       ],
+      filter:null,
+      filterModel: [
+      {
+          label: 'Active Tables',
+          colmun:`enable.equals`,
+          value:true
+        },
+        {
+          label: 'Deactive Tables ',
+          colmun:`enable.equals`,
+          value:false  
+        },
+      ],
       selectedSort:'',
 
       actions: [
@@ -190,6 +214,39 @@ export default {
     }
   },
   methods: {
+    handleFilterSelection(value){
+      const key = value?.colmun; 
+      const val = value?.value; 
+   
+
+      const reqFilter = {
+          [key]: val
+      };
+   
+      const paginationQuery = {
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort()
+  
+      };
+         
+         this.diningTableService.retrieveFilter(paginationQuery,reqFilter).then(res => {
+
+            if (res.data.length == 0) {
+              this.notifyNotfound("Not Found");
+            }
+            
+            this.diningTables = [];
+            this.diningTables = [...res.data];
+            }).catch(err => {
+            console.log(err)
+            })
+     
+    },
+    clearFilter() {
+      this.filter = null;
+      this.retrieveAllDiningTables();
+    },
     onPageChange(page) {
       console.log(`Page changed to: ${page}`);
       if (page !== this.previousPage) {

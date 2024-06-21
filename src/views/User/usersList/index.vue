@@ -9,8 +9,18 @@
               <p class="category">Explore and manage your users</p>
             </div>
             <div style="display: flex;justify-content: space-between;">
+              <div class="filter-container" style="display: flex;" >
+                <div style="padding: 10px;" @click="clearFilter">
+                  <md-icon label="Filter" style="color:white !important">close</md-icon>
+                </div>
+                <q-select  v-model="filter"  :options="filterModel" label="Filter By" @input="handleFilterSelection"  style="color:white !important;width:150px;"  class="custom-select">
+                  <template v-slot:prepend>
+                    <q-icon  style="color:white !important" name="filter" />
+                  </template>
+                </q-select>
+              </div>
               <div class="sort-container">
-                <q-select  style="color:white !important;width:150px" v-model="selectedSort"  :options="sortModel" label="Sort By" @input="handleSortSelection"  class="custom-select">
+                <q-select  style="color:white !important;width:150px" v-model="selectedSort"  :options="sortModel" label="Sort By" @input="handleSortSelection"  class="custom-select"    filled>
                   <template v-slot:prepend>
                     <q-icon  style="color:white !important" name="sort" />
                   </template>
@@ -99,6 +109,20 @@ export default {
         { label: "Create By", field: "createdBy" },
         { label: "Activated", field: "activated" },
       ],
+      filter:null,
+      filterModel: [
+      {
+          label: 'Active Users',
+          colmun:`activated.equals`,
+          value:true
+        },
+        {
+          label: 'Deactive Users ',
+          colmun:`activated.equals`,
+          value:false  
+        },
+        // Add more categories and options as needed
+      ],
       sortModel: [
         'login',
         'email',
@@ -184,6 +208,37 @@ export default {
       this.changeOrder(value);
       // Implement your logic based on the selected value (e.g., update sorting order)
     },
+    handleFilterSelection(value){
+      const key = value?.colmun; 
+      const val = value?.value; 
+   
+
+      const reqFilter = {
+          [key]: val
+      };
+   
+      const paginationQuery = {
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort()
+  
+      };
+
+         this.userManagementService.retrieveFilter(paginationQuery,reqFilter).then(res => {
+
+            if (res.data.length == 0) {
+              this.notifyNotfound("Not Found");
+            }
+            // Clear the users array
+            this.users = [];
+            // Assign the new data to the users array
+            this.users = [...res.data];
+            }).catch(err => {
+            console.log(err)
+            })
+     
+    },
+   
     toggleSearch() {
       this.showSearchInput = !this.showSearchInput;
       if (this.showSearchInput) {
@@ -192,6 +247,10 @@ export default {
     },
     clear() {
       this.searchKeyword = '';
+      this.loadAll();
+    },
+    clearFilter() {
+      this.filter = null;
       this.loadAll();
     },
      changeOrder(propOrder) {

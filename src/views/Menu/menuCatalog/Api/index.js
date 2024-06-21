@@ -30,6 +30,11 @@ export default class ProductCatalogService {
         });
     });
   }
+  retrieveFilter(paginationQuery,reqFilter) {
+    const filterKey = Object.keys(reqFilter)[0];
+    const filterValue = reqFilter[filterKey]; 
+    return axios.get(`/product-catalogsFilter?${buildPaginationQueryOpts(paginationQuery)}&${filterKey}=${filterValue}`);
+  }
 
   searchMenuCat(name) {
     return new Promise((resolve, reject) => {

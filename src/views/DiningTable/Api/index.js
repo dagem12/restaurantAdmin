@@ -29,6 +29,11 @@ class DiningTableService {
         });
     });
   }
+  retrieveFilter(paginationQuery,reqFilter) {
+    const filterKey = Object.keys(reqFilter)[0]; 
+    const filterValue = reqFilter[filterKey]; 
+    return axios.get(`/dining-tablesFilter?${buildPaginationQueryOpts(paginationQuery)}&${filterKey}=${filterValue}`);
+  }
 
   searchDine(name) {
     return new Promise((resolve, reject) => {

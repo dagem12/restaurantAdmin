@@ -9,6 +9,17 @@
               <p class="category">Explore and manage your organizations</p>
             </div>
             <div style="display: flex;justify-content: space-between;">
+              <div class="filter-container" style="display: flex;" >
+                <div style="padding: 10px;" @click="clearFilter">
+                  <md-icon label="Filter" style="color:white !important">close</md-icon>
+                </div>
+                <q-select  v-model="filter"  :options="filterModel" label="Filter By" @input="handleFilterSelection"  style="color:white !important;width:150px;"  class="custom-select">
+                  <template v-slot:prepend>
+                    <q-icon  style="color:white !important" name="filter" />
+                  </template>
+                </q-select>
+              </div>
+            
                     <div class="sort-container">
                 <q-select  style="color:white !important;width:150px" v-model="selectedSort"  :options="sortModel" label="Sort By" @input="handleSortSelection" class="custom-select">
                   <template v-slot:prepend>
@@ -116,6 +127,20 @@ export default {
         { label: "CreateTime", field: "createTime", isCreateTime: true },
 
       ],
+      filter:null,
+      filterModel: [
+      {
+          label: 'Active Organizations',
+          colmun:`enable.equals`,
+          value:true
+        },
+        {
+          label: 'Disabled Organizations ',
+          colmun:`enable.equals`,
+          value:false  
+        },
+        // Add more categories and options as needed
+      ],
       sortModel: [
         'name',
         'createTime',
@@ -174,6 +199,40 @@ export default {
   },
 
   methods: {
+    handleFilterSelection(value){
+      const key = value?.colmun; 
+      const val = value?.value; 
+   
+
+      const reqFilter = {
+          [key]: val
+      };
+   
+      const paginationQuery = {
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort()
+  
+      };
+
+         this.organizationService.retrieveFilter(paginationQuery,reqFilter).then(res => {
+
+            if (res.data.length == 0) {
+              this.notifyNotfound("Not Found");
+            }
+            // Clear the users array
+            this.organizations = [];
+            // Assign the new data to the users array
+            this.organizations = [...res.data];
+            }).catch(err => {
+            console.log(err)
+            })
+     
+    },
+    clearFilter() {
+      this.filter = null;
+      this.retrieveAllOrganizations();
+    },
     onPageChange(page) {
       console.log(`Page changed to: ${page}`);
       if (page !== this.previousPage) {
