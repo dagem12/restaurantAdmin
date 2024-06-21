@@ -16,7 +16,6 @@ import UsersList from "@/views/User/usersList";
 import Login from "@/views/Login";
 import ForgotPassword from "@/views/ForgetPassword";
 import OrderDetail from "@/views/Order/orderDetail";
-import Advertisements from "@/views/advert/advertList"
 
 const routes = [
   {

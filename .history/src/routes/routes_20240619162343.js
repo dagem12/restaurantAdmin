@@ -16,7 +16,6 @@ import UsersList from "@/views/User/usersList";
 import Login from "@/views/Login";
 import ForgotPassword from "@/views/ForgetPassword";
 import OrderDetail from "@/views/Order/orderDetail";
-import Advertisements from "@/views/advert/advertList"
 
 const routes = [
   {
@@ -71,12 +70,6 @@ const routes = [
         path: "feedBack",
         name: "Feedback List",
         component: FeedbackList,
-        meta: { requiresAuth: true },
-      },
-      {
-        path: "advertisements",
-        name: "Advertisements",
-        component: Advertisements,
         meta: { requiresAuth: true },
       },
       {
