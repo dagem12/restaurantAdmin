@@ -7,7 +7,7 @@
           <!-- Mobile specific buttons -->
           <q-btn flat round dense icon="dashboard" @click="$router.push('/dashboard')" class="toolbar-btn" />
           <q-btn-dropdown flat round dense class="notification-btn-dropdown toolbar-btn">
-            <template v-slot:label>
+            <template v-slot:label v-if="userAuth">
               <q-icon round :class="{ glow: notifications.length > 0 }" name="notifications" />
               <q-badge color="red" floating transparent class="notification-badge">
                 {{ notifications.length }}
@@ -73,7 +73,7 @@
           <q-btn flat round dense icon="dashboard" @click="$router.push('/dashboard')" class="toolbar-btn" />
 
           <q-btn-dropdown flat round dense class="notification-btn-dropdown toolbar-btn">
-            <template v-slot:label>
+            <template v-slot:label v-if="userAuth">
               <q-icon :class="{ glow: notifications.length > 0 }" name="notifications" />
               <q-badge color="red" floating transparent class="notification-badge">
                 {{ notifications.length }}
@@ -146,7 +146,8 @@
 </template>
 
 <script>
-
+import AccountService from '@/views/Login/api/account.service';
+import { Authority } from "../../utils/authority";
 import WebSocketService from '../Services/webSocketService';
 import { Notify } from 'quasar';
 export default {
@@ -159,11 +160,16 @@ export default {
       dialog: false,
       currentNotification: null,
       toTable: null,
-      isFullscreen: false
+      isFullscreen: false,
+      accountService: new AccountService(),
+      authority: new Authority(),
+      userAuth: null
     };
   },
   mounted() {
     this.user = this.$store.getters.account;
+    this.userAuth = this.accountService.hasAuthorities(this.authority.SHOP_ADMIN)
+    // console.log("thisuser" , this.AccountService)
     window.addEventListener('resize', this.handleResize);
     this.connectWebSocket();
 
@@ -183,30 +189,33 @@ export default {
     },
     connectWebSocket() {
       const token = localStorage.getItem('jhi-authenticationToken');
-      WebSocketService.connect(token);
+      if (this.userAuth) {
+        WebSocketService.connect(token, this.user.shopId);
 
-      WebSocketService.socket.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          this.addNotification(data.message);
-          Notify.create({
-            message: "Waiter Called from Table " + data.message.tableNumber,
-            timeout: 3000,
-            position: 'right',
-            actions: [
-    {
-      label: 'Dismiss',
-      color: 'yellow',
-      handler: () => {
-        // console.log('Dismiss clicked');
+        WebSocketService.socket.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            this.addNotification(data.message);
+            Notify.create({
+              message: "Waiter Called from Table " + data.message.tableNumber,
+              timeout: 3000,
+              position: 'right',
+              actions: [
+                {
+                  label: 'Dismiss',
+                  color: 'yellow',
+                  handler: () => {
+                    // console.log('Dismiss clicked');
+                  }
+                }
+              ]
+            });
+          } catch (error) {
+            console.error('Error processing WebSocket message:', error.message);
+          }
+        };
       }
-    }
-  ]
-          });
-        } catch (error) {
-          console.error('Error processing WebSocket message:', error.message);
-        }
-      };
+
     },
     addNotification(message) {
       // Validate the message structure

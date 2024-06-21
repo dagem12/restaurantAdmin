@@ -153,7 +153,7 @@ export default {
                 price: `Br ${(product.amount).toFixed(2)}`  
             }));
             this.tabLoading = false;
-          console.log("trending data" , this.trendingData)
+          // console.log("trending data" , this.trendingData)
     }).catch(err =>{
      this.notifyError('Error Occured Please Contact System Administrator')
      this.tabLoading = false;
