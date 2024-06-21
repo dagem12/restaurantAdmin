@@ -23,7 +23,7 @@ module.exports = defineConfig({
         pathRewrite: {
           '^/api': '/api'
         }, //将所有含/api路径的，去掉/api转发给服务器
-        ws: true, //用于支持websocket
+        ws: false, //用于支持websocket
         changeOrigin: true //用于控制请求头中的host值
       }
     },
