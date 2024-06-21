@@ -8,7 +8,7 @@
               <h4 class="title">Organization</h4>
               <p class="category">Explore and manage your organizations</p>
             </div>
-            <div style="display: flex;justify-content: space-between;">
+            <div style="display: flex;justify-content: space-between;" class="sortHolder">
               <div class="filter-container" style="display: flex;" >
                 <div style="padding: 10px;" @click="clearFilter">
                   <md-icon label="Filter" style="color:white !important">close</md-icon>
@@ -396,6 +396,21 @@ export default {
 <style>
 .table {
   padding: 1%;
+}
+@media (max-width: 768px) {
+  .sortHolder {
+    flex-direction: column !important;
+  
+    justify-content: end;
+    
+    
+  }
+  .category{
+    display: none;
+  }
+  .title{
+   font-size: small !important;
+  }
 }
 
 .search-container {
