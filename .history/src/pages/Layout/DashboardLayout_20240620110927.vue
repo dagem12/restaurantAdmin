@@ -44,8 +44,8 @@
 
       <sidebar-link to="/advertisements"
         v-if="accountService.hasAuthorities(Authority.ADMIN) || accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN)">
-        <md-icon>book</md-icon>
-        <p v-if="isExpanded">Advertisements</p>
+        <md-icon>person</md-icon>
+        <p v-if="isExpanded">Users</p>
       </sidebar-link>
       <sidebar-link to="/users"
         v-if="accountService.hasAuthorities(Authority.ADMIN) || accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN)">
