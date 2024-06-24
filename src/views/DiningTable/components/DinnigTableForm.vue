@@ -8,7 +8,7 @@
       </q-card-section>
 
       <q-card-section>
-        <q-input ref="name" v-model="diningItem.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
+        <q-input ref="name" v-model="diningItem.name" label="Name*" class="q-mb-md" :rules="[rules.required]" />
 
         <q-input v-model="diningItem.description" label="Description" type="textarea" class="q-mb-md" />
         <!-- <q-select v-model="diningItem.tenant" label="Organization" :options="organizations" option-label="name"
@@ -16,7 +16,7 @@
 
 
         <q-select ref="shop" v-model="diningItem.shop" :options="shops" option-label="name" option-value="id"
-          label="Shop" class="q-mb-md" v-if="accountService.hasAuthorities(authority.ORGANIZATION_ADMIN)"
+          label="Shop*" class="q-mb-md" v-if="accountService.hasAuthorities(authority.ORGANIZATION_ADMIN)"
           :rules="[rules.required]" />
         <q-toggle v-model="diningItem.enable" label="Enable" class="q-mb-md" />
 

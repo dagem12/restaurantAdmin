@@ -8,15 +8,15 @@
             </q-card-section>
 
             <q-card-section>
-                <q-input ref="name" v-model="shop.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
+                <q-input ref="name" v-model="shop.name" label="Name*" class="q-mb-md" :rules="[rules.required]" />
 
                 <q-input v-model="shop.description" label="Description" type="textarea" class="q-mb-md" />
                
                 <q-toggle v-model="shop.enable" label="Enable" type="number" class="q-mb-md" />
-                <q-input  ref="address" v-model="shop.address" label="Address" type="text" class="q-mb-md" :rules="[rules.required]" />
+                <q-input  ref="address" v-model="shop.address" label="Address*" type="text" class="q-mb-md" :rules="[rules.required]" />
                 <q-toggle v-model="shop.orderService" label="Order Service" class="q-mb-md" />
 
-                <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo "
+                <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo* "
                     @added="onFileAdded" @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
                 <label></label>
 

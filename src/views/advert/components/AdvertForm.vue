@@ -8,14 +8,14 @@
       </q-card-section>
 
       <q-card-section>
-        <q-input  v-model="advertItem.title" label="Title" class="q-mb-md" :rules="[rules.required]" />
+        <q-input  v-model="advertItem.title" label="Title*" class="q-mb-md" :rules="[rules.required]" />
 
      
         <!-- <q-select v-model="advertItem.tenant" :options="tenantOptions" label="Tenant" type="select" class="q-mb-md" /> -->
        
         
        
-        <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo "
+        <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo* "
           @added="onFileAdded" :rules="[rules.validImage]" @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
 
           <div class="date-picker" >

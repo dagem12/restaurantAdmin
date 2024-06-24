@@ -9,14 +9,14 @@
       </q-card-section>
 
       <q-card-section>
-        <q-input ref="name" v-model="organizationItem.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
+        <q-input ref="name" v-model="organizationItem.name" label="Name*" class="q-mb-md" :rules="[rules.required]" />
 
         <q-input v-model="organizationItem.description" label="Description" type="textarea" class="q-mb-md" />
-        <q-input ref="tinNumber" v-model="organizationItem.tinNumber" label="Tin Number" type="number" class="q-mb-md"
+        <q-input ref="tinNumber" v-model="organizationItem.tinNumber" label="Tin Number*" type="number" class="q-mb-md"
           :rules="[rules.required, rules.onlyNumbers]" />
-        <q-input ref="merchantId" v-model="organizationItem.merchantId" label="Merchant Id" class="q-mb-md"
+        <q-input ref="merchantId" v-model="organizationItem.merchantId" label="Merchant Id*" class="q-mb-md"
           :rules="[rules.required]" />
-        <q-input ref="merchantCode" v-model="organizationItem.merchantCode" label="Merchant Code" class="q-mb-md"
+        <q-input ref="merchantCode" v-model="organizationItem.merchantCode" label="Merchant Code*" class="q-mb-md"
           :rules="[rules.required]" />
         <q-toggle v-model="organizationItem.orderService" label="Order Service" class="q-mb-md" />
         <!-- <q-select v-model="organizationItem.admin" :options="users" option-label="login" option-value="id"

@@ -8,19 +8,19 @@
             </q-card-section>
 
             <q-card-section>
-                <q-input ref="login" v-model="user.login" label="User Name" class="q-mb-md" :rules="[rules.required]" />
-                <q-input ref="firstName" v-model="user.firstName" label="First Name" class="q-mb-md"  :rules="[rules.required, rules.onlyAlphabets]"  />
-                <q-input ref="lastName" v-model="user.lastName" label="Last Name" class="q-mb-md"  :rules="[rules.required, rules.onlyAlphabets]" />
-                <q-input  ref="email" v-model="user.email" label="Email" class="q-mb-md" :rules="[rules.required, rules.email]" />
+                <q-input ref="login" v-model="user.login" label="User Name*" class="q-mb-md" :rules="[rules.required]" />
+                <q-input ref="firstName" v-model="user.firstName" label="First Name*" class="q-mb-md"  :rules="[rules.required, rules.onlyAlphabets]"  />
+                <q-input ref="lastName" v-model="user.lastName" label="Last Name*" class="q-mb-md"  :rules="[rules.required, rules.onlyAlphabets]" />
+                <q-input  ref="email" v-model="user.email" label="Email*" class="q-mb-md" :rules="[rules.required, rules.email]" />
                 <q-toggle v-model="user.activated" label="Activated" class="q-mb-md" />
 
                 <q-select ref="org" :rules="[rules.required]"  v-if="this.accountService.hasAuthorities(this.authority.ADMIN)" v-model="user.orgId"
-                    label="Organization" :options="organizations" option-label="name" option-value="id"
+                    label="Organization*" :options="organizations" option-label="name" option-value="id"
                     class="q-mb-md" />
 
-                <q-select ref="shop"  v-model="user.shopId"   :rules="[rules.required]" v-if="this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)" label="Shop" :options="shops" option-label="name" option-value="id"
+                <q-select ref="shop"  v-model="user.shopId"   :rules="[rules.required]" v-if="this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)" label="Shop*" :options="shops" option-label="name" option-value="id"
                     class="q-mb-md" />
-                <q-select ref="authority" v-model="user.authorities" label="Authority" :options="authorities" option-label="label"
+                <q-select ref="authority" v-model="user.authorities" label="Authority*" :options="authorities" option-label="label"
                     option-value="value" multiple class="q-mb-md" :rules="[rules.required]"/>
 
             </q-card-section>
