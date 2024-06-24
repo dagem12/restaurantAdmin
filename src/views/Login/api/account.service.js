@@ -64,6 +64,53 @@ export default class AccountService {
         });
     });
   }
+  forgetPassword(body){
+    return axios({
+      url:'/account/reset-password/init',
+      method:'post',
+      data:{"mail":body}
+    })
+  }
+
+  resetPassword(body){
+    return axios({
+      url:'/account/reset-password/finish',
+      method:'post',
+      data:body
+    })
+  }
+  //  changePassword(body) {
+  //   return axios({
+  //     url: '/account/change-password',
+  //     method: 'post',
+  //     data:body
+  //   })
+  // }
+  changePassword(entity) {
+    return new Promise((resolve, reject) => {
+      fetch('api/account/change-password', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('jhi-authenticationToken'),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(entity)
+      })
+      .then(response => {
+        if (response.ok) {
+          resolve(response)
+        } else {
+          return response.json().then(error => {
+            reject(error.title);
+          });
+        }
+      })
+      .catch(err => {
+        reject(new Error(`Network error: ${err.message}`));
+      });
+    });
+  }
+
 
   retrieveUser() {
     return new Promise((resolve) => {

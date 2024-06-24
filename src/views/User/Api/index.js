@@ -27,7 +27,7 @@ export default class UserManagementService {
           return response.json().then(data => resolve(data));
         } else {
           return response.json().then(error => {
-            reject(new Error(`HTTP status ${response.status}: ${error.title}`));
+            reject(error.title);
           });
         }
       })

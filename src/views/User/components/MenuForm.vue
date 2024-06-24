@@ -165,7 +165,7 @@ export default {
         .catch(error => {
       //    console.error('Error adding new User:', error);
           this.loading = false;
-          this.notifyError(`Error Happens${error}`);
+          this.notifyError(`${error}`);
         });
     },
     cancelAddItem() {
