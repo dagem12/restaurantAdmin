@@ -4,11 +4,13 @@
        
        <div class="form-container sign-in" >
         <form @submit.prevent="validateForm" >
-    <h3>Forgot Password</h3>
+    <h3>Reset Password</h3>
    
-    <q-input ref="email"  :rules="[rules.required, rules.email]" style="width:100%;" type="text" placeholder="Enter Email" v-model="emailOrPhone" />
+    <q-input ref="password"  :rules="[rules.required, rules.minLength(6),rules.containsCapital,rules.containsSymbol,rules.containsNumber]" style="width:100%;" type="text" placeholder="Enter Password" v-model="password" />
+    <q-input ref="passwordCheck"  :rules="[rules.required, rules.minLength(6),rules.containsCapital,rules.containsSymbol,rules.containsNumber]" style="width:100%;" type="text" placeholder="Confirm your Password" v-model="passwordCheck" />
+    <label v-if="passwordCheckError" style="color:red;">{{ passwordCheckError }}</label>
     <q-btn type="submit" :loading="loading"  >Submit</q-btn>
-    <router-link to="/login">Back To Login</router-link>
+    <!-- <router-link to="/login">Back To Login</router-link> -->
   </form>
 
        </div>
@@ -47,11 +49,17 @@ export default {
       userName: null,
       emailOrPhone:'',
       loading:false,
+      password:'',
+      passwordCheck:'',
+      passwordCheckError:'',
       rules: {
         required: val => !!val || 'Field is required',
         email: val => /.+@.+\..+/.test(val) || 'Email must be valid',
         minLength: len => val => (val && val.length >= len) || `Minimum ${len} characters required`,
-        onlyAlphabets: val => /^[a-zA-Z]+$/.test(val) || 'Only alphabets are allowed'
+        onlyAlphabets: val => /^[a-zA-Z]+$/.test(val) || 'Only alphabets are allowed',
+        containsCapital: val => /[A-Z]/.test(val) || 'Password must contain at least one capital letter',
+        containsSymbol: val => /[!@#$%^&*(),.?":{}|<>]/.test(val) || 'Password must contain at least one symbol',
+        containsNumber: val => /\d/.test(val) || 'Password must contain at least one number'
       },
     };
   },
@@ -66,19 +74,26 @@ gsap.from(box, { duration: 1, x: -1000, opacity: 0, ease: "power1.in" });
   methods: {
     validateForm() {
       
-      const inputs = [
-   
-       this.$refs.email
-  
+        const password = this.$refs.password;
+    const passwordCheck = this.$refs.passwordCheck;
 
-       ];
+    // Validate all inputs first
+    const inputs = [password, passwordCheck];
+    const validInputs = inputs.reduce((acc, input) => acc && input.validate(), true);
+
+    // Check if passwords match
+    if (validInputs) {
+      if (password.value !== passwordCheck.value) {
       
-
-     const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
-
-     if (valid) {
-       this.handleSubmit();
-     }
+        this.passwordCheckError = 'Passwords do not match';
+        return false; // Return false to indicate validation failed
+      } else {
+        // Reset error message if passwords match
+        this.passwordCheckError = null;
+        this.handleSubmit(); // Proceed with form submission
+      }
+    }
+     
    },
    notifySuccess(message) {
       Notify.create({
@@ -99,27 +114,25 @@ gsap.from(box, { duration: 1, x: -1000, opacity: 0, ease: "power1.in" });
       });
     },
     handleSubmit() {
-
-    
-          // Perform your submission logic here
-          this.loading=true
-       
-          this.accountService.forgetPassword(this.emailOrPhone)
-            .then(() => {
-              this.notifySuccess("Password Reset link sent! Check your Email.")
-              
-              setTimeout(() => {
-                this.navigateToLogin();
-                this.loading=false
-              }, 2000);
-            })
-            .catch(err => {
-              this.notifyError(`Error happen ${err}`)
-              console.log(err);
-              this.loading=false
-            })
-  
-      },
+ 
+      this.loading = true;
+      // Perform password reset logic here
+      this.accountService.resetPassword({ newPassword: this.password, key: this.$route.query.token })
+        .then(() => {
+           
+          this.notifySuccess('Password reset successful');
+          this.$router.push('/login');
+        })
+        .catch(error => {
+          
+            const errorMessage = error.response ? error.response.data.message : 'An error occurred';
+         this.notifyError(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+ 
+    },
       navigateToLogin() {
         this.$router.push('/login');
       }

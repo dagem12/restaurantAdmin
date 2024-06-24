@@ -18,6 +18,8 @@ import ForgotPassword from "@/views/ForgetPassword";
 import OrderDetail from "@/views/Order/orderDetail";
 import Advertisements from "@/views/advert/advertList"
 import WaitersCall from "@/views/call-waiter/CallWaiterList"
+import ResetPage from "@/views/ResetPassword";
+import ChangePassword from "@/views/ChangePassword";
 
 const routes = [
   {
@@ -33,9 +35,15 @@ const routes = [
     meta: { requiresAuth: false },
   },
   {
+    path: "/reset-password",
+    name: "ResetPassword",
+    component: ResetPage,
+    meta: { requiresAuth: false },
+  },
+  {
     path: "/",
     component: DashboardLayout,
-    redirect: "/dashboard",
+    // redirect: "/dashboard",
     meta: { requiresAuth: true },
     children: [
       {
@@ -48,6 +56,12 @@ const routes = [
         path: "user",
         name: "User Profile",
         component: UserProfile,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "change-password",
+        name: "Change Password",
+        component: ChangePassword,
         meta: { requiresAuth: true },
       },
       {
@@ -119,6 +133,7 @@ const routes = [
       },
     ],
   },
+ 
 ];
 
 export default routes;
