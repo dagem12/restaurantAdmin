@@ -8,17 +8,17 @@
       </q-card-section>
 
       <q-card-section>
-        <q-input ref="name" v-model="shopItem.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
+        <q-input ref="name" v-model="shopItem.name" label="Name*" class="q-mb-md" :rules="[rules.required]" />
 
         <q-input v-model="shopItem.description" label="Description" type="textarea" class="q-mb-md" />
         <!-- <q-select v-model="shopItem.contact" :options="contactOptions" label="Contact" class="q-mb-md" /> -->
         <!-- <q-select v-model="shopItem.tenant" :options="tenantOptions" label="Tenant" type="select" class="q-mb-md" /> -->
         <q-toggle v-model="shopItem.enable" label="Enable" type="number" class="q-mb-md" />
-        <q-input ref="address" v-model="shopItem.address" label="Address" type="text" class="q-mb-md"
+        <q-input ref="address" v-model="shopItem.address" label="Address*" type="text" class="q-mb-md"
           :rules="[rules.required]" />
         <q-toggle v-model="shopItem.orderService" label="Order Service" class="q-mb-md" />
 
-        <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo "
+        <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo* "
           @added="onFileAdded" :rules="[rules.validImage]" @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
 
       </q-card-section>

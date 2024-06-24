@@ -9,12 +9,12 @@
             </q-card-section>
 
             <q-card-section>
-                <q-input ref="name"  v-model="organization.name" label="Name" class="q-mb-md"  :rules="[rules.required]" />
+                <q-input ref="name"  v-model="organization.name" label="Name*" class="q-mb-md"  :rules="[rules.required]" />
 
                 <q-input v-model="organization.description" label="Description" type="textarea" class="q-mb-md" />
-                <q-input ref="tinNumber"  v-model="organization.tinNumber" label="Tin Number" type="number" class="q-mb-md" :rules="[rules.required, rules.onlyNumbers]" />
-                <q-input ref="merchantId" v-model="organization.merchantId" label="Merchant Id" class="q-mb-md"  :rules="[rules.required]" />
-                <q-input  ref="merchantCode" v-model="organization.merchantCode"   :rules="[rules.required]"  label="Merchant Code" class="q-mb-md" />
+                <q-input ref="tinNumber"  v-model="organization.tinNumber" label="Tin Number*" type="number" class="q-mb-md" :rules="[rules.required, rules.onlyNumbers]" />
+                <q-input ref="merchantId" v-model="organization.merchantId" label="Merchant Id*" class="q-mb-md"  :rules="[rules.required]" />
+                <q-input  ref="merchantCode" v-model="organization.merchantCode"   :rules="[rules.required]"  label="Merchant Code*" class="q-mb-md" />
                 <q-toggle v-model="organization.orderService" label="Order Service" class="q-mb-md" />
                 <q-select v-model="organization.admin" :options="users" option-label="login" option-value="id"
                     label="Admin" class="q-mb-md" />

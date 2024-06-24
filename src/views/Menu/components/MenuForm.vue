@@ -8,8 +8,8 @@
       </q-card-section>
 
       <q-card-section>
-        <q-input ref="name" v-model="menuItem.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
-        <q-input ref="price" v-model="menuItem.price" label="Price" type="number"
+        <q-input ref="name" v-model="menuItem.name" label="Name*" class="q-mb-md" :rules="[rules.required]" />
+        <q-input ref="price" v-model="menuItem.price" label="Price*" type="number"
           :rules="[rules.required, rules.onlyNumbers]" class="q-mb-md" />
         <q-input v-model="menuItem.description" label="Description" type="textarea" class="q-mb-md" />
         <!-- <q-select v-model="menuItem.category" :options="categoryOptions" label="Category" class="q-mb-md" /> -->
@@ -22,13 +22,13 @@
         <q-input v-model="menuItem.prepTime" label="Preparation Time (minutes)" type="number" class="q-mb-md" />
         <q-input v-model="menuItem.calories" label="Calories" type="number" class="q-mb-md" />
         <q-toggle v-model="menuItem.isVisible" label="Is Visible" class="q-mb-md" />
-        <q-select ref="shop" v-model="menuItem.shop" :options="shops" option-label="name" option-value="id" label="Shop"
+        <q-select ref="shop" v-model="menuItem.shop" :options="shops" option-label="name" option-value="id" label="Shop*"
           class="q-mb-md" v-if="accountService.hasAuthorities(authority.ORGANIZATION_ADMIN)"
           :rules="[rules.required]" />
         <q-select ref="catalog" v-model="menuItem.catalog" :options="productCatalogs" option-label="name"
-          option-value="id" label="Product Catalog" class="q-mb-md" :rules="[rules.required]" />
+          option-value="id" label="Product Catalog*" class="q-mb-md" :rules="[rules.required]" />
         <q-uploader ref="imageUploader" :rules="[rules.validImage]" url="http://localhost:8081/upload"
-          label="Click or Drag image of menu " @added="onFileAdded" @uploaded="onFileUploaded" :headers="uploadHeaders"
+          label="Click or Drag image of menu* " @added="onFileAdded" @uploaded="onFileUploaded" :headers="uploadHeaders"
           :factory="uploadFactory" /><label style="color:red" v-if="imageError != null || imageError != ''">{{
             imageError
           }}</label>

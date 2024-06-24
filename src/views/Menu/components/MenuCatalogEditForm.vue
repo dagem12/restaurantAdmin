@@ -8,10 +8,10 @@
             </q-card-section>
 
             <q-card-section>
-                <q-input ref="name" v-model="menu.name" label="Name" class="q-mb-md" :rules="[rules.required]"/>
+                <q-input ref="name" v-model="menu.name" label="Name*" class="q-mb-md" :rules="[rules.required]"/>
 
                 <q-input v-model="menu.description" label="Description" type="textarea" class="q-mb-md" />
-                <q-select ref="shop" v-model="menu.shop" :options="shops" option-label="name" option-value="id" label="Shop"
+                <q-select ref="shop" v-model="menu.shop" :options="shops" option-label="name" option-value="id" label="Shop*"
                     class="q-mb-md" v-if="accountService.hasAuthorities(authority.ORGANIZATION_ADMIN)"    :rules="[rules.required]" />
                 <q-toggle v-model="menu.enable" label="Enable" type="number" class="q-mb-md" />
 

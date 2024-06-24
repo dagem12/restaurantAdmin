@@ -31,19 +31,31 @@
             v-if="action.label2 == null && action.label22 == null" :label="action.label2" @click="action.method(item)"
             :dense="true" flat="true" style="margin: 2px" round />
 
-          <q-btn-dropdown style="margin-left: 10px;" v-for="action in actions" :key="item.id"
-            v-if="action.label2 != null" color="primary" :label="action.label2"
-            :loading="action.loadingS && (action.specificItem.id == item.id)">
-            <q-list>
-              <q-item v-for="option in action.label2Options" clickable v-close-popup
-                @click="action.methodOptions(option, item)"
-                :class="{ 'q-item-selected': item.status.value === option }">
-                <q-item-section>
-                  <q-item-label>{{ option }}</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-btn-dropdown>
+            <q-btn-dropdown
+                style="margin-left: 10px;"
+                v-for="action in actions"
+                :key="item.id"
+                v-if="action.label2 != null"
+                color="primary"
+                :label="action.label2"
+                :loading="action.loadingS && (action.specificItem.id == item.id)"
+              >
+                <q-list>
+                  <q-item
+                    v-for="(option, index) in action.label2Options"
+                    :key="option"
+                    :disable="shouldDisable(item, index)"
+                    v-close-popup
+                    @click="!shouldDisable(item, index) && action.methodOptions(option, item)"
+                    :class="{ 'q-item-selected': item.status.value === option }"
+                    clickable
+                  >
+                    <q-item-section>
+                      <q-item-label>{{ option }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-btn-dropdown>
           <q-btn style="margin-left: 10px;" v-for="action in actions" v-if="action.label22 != null && action.label22"
             @click="action.method(item)" :label="action.label22" :loading="action.loadingS" color="grey-4"
             text-color="purple" glossy unelevated label="Generate QR" />
@@ -85,7 +97,9 @@ export default {
             "color" in action
         );
       },
+     
     },
+   
   },
   data() {
     return {
@@ -115,8 +129,23 @@ export default {
       }
       const date = new Date(timestamp);
       return date.toLocaleString();
+    },
+    shouldDisable(item, index) {
+      const statusToIndex = {
+        7001: 0,
+        7002: 1,
+        7003: 2,
+        7004: 3,
+        7005: 4
+      };
+      
+      const currentIndex = statusToIndex[item.status.id];
+      return index !== currentIndex + 1;
     }
   }
+
+     
+    
 };
 </script>
 
@@ -134,6 +163,10 @@ export default {
 .q-item-selected {
   font-weight: bold;
   background-color: #5335AB; /* Change this color to your preference */
+}
+.q-item-disabled {
+  pointer-events: none;
+  opacity: 0.6;
 }
 
 
