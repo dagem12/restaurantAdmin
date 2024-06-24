@@ -3,4 +3,8 @@ dist/
 package-lock.json
 /docs
 /dist
+<<<<<<< HEAD
 /.history
+=======
+.history/
+>>>>>>> 3f6ee67dc6e912ebc5a532797b1dbbbac89a975b

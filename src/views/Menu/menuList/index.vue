@@ -214,7 +214,7 @@ export default {
   },
   watch: {
     sidebarItemColor(newColor) {
-      console.log('sidebarItemColor changed to:', newColor);
+      // console.log('sidebarItemColor changed to:', newColor);
     }
   },
   methods: {
@@ -253,7 +253,7 @@ export default {
       this.retrieveAllProducts();
     },
     onPageChange(page) {
-      console.log(`Page changed to: ${page}`);
+      // console.log(`Page changed to: ${page}`);
       if (page !== this.previousPage) {
         this.previousPage = page;
         this.page = page;
@@ -261,7 +261,7 @@ export default {
       }
     },
     handleSortSelection(value) {
-      console.log('Selected sort option:', value);
+      // console.log('Selected sort option:', value);
       this.changeOrder(value);
       // Implement your logic based on the selected value (e.g., update sorting order)
     },
@@ -286,7 +286,7 @@ export default {
     },
     performSearch() {
       // Your search logic here
-      console.log('Search performed:', this.searchKeyword);
+      // console.log('Search performed:', this.searchKeyword);
 
       this.productService.searchMenu(this.searchKeyword).then(res => {
         if (res.data.length == 0) {
@@ -295,11 +295,11 @@ export default {
 
 
         // Clear the po array
-        console.log("am IN", this.products);
+        // console.log("am IN", this.products);
         this.products = [];
         // Assign the new data to the po array
         this.products = [...res.data];
-        console.log("haha in", this.products);
+        // console.log("haha in", this.products);
       }).catch(err => {
 
         console.log(err)
@@ -383,17 +383,17 @@ export default {
     },
 
     editItem(item) {
-      console.log("Editing item:", item);
+      // console.log("Editing item:", item);
       this.menu = item;
       this.$refs.editFormDialog.showDialogEdit = true;
 
     },
     deleteItem(item) {
-      console.log("Deleting item:", item);
+      // console.log("Deleting item:", item);
       this.prepareRemove(item);
     },
     viewItem(item) {
-      console.log("Viewing item:", item);
+      // console.log("Viewing item:", item);
     },
     showAddItemDialog() {
       // Show the MenuForm dialog

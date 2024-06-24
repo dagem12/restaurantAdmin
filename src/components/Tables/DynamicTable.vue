@@ -156,8 +156,8 @@ export default {
   color: white;
 }
 .selected-row {
-  color:white !important;
-  background-color: #5335AB; /* Change this color to your preference */
+  color:rgb(12, 11, 11) !important;
+  background-color: #93b4a9 !important; /* Change this color to your preference */
 }
 
 .q-item-selected {

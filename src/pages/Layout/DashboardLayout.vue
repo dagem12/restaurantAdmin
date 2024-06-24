@@ -47,6 +47,11 @@
         <md-icon>book</md-icon>
         <p v-if="isExpanded">Advertisements</p>
       </sidebar-link>
+      <sidebar-link to="/waiters-call"
+        v-if=" accountService.hasAuthorities(Authority.SHOP_ADMIN)">
+        <md-icon>dish</md-icon>
+        <p v-if="isExpanded">Waiters Call</p>
+      </sidebar-link>
       <sidebar-link to="/users"
         v-if="accountService.hasAuthorities(Authority.ADMIN) || accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN)">
         <md-icon>person</md-icon>

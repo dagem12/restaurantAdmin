@@ -142,7 +142,7 @@ export default {
     trendingDataFetch(tab){
       this.tabLoading=true
     this.API.getDashBoardDataTrendingOrders(tab).then( res =>{
-         console.log(res)
+        //  console.log(res)
       this.trendingData = res.data.trendingData.topProducts.map((product, index) => ({
                 id: index + 1,
                 imageUrl:'/api/images/'+ product.imageUrl || 'https://via.placeholder.com/70',
@@ -153,7 +153,7 @@ export default {
                 price: `Br ${(product.amount).toFixed(2)}`  
             }));
             this.tabLoading = false;
-          console.log("trending data" , this.trendingData)
+          // console.log("trending data" , this.trendingData)
     }).catch(err =>{
      this.notifyError('Error Occured Please Contact System Administrator')
      this.tabLoading = false;

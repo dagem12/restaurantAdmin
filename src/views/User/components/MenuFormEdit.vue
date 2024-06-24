@@ -119,17 +119,17 @@ export default {
         }
         },
         async addItem() {
-            console.log('updating new New User item:', this.user);
+            // console.log('updating new New User item:', this.user);
             this.loading = true;
-        console.log("data data ",this.user.orgId)
+        // console.log("data data ",this.user.orgId)
         let orgId=this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)?this.$store.getters.account.orgId:this.user.orgId.id
-        console.log("data data ",orgId)  
+        // console.log("data data ",orgId)  
            
      
 
             this.userService.update(this.user)
                 .then(() => {
-                    console.log('User Updated successfully.');
+                    // console.log('User Updated successfully.');
                     this.showDialogEdit = false;
                     this.loading = false;
                     this.$emit('getUsers');
@@ -139,7 +139,7 @@ export default {
                 .catch(error => {
                     this.showDialogEdit = false;
                     this.loading = false;
-                    console.error('Error adding new User:', error);
+                    // console.error('Error adding new User:', error);
                     this.notifyError('Error Happens')
                 });
         },

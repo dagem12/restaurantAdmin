@@ -5,21 +5,11 @@
         <md-card>
           <md-card-header data-background-color="" class="header-with-button">
             <div>
-              <h4 class="title">Shops</h4>
-              <p class="category">Explore and manage your shops</p>
+              <h4 class="title">Waiter Call</h4>
+              <p class="category"> manage your Waiter Call</p>
             </div>
             <!-- Add Item button -->
-            <div style="display: flex;justify-content: space-between;" class="sortHolder">
-              <div class="filter-container" style="display: flex;" >
-                <div style="margin:auto;" @click="clearFilter">
-                  <md-icon label="Filter" style="color:white !important">close</md-icon>
-                </div>
-                <q-select  v-model="filter"  :options="filterModel" label="Filter By" @input="handleFilterSelection"  style="color:white !important;width:150px;"  class="custom-select">
-                  <template v-slot:prepend>
-                    <q-icon  style="color:white !important" name="filter" />
-                  </template>
-                </q-select>
-              </div>
+            <div style="display: flex;justify-content: space-between;">
               <div class="sort-container">
                 <q-select  v-model="selectedSort"  :options="sortModel" label="Sort By" @input="handleSortSelection"  style="color:white !important;width:150px;"  class="custom-select">
                   <template v-slot:prepend>
@@ -39,62 +29,42 @@
 
                 <!-- <q-btn @click="toggleSearch" label="Search" color="primary"></q-btn> -->
               </div>
-              <div class="add-item-button">
-                <md-button md-theme="" style="background-color: white !important;color:black !important"
-                  @click="this.showAddItemDialog">
-                  <md-icon style="color:black !important">add</md-icon>
-                  <span>Add Item</span>
-                </md-button>
-              </div>
+             
             </div>
           </md-card-header>
           <md-card-content>
-            <dynamic-table table-header-color="red" :columns="columns" :data-items="shops" :actions="actions" />
-            <q-pagination style="display: flex;justify-content: center;"  v-if="shops.length > 0" v-model="page" :max="totalPages" @input="onPageChange"
+            <dynamic-table table-header-color="red" :columns="columns" :data-items="waiterCalls" :actions="actions" />
+            <q-pagination style="display: flex;justify-content: center;"  v-if="waiterCalls.length > 0" v-model="page" :max="totalPages" @input="onPageChange"
               direction-links flat color="grey" active-color="primary" />
           </md-card-content>
-          <div v-if="shops.length == 0">
+          <div v-if="waiterCalls.length == 0">
             <md-empty-state md-rounded md-icon="description" md-label="Not Found !" md-description="No record founded">
             </md-empty-state>
           </div>
         </md-card>
       </div>
     </div>
-    <MenuForm ref="menuFormDialog" @getShop="retrieveAllShops" />
-    <ShopEditForm ref="editFormDialog" :shop="shop" @getShop="retrieveAllShops" />
-    <q-dialog v-model="confirm" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="delete" color="primary" text-color="white" />
-          <span class="q-ml-sm">Are you sure to delete this shop</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
-          <q-btn flat label="Confirm" :loading="loading" @click="removeShop()" color="primary" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+   
+   
   </div>
 </template>
 
 
 <script>
 import DynamicTable from "../../../components/Tables/DynamicTable.vue";
-import { mapActions, mapState } from 'vuex';
-import ShopService from '../Api/index';
-import MenuForm from "../components/ShopForm.vue";
-import ShopEditForm from "../components/ShopEditForm.vue";
+
+import WaiterCallService from '../Api/index';
+
 import { gsap } from 'gsap';
-import { Notify } from 'quasar';
+
 
 export default {
   name: "shopList",
   components: {
     DynamicTable,
-    MenuForm,
-    ShopEditForm
+   
   },
+
 
   data() {
     return {
@@ -103,43 +73,35 @@ export default {
       searchKeyword: '',
       columns: [
   
-        { label: "Name", field: "name" },
-        { label: "Description", field: "description" },
-        { label: "Enable", field: "enable" },
-        { label: "CreateTime", field: "createTime", isCreateTime: true   },
-        { label: "Address", field: "address" },
+        
+        { label: "dinningTable", field: "dinningTable", isRelation:true  },
+  
+        { label: "createTime", field: "createTime", isCreateTime: true   },
+       
+         { label: "status", field: "status", isRelation:true },
       ],
       sortModel: [
         'createTime',
-        'name'
-      ],
-      filter:null,
-      filterModel: [
-        {
-          label: 'Active Shops',
-          colmun:`enable.equals`,
-          value:true
-        },
-        {
-          label: 'Closed Shops ',
-          colmun:`enable.equals`,
-          value:false  
-        },
-      
+        
       ],
       selectedSort:'',
       actions: [
-        {
-          label: "Edit",
-          method: this.editItem,
-          icon: "edit",
-          color: "blue",
-        },
+      // {
+      //     label: "Edit",
+      //     label2: "Update Status",
+      //     label2Options: ['Active', 'Inactive'],
+      //     method: this.editItem,
+      //     methodOptions: this.updateStatus,
+      //     loadingS: false,
+      //     specificItem: null,
+      //     icon: "edit",
+      //     color: "blue",
+      //   },
         {
           label: "Delete",
           method: this.deleteItem,
-          icon: "delete",
-          color: "red",
+          icon: "edit",
+          color: "blue",
         }
       ],
       removeId: null,
@@ -151,9 +113,9 @@ export default {
       propOrder: 'createTime',
       reverse: true,
       totalItems: 0,
-      shops: [],
+      waiterCalls: [],
       isFetching: false,
-      shopService: new ShopService(),
+      waiterCallService: new WaiterCallService(),
       confirm: false,
       shop: {},
       searchWord: ''
@@ -172,44 +134,8 @@ export default {
     gsap.from(diningbox, { duration: 0.5, opacity: 0, y: 1000, ease: "power1.out" });
   },
   methods: {
-    handleFilterSelection(value){
-      const key = value?.colmun; 
-      const val = value?.value; 
-   
-
-      const reqFilter = {
-          [key]: val
-      };
-   
-      const paginationQuery = {
-        page: this.page - 1,
-        size: this.itemsPerPage,
-        sort: this.sort()
-  
-      };
-         
-
-      
-         this.shopService.retrieveFilter(paginationQuery,reqFilter).then(res => {
-
-            if (res.data.length == 0) {
-              this.notifyNotfound("Not Found");
-            }
-            // Clear the users array
-            this.shops = [];
-            // Assign the new data to the users array
-            this.shops = [...res.data];
-            }).catch(err => {
-            console.log(err)
-            })
-     
-    },
-    clearFilter() {
-      this.filter = null;
-      this.retrieveAllShops();
-    },
     onPageChange(page) {
-      // console.log(`Page changed to: ${page}`);
+      console.log(`Page changed to: ${page}`);
       if (page !== this.previousPage) {
         this.previousPage = page;
         this.page = page;
@@ -217,7 +143,7 @@ export default {
       }
     },
      handleSortSelection(value) {
-      // console.log('Selected sort option:', value);
+      console.log('Selected sort option:', value);
       this.changeOrder(value);
       // Implement your logic based on the selected value (e.g., update sorting order)
     },
@@ -242,31 +168,22 @@ export default {
     },
     performSearch() {
       // Your search logic here
-      // console.log('Search performed:', this.searchKeyword);
-      this.shopService.searchShop(this.searchKeyword).then(res => {
+      console.log('Search performed:', this.searchKeyword);
+      this.waiterCallService.searchWaiterCalls(this.searchKeyword).then(res => {
 
         if (res.data.length == 0) {
           this.notifyNotfound("Not Found");
         }
         // Clear the users array
-        this.shops = [];
+        this.waiterCalls = [];
         // Assign the new data to the users array
-        this.shops = [...res.data];
+        this.waiterCalls = [...res.data];
       }).catch(err => {
         console.log(err)
       })
     }
     ,
-    addItem() {
-      // Define your add item logic here
-    },
-    editItem(item) {
-      // console.log("editing", item)
-      this.shop = item;
-      this.$refs.editFormDialog.showDialogEdit = true;
-
-      // Define your edit item logic here
-    },
+   
     deleteItem(item) {
       this.prepareRemove(item);
     },
@@ -278,7 +195,7 @@ export default {
       this.retrieveAllShops();
     },
     retrieveAllShops() {
-      // console.log("data ", this.shops)
+      console.log("data ", this.waiterCalls)
       this.isFetching = true;
       const paginationQuery = {
         page: this.page - 1,
@@ -286,15 +203,15 @@ export default {
         sort: this.sort(),
       };
 
-      this.shopService.retrieve(paginationQuery)
+      this.waiterCallService.retrieve(paginationQuery)
         .then(
           res => {
-            // console.log(res)
-            this.shops = res.data;
+            console.log(res)
+            this.waiterCalls = res.data;
             this.totalItems = Number(res.headers['x-total-count']);
             this.queryCount = this.totalItems;
             this.isFetching = false;
-            // console.log("data ", this.shops)
+            console.log("data ", this.waiterCalls)
           },
 
         ).catch(err => {
@@ -302,7 +219,7 @@ export default {
           this.isFetching = false;
 
         });
-      // console.log("data data")
+      console.log("data data")
     },
     handleSyncList() {
       this.clear();
@@ -314,27 +231,7 @@ export default {
         this.confirm = true;
       }
     },
-    removeShop() {
-      this.loading = true;
-      this.shopService.delete(this.removeId)
-        .then(() => {
-
-          this.loading = false;
-          this.confirm = false;
-          this.notifySuccess('Shop deleted succuessfuly!')
-          this.removeId = null;
-
-          this.retrieveAllShops();
-
-        })
-        .catch(error => {
-          this.loading = false;
-          this.confirm = false;
-
-          this.notifyError('Error happens on Deleting shop')
-
-        });
-    },
+   
     sort() {
       const result = [this.propOrder + ',' + (this.reverse ? 'desc' : 'asc')];
       if (this.propOrder !== 'id') {
@@ -358,9 +255,9 @@ export default {
       }
     },
     showAddItemDialog() {
-      // Show the MenuForm dialog
+      // Show the AdvertForm dialog
 
-      this.$refs.menuFormDialog.showDialog = true;
+      this.$refs.AdvertFormDialog.showDialog = true;
     },
     notifySuccess(message) {
       Notify.create({
@@ -381,6 +278,39 @@ export default {
         color: 'red'
       });
     },
+    updateStatus(option, item) {
+
+let statuscode = '';
+if (option == 'Preparing') {
+  statuscode = 7002
+} else if (option == 'Delivered') {
+  statuscode = 7003
+} else if (option == 'Open') {
+  statuscode = 7001
+} else if (option == 'Paid') {
+  statuscode = 7004
+} else if (option == 'Cancelled') {
+  statuscode = 7005
+}
+
+this.actions[1].loadingS = true;
+this.actions[1].specificItem = item;
+
+// this.productOrderService.changeOrderStatus(item.id, statuscode).then((res) => {
+
+//   this.actions[1].loadingS = false;
+//   this.notifySuccess(`Order Status Changed To ${option} successfully`);
+//   this.retrieveAllProductOrders();
+// }).catch(err => {
+//   console.log(err)
+//   this.actions[1].loadingS = false;
+//   this.notifyError('Error Occured')
+
+// })
+
+
+}
+
 
 
 
@@ -394,21 +324,7 @@ export default {
 .table {
   padding: 1%;
 }
-@media (max-width: 768px) {
-  .sortHolder {
-    flex-direction: column !important; /* Stack items vertically */
-    align-items: flex-end; /* Align items to the start of the flex container */
-  
-    justify-content: end;
 
-  }
-  .category{
-    display: none;
-  }
-  .title{
-   font-size: x-large;
-  }
-}
 .search-container {
   display: flex;
   justify-content: flex-end;

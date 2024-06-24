@@ -234,7 +234,7 @@ export default {
       this.retrieveAllOrganizations();
     },
     onPageChange(page) {
-      console.log(`Page changed to: ${page}`);
+      //console.log(`Page changed to: ${page}`);
       if (page !== this.previousPage) {
         this.previousPage = page;
         this.page = page;
@@ -242,7 +242,7 @@ export default {
       }
     },
        handleSortSelection(value) {
-      console.log('Selected sort option:', value);
+      //console.log('Selected sort option:', value);
       this.changeOrder(value);
       // Implement your logic based on the selected value (e.g., update sorting order)
     },
@@ -267,7 +267,7 @@ export default {
     },
     performSearch() {
       // Your search logic here
-      console.log('Search performed:', this.searchKeyword);
+      //console.log('Search performed:', this.searchKeyword);
       this.organizationService.searchOrg(this.searchKeyword).then(res => {
 
         if (res.data.length == 0) {
@@ -383,7 +383,7 @@ export default {
 
     },
     editItem(item) {
-      console.log("Editing item:", item);
+      //console.log("Editing item:", item);
       this.organization = item;
       this.$refs.editFormDialog.showDialogEdit = true;
     },

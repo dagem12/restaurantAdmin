@@ -97,13 +97,13 @@ export default {
         }
         },
         async addItem() {
-            console.log('Updating new ProductCatalog item:', this.menu);
+            // console.log('Updating new ProductCatalog item:', this.menu);
 
             this.loading = true;
         
             this.productCatalogService.update(this.menu)
                 .then(() => {
-                    console.log('New product  Menu Catalog successfully.');
+                    // console.log('New product  Menu Catalog successfully.');
                     this.loading = false;
                     this.showDialogEdit = false;
 

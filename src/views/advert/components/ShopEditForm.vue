@@ -117,11 +117,11 @@ export default {
 
         async updateItem() {
             this.loading = true;
-            console.log('Updating shopItem item:', this.shop);
+            // console.log('Updating shopItem item:', this.shop);
 
             this.shopService.update(this.shop)
                 .then(() => {
-                    console.log(' Shop Updated successfully.');
+                    // console.log(' Shop Updated successfully.');
                     this.loading = false;
                     this.showDialogEdit = false;
 
@@ -171,7 +171,7 @@ export default {
             });
         },
         onFileAdded(files) {
-            console.log('Files added:', files);
+            // console.log('Files added:', files);
             const formDataFile = new FormData();
             formDataFile.append('file', files[0]);
             fileService.createFile(formDataFile).then(res => {
@@ -182,7 +182,7 @@ export default {
             })
         },
         onFileUploaded(response) {
-            console.log('File uploaded:', response);
+            // console.log('File uploaded:', response);
         },
         uploadFactory(files) {
             // Customize how files are uploaded, if necessary

@@ -236,7 +236,7 @@ export default {
       this.retrieveAllProductOrders();
     },
     onPageChange(page) {
-      console.log(`Page changed to: ${page}`);
+      // console.log(`Page changed to: ${page}`);
       if (page !== this.previousPage) {
         this.previousPage = page;
         this.page = page;
@@ -244,7 +244,7 @@ export default {
       }
     },
      handleSortSelection(value) {
-      console.log('Selected sort option:', value);
+      // console.log('Selected sort option:', value);
       this.changeOrder(value);
       // Implement your logic based on the selected value (e.g., update sorting order)
     },
@@ -260,7 +260,7 @@ export default {
     },
     performSearch() {
       // Your search logic here
-      console.log('Search performed:', this.searchKeyword);
+      // console.log('Search performed:', this.searchKeyword);
       this.productOrderService.searchOrder(this.searchKeyword).then(res => {
         if (res.length == 0) {
           this.notifyNotfound("Not Found");
@@ -268,11 +268,11 @@ export default {
 
 
         // Clear the po array
-        console.log("am IN", this.productOrders);
+        // console.log("am IN", this.productOrders);
         this.productOrders = [];
         // Assign the new data to the po array
         this.productOrders = [...res];
-        console.log("haha in", this.productOrders);
+        // console.log("haha in", this.productOrders);
       }).catch(err => {
 
         console.log(err)
@@ -382,17 +382,17 @@ export default {
       this.$refs.removeEntity.hide();
     },
     editItem(item) {
-      console.log("Editing item:", item);
+      // console.log("Editing item:", item);
     },
     deleteItem(item) {
-      console.log("Deleting item:", item);
+      // console.log("Deleting item:", item);
     },
     viewItem(item) {
-      console.log("Viewing item:", item);
+      // console.log("Viewing item:", item);
       this.$router.push({ name: 'Order Detail', params: { orderId: item.id } });
     },
     addItem() {
-      console.log("Adding new item");
+      // console.log("Adding new item");
       // Add your logic here to handle adding a new item
     },
     updateStatus(option, item) {

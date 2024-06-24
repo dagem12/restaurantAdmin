@@ -31,7 +31,7 @@ export default {
             this.stomp = new RxStomp();
             this.stomp.configure({
                 webSocketFactory: () => socket,
-                debug: (msg) => console.log(new Date(), msg)
+                // debug: (msg) => console.log(new Date(), msg)
             });
             this.stomp.activate();
             this.stomp.watch('/topic/waiterNotification').subscribe((message) => {

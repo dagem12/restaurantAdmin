@@ -142,7 +142,7 @@ export default {
     },
     async addItem() {
       this.loading = true;
-      console.log('Adding new advertItem item:', this.advertItem);
+      // console.log('Adding new advertItem item:', this.advertItem);
 
 
      
@@ -194,7 +194,7 @@ export default {
       };
     },
     onFileAdded(files) {
-      console.log('Files added:', files);
+      // console.log('Files added:', files);
       const formDataFile = new FormData();
       formDataFile.append('file', files[0]);
       fileService.createFile(formDataFile).then(res => {

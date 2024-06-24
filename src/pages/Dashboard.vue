@@ -654,7 +654,7 @@ export default {
         this.monthlyRevenueData = revenueData;
       }
 
-      console.log(`${tab} Revenue Data:`, this.dailyRevenueData); // Log the sorted data
+      // console.log(`${tab} Revenue Data:`, this.dailyRevenueData); // Log the sorted data
 
     })
     .catch(err => {

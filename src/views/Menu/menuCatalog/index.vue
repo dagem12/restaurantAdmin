@@ -222,7 +222,7 @@ export default {
       this.retrieveAllProductCatalogs();
     },
     onPageChange(page) {
-      console.log(`Page changed to: ${page}`);
+      // console.log(`Page changed to: ${page}`);
       if (page !== this.previousPage) {
         this.previousPage = page;
         this.page = page;
@@ -230,7 +230,7 @@ export default {
       }
     },
      handleSortSelection(value) {
-      console.log('Selected sort option:', value);
+      // console.lo/g('Selected sort option:', value);
       this.changeOrder(value);
       // Implement your logic based on the selected value (e.g., update sorting order)
     },
@@ -255,7 +255,7 @@ export default {
     },
     performSearch() {
       // Your search logic here
-      console.log('Search performed:', this.searchKeyword);
+      // console.log('Search performed:', this.searchKeyword);
 
 
       this.productCatalogService.searchMenuCat(this.searchKeyword).then(res => {
@@ -265,11 +265,11 @@ export default {
 
 
         // Clear the po array
-        console.log("am IN", this.productCatalogs);
+        // console.log("am IN", this.productCatalogs);
         this.productCatalogs = [];
         // Assign the new data to the po array
         this.productCatalogs = [...res.data];
-        console.log("haha in", this.productCatalogs);
+        // console.log("haha in", this.productCatalogs);
       }).catch(err => {
 
         console.log(err)
@@ -371,21 +371,21 @@ export default {
         });
     },
     editItem(item) {
-      console.log("Editing item:", item);
+      // console.log("Editing item:", item);
       this.menu = item;
       this.$refs.editFormDialog.showDialogEdit = true;
 
 
     },
     deleteItem(item) {
-      console.log("Deleting item:", item);
+      // console.log("Deleting item:", item);
       this.prepareRemove(item);
     },
     viewItem(item) {
-      console.log("Viewing item:", item);
+      // console.log("Viewing item:", item);
     },
     addItem() {
-      console.log("Adding new item");
+      // console.log("Adding new item");
       // Add your logic here to handle adding a new item
     },
     showAddItemDialog() {

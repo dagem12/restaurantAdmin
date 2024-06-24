@@ -1,8 +1,10 @@
+
 const WebSocketService = {
   socket: null,
 
-  connect(token) {
-    const wsUrl = `ws://localhost:19213/ws/waitercall/admin/1?token=${token}`;
+  connect(token ,shopId ) {
+
+    const wsUrl = `${process.env.VUE_APP_WS_URL}/ws/waitercall/admin/${shopId}?token=${token}`;
     this.socket = new WebSocket(wsUrl);
 
     this.socket.onopen = () => {
@@ -23,7 +25,7 @@ const WebSocketService = {
   },
 
   send(message) {
-    if (this.socket.readyState === WebSocket.OPEN) {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       this.socket.send(JSON.stringify(message));
     } else {
       console.error('WebSocket not open to send message');
@@ -35,7 +37,6 @@ const WebSocketService = {
       this.socket.close();
     }
   },
-
 };
 
 export default WebSocketService;

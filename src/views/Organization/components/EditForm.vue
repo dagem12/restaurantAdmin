@@ -113,13 +113,13 @@ export default {
 
         async updateItem() {
             this.loading = true;
-            console.log('Update Organization item:', this.organization);
+            // console.log('Update Organization item:', this.organization);
 
 
 
             this.organizationService.update(this.organization)
                 .then(() => {
-                    console.log(' Organization Updated successfully.');
+                    // console.log(' Organization Updated successfully.');
                     this.showDialogEdit = false;
                     this.loading = false;
                     this.notifySuccess('Organization Updated successfully');

@@ -51,9 +51,9 @@ export default {
     };
   },
   mounted() {
-    console.log("auth",this.$store.getters)
+    // console.log("auth",this.$store.getters)
     if (this.$store.getters.authenticated) {
-      console.log("work")
+      // console.log("work")
       this.$router.push('/');
     }
     const box = this.$refs.box;
@@ -101,7 +101,7 @@ gsap.from(box, { duration: 1, x: -1000, opacity: 0, ease: "power1.out" });
          return localStorage.getItem('jhi-authenticationToken');
          
         }).then(data=>{
-          console.log("data",data)
+          // console.log("data",data)
           new AccountService().retrieveAccount().then(res=>{
             this.loading=false;
             this.$router.push('/');

@@ -38,7 +38,7 @@ const handleError = async(error) => {
   if (error.response) {
     if (error.response.status === 404) {
       store.dispatch("errors/addError", error.response.data.message).then(response => {
-       console.log(store.state.errors.error);
+      //  console.log(store.state.errors.error);
        },
        (error) => {
       console.log("error",error)

@@ -120,7 +120,7 @@ export default {
             }
             },
         async addItem() {
-            console.log('Updating new Dining item:', this.dining);
+            // console.log('Updating new Dining item:', this.dining);
             this.loading = true;
 
        

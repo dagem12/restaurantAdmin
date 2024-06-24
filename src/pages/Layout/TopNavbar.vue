@@ -5,45 +5,21 @@
         <h3 class="md-title">{{ $route.name }}</h3>
         <template v-if="isMobile">
           <!-- Mobile specific buttons -->
-          <q-btn
-            flat
-            round
-            dense
-            icon="dashboard"
-            @click="$router.push('/dashboard')"
-            class="toolbar-btn"
-          />
-          <q-btn-dropdown
-            flat
-            round
-            dense
-            class="notification-btn-dropdown toolbar-btn"
-          >
-            <template v-slot:label>
+          <q-btn flat round dense icon="dashboard" @click="$router.push('/dashboard')" class="toolbar-btn" />
+          <q-btn-dropdown flat round dense class="notification-btn-dropdown toolbar-btn">
+            <template v-slot:label v-if="userAuth">
               <q-icon round :class="{ glow: notifications.length > 0 }" name="notifications" />
-              <q-badge
-                color="red"
-                floating
-                transparent
-                class="notification-badge"
-              >
+              <q-badge color="red" floating transparent class="notification-badge">
                 {{ notifications.length }}
               </q-badge>
             </template>
             <q-list style="min-width: 250px">
-              <q-item
-                v-for="(notification, index) in notifications"
-                :key="index"
-                clickable
-              >
+              <q-item v-for="(notification, index) in notifications" :key="index" clickable>
                 <q-item-section>
                   <div class="notification-info">
                     <span>Table {{ notification.tableNumber }} </span>
-                    <span
-                      :style="{ color: notification.isVip ? 'green' : 'black' }"
-                      v-if="notification.isVip"
-                      class="vip-tag"
-                    >
+                    <span :style="{ color: notification.isVip ? 'green' : 'black' }" v-if="notification.isVip"
+                      class="vip-tag">
                       (VIP)
                     </span>
                   </div>
@@ -54,37 +30,24 @@
                   </div>
                 </q-item-section>
                 <q-item-section side>
-                  <q-btn round push size="10px" color="purple" icon="check" @click="confirmAcknowledgement(notification)" />
+                  <q-btn round push size="10px" color="purple" icon="check"
+                    @click="confirmAcknowledgement(notification)" />
                 </q-item-section>
               </q-item>
             </q-list>
           </q-btn-dropdown>
 
-          <q-btn-dropdown
-            flat
-            round
-            dense
-            :label="user.firstName"
-            class="toolbar-btn"
-          >
+          <q-btn-dropdown flat round dense :label="user.firstName" class="toolbar-btn">
             <q-list>
               <q-item clickable @click="goToProfile">
                 <q-item-section avatar>
-                  <q-avatar
-                    icon="person"
-                    color="primary"
-                    text-color="white"
-                  />
+                  <q-avatar icon="person" color="primary" text-color="white" />
                 </q-item-section>
                 <q-item-section>Profile</q-item-section>
               </q-item>
               <q-item clickable @click="logout">
                 <q-item-section avatar>
-                  <q-avatar
-                    icon="logout"
-                    color="primary"
-                    text-color="white"
-                  />
+                  <q-avatar icon="logout" color="primary" text-color="white" />
                 </q-item-section>
                 <q-item-section>Logout</q-item-section>
               </q-item>
@@ -94,68 +57,35 @@
       </div>
       <div class="md-toolbar-section-end">
         <!-- Buttons for desktop -->
-        <md-button
-          class="md-just-icon md-simple md-toolbar-toggle"
-          :class="{ toggled: $sidebar.showSidebar }"
-          @click="toggleSidebar"
-        >
+        <md-button class="md-just-icon md-simple md-toolbar-toggle" :class="{ toggled: $sidebar.showSidebar }"
+          @click="toggleSidebar">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </md-button>
 
         <div class="md-collapse toolbar-buttons">
-          <q-btn
-            flat
-            round
-            dense
-            @click="toggleFullscreen"
-            class="toolbar-btn"
-          >
+          <q-btn flat round dense @click="toggleFullscreen" class="toolbar-btn">
             <q-icon v-if="isFullscreen" name="crop_free" />
             <q-icon v-else name="zoom_out_map" />
           </q-btn>
 
-          <q-btn
-            flat
-            round
-            dense
-            icon="dashboard"
-            @click="$router.push('/dashboard')"
-            class="toolbar-btn"
-          />
+          <q-btn flat round dense icon="dashboard" @click="$router.push('/dashboard')" class="toolbar-btn" />
 
-          <q-btn-dropdown
-            flat
-            round
-            dense
-            class="notification-btn-dropdown toolbar-btn"
-          >
-            <template v-slot:label>
+          <q-btn-dropdown flat round dense class="notification-btn-dropdown toolbar-btn">
+            <template v-slot:label v-if="userAuth">
               <q-icon :class="{ glow: notifications.length > 0 }" name="notifications" />
-              <q-badge
-                color="red"
-                floating
-                transparent
-                class="notification-badge"
-              >
+              <q-badge color="red" floating transparent class="notification-badge">
                 {{ notifications.length }}
               </q-badge>
             </template>
             <q-list style="min-width: 250px">
-              <q-item
-                v-for="(notification, index) in notifications"
-                :key="index"
-                clickable
-              >
+              <q-item v-for="(notification, index) in notifications" :key="index" clickable>
                 <q-item-section>
                   <div class="notification-info">
                     <span>Table {{ notification.tableNumber }} </span>
-                    <span
-                      :style="{ color: notification.isVip ? 'green' : 'black' }"
-                      v-if="notification.isVip"
-                      class="vip-tag"
-                    >
+                    <span :style="{ color: notification.isVip ? 'green' : 'black' }" v-if="notification.isVip"
+                      class="vip-tag">
                       (VIP)
                     </span>
                   </div>
@@ -166,37 +96,24 @@
                   </div>
                 </q-item-section>
                 <q-item-section side>
-                  <q-btn round push size="10px" color="purple" icon="check" @click="confirmAcknowledgement(notification)" />
+                  <q-btn round push size="10px" color="purple" icon="check"
+                    @click="confirmAcknowledgement(notification)" />
                 </q-item-section>
               </q-item>
             </q-list>
           </q-btn-dropdown>
 
-          <q-btn-dropdown
-            flat
-            round
-            dense
-            :label="user.firstName"
-            class="toolbar-btn"
-          >
+          <q-btn-dropdown flat round dense :label="user.firstName" class="toolbar-btn">
             <q-list>
               <q-item clickable @click="goToProfile">
                 <q-item-section avatar>
-                  <q-avatar
-                    icon="person"
-                    color="primary"
-                    text-color="white"
-                  />
+                  <q-avatar icon="person" color="primary" text-color="white" />
                 </q-item-section>
                 <q-item-section>Profile</q-item-section>
               </q-item>
               <q-item clickable @click="logout">
                 <q-item-section avatar>
-                  <q-avatar
-                    icon="logout"
-                    color="primary"
-                    text-color="white"
-                  />
+                  <q-avatar icon="logout" color="primary" text-color="white" />
                 </q-item-section>
                 <q-item-section>Logout</q-item-section>
               </q-item>
@@ -206,32 +123,33 @@
       </div>
     </div>
     <template>
-    <q-dialog v-model="dialog">
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">Acknowledge</div>
-        </q-card-section>
+      <q-dialog v-model="dialog">
+        <q-card>
+          <q-card-section>
+            <div class="text-h6">Acknowledge</div>
+          </q-card-section>
 
-        <q-card-section class="q-pt-none">
-          Please send a waiter to Table {{ toTable }}
-        </q-card-section>
+          <q-card-section class="q-pt-none">
+            Please send a waiter to Table {{ toTable }}
+          </q-card-section>
 
-        <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup  @click="acknowledgeNotification()"/>
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+          <q-card-actions align="right">
+            <q-btn flat label="OK" color="primary" v-close-popup @click="acknowledgeNotification()" />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
 
-  </template>
-  <audio ref="notificationSound" src="../Sounds/ring.mp3" preload="auto"></audio>
+    </template>
+    <audio ref="notificationSound" src="../Sounds/ring.mp3" preload="auto"></audio>
   </md-toolbar>
-  
+
 </template>
 
 <script>
-
+import AccountService from '@/views/Login/api/account.service';
+import { Authority } from "../../utils/authority";
 import WebSocketService from '../Services/webSocketService';
-
+import { Notify } from 'quasar';
 export default {
 
   data() {
@@ -242,11 +160,16 @@ export default {
       dialog: false,
       currentNotification: null,
       toTable: null,
-      isFullscreen:false
+      isFullscreen: false,
+      accountService: new AccountService(),
+      authority: new Authority(),
+      userAuth: null
     };
   },
   mounted() {
     this.user = this.$store.getters.account;
+    this.userAuth = this.accountService.hasAuthorities(this.authority.SHOP_ADMIN)
+    // console.log("thisuser" , this.AccountService)
     window.addEventListener('resize', this.handleResize);
     this.connectWebSocket();
 
@@ -266,16 +189,33 @@ export default {
     },
     connectWebSocket() {
       const token = localStorage.getItem('jhi-authenticationToken');
-      WebSocketService.connect(token);
+      if (this.userAuth) {
+        WebSocketService.connect(token, this.user.shopId);
 
-      WebSocketService.socket.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          this.addNotification(data.message); // Call method to add formatted notification
-        } catch (error) {
-          console.error('Error processing WebSocket message:', error.message);
-        }
-      };
+        WebSocketService.socket.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            this.addNotification(data.message);
+            Notify.create({
+              message: "Waiter Called from Table " + data.message.tableNumber,
+              timeout: 3000,
+              position: 'right',
+              actions: [
+                {
+                  label: 'Dismiss',
+                  color: 'yellow',
+                  handler: () => {
+                    // console.log('Dismiss clicked');
+                  }
+                }
+              ]
+            });
+          } catch (error) {
+            console.error('Error processing WebSocket message:', error.message);
+          }
+        };
+      }
+
     },
     addNotification(message) {
       // Validate the message structure
@@ -299,7 +239,7 @@ export default {
     confirmAcknowledgement(notification) {
       this.currentNotification = notification;
       this.dialog = true;
-      this.toTable=notification.tableNumber
+      this.toTable = notification.tableNumber
     },
     acknowledgeNotification() {
       this.dialog = false;
@@ -421,8 +361,9 @@ export default {
   cursor: pointer;
   margin-left: 10px;
 }
+
 .glow {
-  position: relative; 
+  position: relative;
   animation: glow 1.5s infinite;
 }
 
@@ -430,16 +371,18 @@ export default {
   0% {
     box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
   }
+
   50% {
     box-shadow: 0 0 20px rgba(255, 0, 0, 1);
   }
+
   100% {
     box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
   }
 }
 
 .q-icon.round {
-  border-radius: 50%; 
-  overflow: hidden; 
+  border-radius: 50%;
+  overflow: hidden;
 }
 </style>
