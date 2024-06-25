@@ -43,7 +43,7 @@ const routes = [
   {
     path: "/",
     component: DashboardLayout,
-    // redirect: "/dashboard",
+    redirect: "/dashboard",
     meta: { requiresAuth: true },
     children: [
       {
@@ -133,7 +133,7 @@ const routes = [
       },
     ],
   },
- 
+
 ];
 
 export default routes;
