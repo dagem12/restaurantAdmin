@@ -36,6 +36,9 @@ import "@quasar/extras/material-icons/material-icons.css";
 import "quasar/dist/quasar.min.css";
 import AccountService from "./views/Login/api/account.service";
 
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
 // configure router
 
 Vue.prototype.$Chartist = Chartist;
