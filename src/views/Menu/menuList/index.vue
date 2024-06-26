@@ -11,7 +11,7 @@
               </div>
               <div style="display: flex; justify-content: space-between;" class="sortHolder">
                 <div class="filter-container" style="display: flex;" >
-                <div style="padding: 10px;" @click="clearFilter">
+                <div style="margin:auto;" @click="clearFilter">
                   <md-icon label="Filter" style="color:white !important">close</md-icon>
                 </div>
                 <q-select  v-model="filter"  :options="filterModel" label="Filter By" @input="handleFilterSelection"  style="color:white !important;width:150px;"  class="custom-select">

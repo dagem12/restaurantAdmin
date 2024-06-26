@@ -45,6 +45,7 @@
                 </q-item-section>
                 <q-item-section>Profile</q-item-section>
               </q-item>
+             
               <q-item clickable @click="logout">
                 <q-item-section avatar>
                   <q-avatar icon="logout" color="primary" text-color="white" />
@@ -95,6 +96,7 @@
                     {{ formattedTime(notification.time) }}
                   </div>
                 </q-item-section>
+                
                 <q-item-section side>
                   <q-btn round push size="10px" color="purple" icon="check"
                     @click="confirmAcknowledgement(notification)" />
@@ -110,6 +112,12 @@
                   <q-avatar icon="person" color="primary" text-color="white" />
                 </q-item-section>
                 <q-item-section>Profile</q-item-section>
+              </q-item>
+              <q-item clickable @click="goToChangePassword">
+                <q-item-section avatar>
+                  <q-avatar icon="key" color="primary" text-color="white" />
+                </q-item-section>
+                <q-item-section>Change Password</q-item-section>
               </q-item>
               <q-item clickable @click="logout">
                 <q-item-section avatar>
@@ -250,6 +258,9 @@ export default {
     },
     goToProfile() {
       this.$router.push({ path: '/profile' });
+    },
+    goToChangePassword() {
+      this.$router.push({ path: '/change-password' });
     },
     logout() {
       localStorage.removeItem('jhi-authenticationToken');

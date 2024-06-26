@@ -8,15 +8,30 @@
             </q-card-section>
 
             <q-card-section>
-                <q-input ref="name" v-model="shop.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
+                <q-input ref="name" v-model="shop.name" label="Name*" class="q-mb-md" :rules="[rules.required]" />
 
                 <q-input v-model="shop.description" label="Description" type="textarea" class="q-mb-md" />
                
                 <q-toggle v-model="shop.enable" label="Enable" type="number" class="q-mb-md" />
-                <q-input  ref="address" v-model="shop.address" label="Address" type="text" class="q-mb-md" :rules="[rules.required]" />
+                <q-input  ref="address" v-model="shop.address" label="Address*" type="text" class="q-mb-md" :rules="[rules.required]" />
+          <div style="margin: auto;padding: 5px;">
+          <l-map :zoom="zoom" :center="initialLocation" class="map-container" @click="onMapClick">
+            <l-tile-layer :url="tileLayerUrl"></l-tile-layer>
+            <l-marker :lat-lng="selectedLocation" :draggable="true" @moveend="onMarkerDragEnd"></l-marker>
+          </l-map>
+          <div>
+            Latitude: <q-input  v-model="selectedLocation.lat" type="number" step="any"   />
+            Longitude: <q-input  v-model="selectedLocation.lng" type="number" step="any"   />
+          </div>
+          <div style="margin: auto;padding: 10px;"><q-btn @click="getUserLocation">Use Current Location</q-btn></div>
+        </div>
+
+
+
+
                 <q-toggle v-model="shop.orderService" label="Order Service" class="q-mb-md" />
 
-                <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo "
+                <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo* "
                     @added="onFileAdded" @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
                 <label></label>
 
@@ -38,7 +53,21 @@
 import ShopService from "../Api/index.js";
 import fileService from "../../../utils/file.service.js";
 import { Notify } from 'quasar';
+import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 export default {
+     components: {
+    LMap,
+    LTileLayer,
+    LMarker
+  },
     props: {
         retrieveAllShops: {
             type: Function,
@@ -94,7 +123,11 @@ export default {
             tenantOptions: [
                 { label: 'Et Restaurnt', value: '1' },
                 { label: 'Kaldis Restaurant', value: '2' }
-            ]
+            ],
+                  selectedLocation: { lat: this.shop.latitude, lng: this.shop.longitude },
+                    zoom: 15,
+                    tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    initialLocation: [this.shop.latitude, this.shop.longitude], // Example initial location (London)
 
         };
     },
@@ -105,6 +138,7 @@ export default {
         const inputs = [
             this.$refs.name,
             this.$refs.address,
+          
 
         ];
 
@@ -117,8 +151,12 @@ export default {
 
         async updateItem() {
             this.loading = true;
-            // console.log('Updating shopItem item:', this.shop);
-
+            
+            if (this.selectedLocation.lat != this.shop.latitude) {
+                this.shop.latitude = this.selectedLocation.lat;
+            } else if (this.shop.longitude != this.selectedLocation.lng) {
+                this.shop.longitude = this.selectedLocation.lng;
+            }
             this.shopService.update(this.shop)
                 .then(() => {
                     // console.log(' Shop Updated successfully.');
@@ -192,10 +230,40 @@ export default {
                     file
                 }
             }));
-        }
+        },
+        
+ getUserLocation() {
+    if (navigator.geolocation) {
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      };
 
-
-
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          this.selectedLocation = { lat: latitude, lng: longitude };
+          this.initialLocation = [latitude, longitude]; // Center the map on the user's location
+        },
+        error => {
+          console.error('Error getting location:', error);
+          alert('Failed to get current location. Please try again.');
+        },
+        options
+      );
+    } else {
+      alert('Geolocation is not supported by this browser.');
+    }
+  },
+    onMarkerDragEnd(event) {
+      this.selectedLocation.lat = event.latlng.lat;
+      this.selectedLocation.lng = event.latlng.lng;
+    },
+    onMapClick(event) {
+      this.selectedLocation.lat = event.latlng.lat;
+      this.selectedLocation.lng = event.latlng.lng;
+    }
 
     }
 };
@@ -212,5 +280,8 @@ export default {
 
 .customdialog /deep/ .q-dialog__backdrop {
     backdrop-filter: blur(4px) !important;
+}
+.map-container {
+  height: 200px; /* Adjust height as needed */
 }
 </style>

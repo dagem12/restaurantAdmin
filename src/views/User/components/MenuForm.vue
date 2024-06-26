@@ -8,23 +8,23 @@
       </q-card-section>
 
       <q-card-section>
-        <q-input ref="login" v-model="user.login" label="User Name" class="q-mb-md" :rules="[rules.required]" />
-        <q-input ref="firstName" v-model="user.firstName" label="First Name" class="q-mb-md"
+        <q-input ref="login" v-model="user.login" label="User Name*" class="q-mb-md" :rules="[rules.required]" />
+        <q-input ref="firstName" v-model="user.firstName" label="First Name*" class="q-mb-md"
           :rules="[rules.required, rules.onlyAlphabets]" />
-        <q-input ref="lastName" v-model="user.lastName" label="Last Name" class="q-mb-md"
+        <q-input ref="lastName" v-model="user.lastName" label="Last Name*" class="q-mb-md"
           :rules="[rules.required, rules.onlyAlphabets]" />
-        <q-input ref="email" v-model="user.email" label="Email" class="q-mb-md"
+        <q-input ref="email" v-model="user.email" label="Email*" class="q-mb-md"
           :rules="[rules.required, rules.email]" />
         <q-toggle v-model="user.activated" label="Activated" class="q-mb-md" />
 
         <q-select ref="org"   :rules="[rules.required]" v-if="this.accountService.hasAuthorities(this.authority.ADMIN)" v-model="user.orgId"
-          label="Organization" :options="organizations" option-label="name" option-value="id" class="q-mb-md" />
+          label="Organization*" :options="organizations" option-label="name" option-value="id" class="q-mb-md" />
 
-        <q-select ref="shop"   :rules="[rules.required]"  v-if="this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)" v-model="user.shopId" label="Shop" :options="shops" option-label="name" option-value="id"
+        <q-select ref="shop"   :rules="[rules.required]"  v-if="this.accountService.hasAuthorities(this.authority.ORGANIZATION_ADMIN)" v-model="user.shopId" label="Shop*" :options="shops" option-label="name" option-value="id"
           class="q-mb-md" />
-        <q-select ref="authority" v-model="user.authorities" label="Authority" :options="authorities"
+        <q-select ref="authority" v-model="user.authorities" label="Authority*" :options="authorities"
           option-label="label" option-value="value" multiple class="q-mb-md" :rules="[rules.required]" />
-        <q-input ref="password"  v-model="user.password" label="Password" class="q-mb-md"
+        <q-input ref="password"  v-model="user.password" label="Password*" class="q-mb-md"
           :rules="[rules.required, rules.minLength(6)]" />
 
       </q-card-section>
@@ -163,9 +163,9 @@ export default {
           this.resetMenuItem();
         })
         .catch(error => {
-          console.error('Error adding new User:', error);
+      //    console.error('Error adding new User:', error);
           this.loading = false;
-          this.notifyError('Error Happens')
+          this.notifyError(`${error}`);
         });
     },
     cancelAddItem() {

@@ -19,6 +19,8 @@ import OrderDetail from "@/views/Order/orderDetail";
 import Advertisements from "@/views/advert/advertList"
 import WaitersCall from "@/views/call-waiter/CallWaiterList"
 import specialOfferList from "@/views/special-offer/specialOfferList"
+import ResetPage from "@/views/ResetPassword";
+import ChangePassword from "@/views/ChangePassword";
 
 const routes = [
   {
@@ -31,6 +33,12 @@ const routes = [
     path: "/forgotPassword",
     name: "ForgotPassword",
     component: ForgotPassword,
+    meta: { requiresAuth: false },
+  },
+  {
+    path: "/reset-password",
+    name: "ResetPassword",
+    component: ResetPage,
     meta: { requiresAuth: false },
   },
   {
@@ -49,6 +57,12 @@ const routes = [
         path: "user",
         name: "User Profile",
         component: UserProfile,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "change-password",
+        name: "Change Password",
+        component: ChangePassword,
         meta: { requiresAuth: true },
       },
       {
@@ -126,6 +140,7 @@ const routes = [
       },
     ],
   },
+
 ];
 
 export default routes;
