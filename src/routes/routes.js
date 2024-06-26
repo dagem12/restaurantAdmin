@@ -18,6 +18,7 @@ import ForgotPassword from "@/views/ForgetPassword";
 import OrderDetail from "@/views/Order/orderDetail";
 import Advertisements from "@/views/advert/advertList"
 import WaitersCall from "@/views/call-waiter/CallWaiterList"
+import specialOfferList from "@/views/special-offer/specialOfferList"
 
 const routes = [
   {
@@ -110,6 +111,12 @@ const routes = [
         name: "Menu List",
         component: MenuList,
         meta: { requiresAuth: true },
+      },
+      {
+        path: "special-offers",
+        name: "Special Offer",
+        component: specialOfferList,
+        meta: { requiresAuth: false },
       },
       {
         path: "users",

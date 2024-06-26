@@ -29,8 +29,7 @@
     "vue-material": "1.0.0-beta-15",
     "vue-router": "3.6.5",
     "vue-social-sharing": "3.0.9",
-    "vuex": "^2.5.0",
-    "websocket": "^1.0.35"
+    "vuex": "^2.5.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.22.15",

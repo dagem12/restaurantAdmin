@@ -8,22 +8,25 @@
       </q-card-section>
 
       <q-card-section>
-        <q-input  v-model="advertItem.title" label="Title" class="q-mb-md" :rules="[rules.required]" />
+        <q-input  v-model:number="specialOffersItem.newPrice" label="New Price" class="q-mb-md" :rules="[rules.required]" />
 
      
-        <!-- <q-select v-model="advertItem.tenant" :options="tenantOptions" label="Tenant" type="select" class="q-mb-md" /> -->
+        <!-- <q-select v-model="specialOffersItem.tenant" :options="tenantOptions" label="Tenant" type="select" class="q-mb-md" /> -->
        
         
-       
-        <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo "
-          @added="onFileAdded" :rules="[rules.validImage]" @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
+      
+      
 
+      <q-select filled v-model="specialOffersItem.priorityLevel" :options="options" label="Priority Level:" />
+      <q-select ref="catalog" v-model="specialOffersItem.product" :options="products" option-label="name"
+      option-value="id" label="Product " class="q-mb-md"  />
+       
           <div class="date-picker" >
-    <q-input filled v-model="advertItem.startDate" mask="date" :rules="['date']" label="Start Date">
+    <q-input filled v-model="specialOffersItem.startDate" mask="date" :rules="['date']" label="Start Date">
       <template v-slot:append>
         <q-icon name="event" class="cursor-pointer">
           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-            <q-date v-model="advertItem.startDate">
+            <q-date v-model="specialOffersItem.startDate">
               <div class="row items-center justify-end">
                 <q-btn v-close-popup label="Close" color="primary" flat />
               </div>
@@ -34,11 +37,11 @@
     </q-input>
   </div>
   <div class="date-picker" >
-    <q-input filled v-model="advertItem.endDate" mask="date" :rules="['date']" label="End Date">
+    <q-input filled v-model="specialOffersItem.endDate" mask="date" :rules="['date']" label="End Date">
       <template v-slot:append>
         <q-icon name="event" class="cursor-pointer">
           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-            <q-date v-model="advertItem.endDate">
+            <q-date v-model="specialOffersItem.endDate">
               <div class="row items-center justify-end">
                 <q-btn v-close-popup label="Close" color="primary" flat />
               </div>
@@ -64,57 +67,59 @@
 </template>
 
 <script>
-import AdvertService from "../Api/index.js";
+import ShopService from "../Api/index.js";
 import fileService from "../../../utils/file.service.js"
 import { Notify } from 'quasar';
 export default {
-  props: ['retrieveAllShops'],
+  props: ['retrieveAllShops','products','shops'],
   data() {
     return {
       imageError: '',
       loading: false,
       showDialog: false,
-      advertService: new AdvertService(),
+      options: [
+        1, 2, 3, 4, 5
+      ],
+      shopService: new ShopService(),
       uploadHeaders: {
         Authorization: 'Bearer YOUR_AUTH_TOKEN'
       },
       rules: {
-        required: val => !!val || 'Field is required',
-        email: val => /.+@.+\..+/.test(val) || 'Email must be valid',
-        minLength: len => val => (val && val.length >= len) || `Minimum ${len} characters required`,
-        onlyAlphabets: val => /^[a-zA-Z]+$/.test(val) || 'Only alphabets are allowed',
-        onlyNumbers: val => /^[0-9]+$/.test(val) || 'Only numbers are allowed',
-        validImage: file => {
-          const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-          const maxSize = 2 * 1024 * 1024; // 2MB
+        // required: val => !!val || 'Field is required',
+        // email: val => /.+@.+\..+/.test(val) || 'Email must be valid',
+        // minLength: len => val => (val && val.length >= len) || `Minimum ${len} characters required`,
+        // onlyAlphabets: val => /^[a-zA-Z]+$/.test(val) || 'Only alphabets are allowed',
+        // onlyNumbers: val => /^[0-9]+$/.test(val) || 'Only numbers are allowed',
+        // validImage: file => {
+        //   const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        //   const maxSize = 2 * 1024 * 1024; // 2MB
 
-          if (!file) return 'Image is required';
-          if (!allowedTypes.includes(file.type)) return 'Only JPEG, PNG, and GIF formats are allowed';
-          if (file.size > maxSize) return 'Image size must be less than 2MB';
+        //   if (!file) return 'Image is required';
+        //   if (!allowedTypes.includes(file.type)) return 'Only JPEG, PNG, and GIF formats are allowed';
+        //   if (file.size > maxSize) return 'Image size must be less than 2MB';
 
-          return true;
-        }
+        //   return true;
+        // }
 
       },
-      advertItem: {
-        title: '',
-        // tenant: null,
-        imageUrl: '',
+      specialOffersItem: {
+        newPrice:0,
+        priorityLevel:'',
         stateDate: '',
         endDate: '',
-        organazation:""
+        product:null
       },
 
 
     };
   },
+
   methods: {
     validateForm() {
 
       // Perform form validation
       const inputs = [
-        this.$refs.name,
-        this.$refs.address
+    
 
 
       ];
@@ -126,34 +131,30 @@ export default {
         }
         return acc;
       }, true);
-      const file = this.$refs.imageUploader.files[0]; // Access the uploaded file
+      
 
       // Validate using the validImage rule
-      const validImage = this.rules.validImage(file);
-      if (validImage != true) {
-
-        this.imageError = validImage;
-      }
+      
 
 
-      if (valid && validImage == true) {
+      if (valid  == true) {
         this.addItem();
       }
     },
     async addItem() {
       this.loading = true;
-      // console.log('Adding new advertItem item:', this.advertItem);
+    
 
 
      
 
-      this.advertService.create(this.advertItem)
+      this.shopService.create(this.specialOffersItem)
         .then(() => {
          
 
           this.showDialog = false;
           this.loading = false;
-          this.notifySuccess('Shop Advert successfully');
+          this.notifySuccess('Create Special offer successfully');
           this.$emit('getShop');
 
           this.resetMenuItem();
@@ -161,7 +162,7 @@ export default {
         .catch(error => {
           this.loading = false;
           this.notifyError('Server Error');
-          console.error('Error adding new Shop:', error);
+         
         });
     },
     notifySuccess(message) {
@@ -186,68 +187,16 @@ export default {
       this.resetMenuItem();
     },
     resetMenuItem() {
-      this.advertItem = {
+      this.specialOffersItem = {
         imageUrl: '',
         title: "",
         stateDate:'',
         endDate:''
       };
     },
-    onFileAdded(files) {
-      // console.log('Files added:', files);
-      const formDataFile = new FormData();
-      formDataFile.append('file', files[0]);
-      fileService.createFile(formDataFile).then(res => {
-
-        this.advertItem.imageUrl = res.data.fileName
-      }).catch(err => {
-        console.log("err", err)
-      })
-    },
-    onFileUploaded(response) {
-      console.log('File uploaded:', response);
-    },
-    uploadFactory(files) {
-      // Customize how files are uploaded, if necessary
-      return files.map(file => ({
-        url: 'http://localhost:8081/upload',
-        formData: {
-          file
-        }
-      }));
-    },
-    updateStatus(option, item) {
-
-let statuscode = '';
-if (option == 'Preparing') {
-  statuscode = 7002
-} else if (option == 'Delivered') {
-  statuscode = 7003
-} else if (option == 'Open') {
-  statuscode = 7001
-} else if (option == 'Paid') {
-  statuscode = 7004
-} else if (option == 'Cancelled') {
-  statuscode = 7005
-}
-
-this.actions[1].loadingS = true;
-this.actions[1].specificItem = item;
-
-// this.productOrderService.changeOrderStatus(item.id, statuscode).then((res) => {
-
-//   this.actions[1].loadingS = false;
-//   this.notifySuccess(`Order Status Changed To ${option} successfully`);
-//   this.retrieveAllProductOrders();
-// }).catch(err => {
-//   console.log(err)
-//   this.actions[1].loadingS = false;
-//   this.notifyError('Error Occured')
-
-// })
-
-
-}
+   
+   
+   
 
 
 

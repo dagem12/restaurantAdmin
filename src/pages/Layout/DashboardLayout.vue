@@ -49,8 +49,13 @@
       </sidebar-link>
       <sidebar-link to="/waiters-call"
         v-if=" accountService.hasAuthorities(Authority.SHOP_ADMIN)">
-        <md-icon>dish</md-icon>
+        <md-icon>coffee</md-icon>
         <p v-if="isExpanded">Waiters Call</p>
+      </sidebar-link>
+      <sidebar-link to="/special-offers"
+        v-if=" accountService.hasAuthorities(Authority.SHOP_ADMIN) ">
+        <md-icon>stars</md-icon>
+        <p v-if="isExpanded">Special Offers </p>
       </sidebar-link>
       <sidebar-link to="/users"
         v-if="accountService.hasAuthorities(Authority.ADMIN) || accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN)">
