@@ -152,10 +152,15 @@ export default {
         async updateItem() {
             this.loading = true;
             
-            if (this.selectedLocation.lat != this.shop.latitude) {
+            if ((this.shop.latitude) && (this.selectedLocation.lat != this.shop.latitude)) {
                 this.shop.latitude = this.selectedLocation.lat;
-            } else if (this.shop.longitude != this.selectedLocation.lng) {
+            } else if ((this.shop.longitude)&&(this.selectedLocation.lng != this.shop.longitude)) {
                 this.shop.longitude = this.selectedLocation.lng;
+            } else if (!this.shop.longitude) {
+                console.log("ammherre")
+                this.shop.longitude = this.selectedLocation.lng;
+            } else if (!this.shop.latitude) {
+                this.shop.latitude = this.selectedLocation.lat;
             }
             this.shopService.update(this.shop)
                 .then(() => {
@@ -187,6 +192,10 @@ export default {
                 orderService: '',
                 contact: null,
                 shortcutIcon: ""
+            };
+            this.selectedLocation = {
+                lat: 0.0,
+                lng: 0.0
             };
         },
         notifySuccess(message) {
