@@ -20,8 +20,9 @@
             <l-marker :lat-lng="selectedLocation" :draggable="true" @moveend="onMarkerDragEnd"></l-marker>
           </l-map>
           <div>
-            Latitude: <q-input  v-model="selectedLocation.lat" type="number" step="any"   />
-            Longitude: <q-input  v-model="selectedLocation.lng" type="number" step="any"   />
+            {{selectedLocation }}
+            Latitude: <q-input  v-model="shop.latitude" type="number" step="any"   />
+            Longitude: <q-input  v-model="shop.longitude" type="number" step="any"   />
           </div>
           <div style="margin: auto;padding: 10px;"><q-btn @click="getUserLocation">Use Current Location</q-btn></div>
         </div>
@@ -124,13 +125,19 @@ export default {
                 { label: 'Et Restaurnt', value: '1' },
                 { label: 'Kaldis Restaurant', value: '2' }
             ],
-                  selectedLocation: { lat: this.shop.latitude, lng: this.shop.longitude },
+                  selectedLocation: { },
                     zoom: 15,
                     tileLayerUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    initialLocation: [this.shop.latitude, this.shop.longitude], // Example initial location (London)
+                    initialLocation: [], // Example initial location (London)
 
         };
     },
+    created() {
+        this.selectedLocation ={ lat: this.$props.shop.latitude, lng: this.$props.shop.longitude }
+                    
+                   
+                   this.initialLocation= [this.$props.shop.latitude, this.$props.shop.longitude]
+},
     methods: {
         validateForm() {
 
@@ -152,16 +159,16 @@ export default {
         async updateItem() {
             this.loading = true;
             
-            if ((this.shop.latitude) && (this.selectedLocation.lat != this.shop.latitude)) {
-                this.shop.latitude = this.selectedLocation.lat;
-            } else if ((this.shop.longitude)&&(this.selectedLocation.lng != this.shop.longitude)) {
-                this.shop.longitude = this.selectedLocation.lng;
-            } else if (!this.shop.longitude) {
-                console.log("ammherre")
-                this.shop.longitude = this.selectedLocation.lng;
-            } else if (!this.shop.latitude) {
-                this.shop.latitude = this.selectedLocation.lat;
-            }
+            // if ((this.shop.latitude) && (this.selectedLocation.lat != this.shop.latitude)) {
+            //     this.shop.latitude = this.selectedLocation.lat;
+            // } else if ((this.shop.longitude)&&(this.selectedLocation.lng != this.shop.longitude)) {
+            //     this.shop.longitude = this.selectedLocation.lng;
+            // } else if (!this.shop.longitude) {
+            //     console.log("ammherre")
+            //     this.shop.longitude = this.selectedLocation.lng;
+            // } else if (!this.shop.latitude) {
+            //     this.shop.latitude = this.selectedLocation.lat;
+            // }
             this.shopService.update(this.shop)
                 .then(() => {
                     // console.log(' Shop Updated successfully.');
@@ -254,6 +261,8 @@ export default {
           const { latitude, longitude } = position.coords;
           this.selectedLocation = { lat: latitude, lng: longitude };
           this.initialLocation = [latitude, longitude]; // Center the map on the user's location
+          this.$props.shop.latitude = latitude
+          this.$props.shop.longitude = longitude
         },
         error => {
           console.error('Error getting location:', error);
