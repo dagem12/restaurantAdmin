@@ -21,6 +21,7 @@ import WaitersCall from "@/views/call-waiter/CallWaiterList"
 import specialOfferList from "@/views/special-offer/specialOfferList"
 import ResetPage from "@/views/ResetPassword";
 import ChangePassword from "@/views/ChangePassword";
+import DrawTable from "@/components/Draw";
 
 const routes = [
   {
@@ -41,6 +42,7 @@ const routes = [
     component: ResetPage,
     meta: { requiresAuth: false },
   },
+
   {
     path: "/",
     component: DashboardLayout,
@@ -112,6 +114,12 @@ const routes = [
         path: "dining-table",
         name: "Dining Table",
         component: DiningTableList,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "draw-table",
+        name: "DrawTable",
+        component: DrawTable,
         meta: { requiresAuth: true },
       },
       {
