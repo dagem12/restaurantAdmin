@@ -133,8 +133,9 @@
         </div>
       </div>
       <!-- table -->
-      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
-        <img class="image box-shadow" src="../assets/img/table.png" alt="" />
+      <div style="margin:auto;margin-bottom: 20px;">
+        <!-- <img class="image box-shadow" src="../assets/img/table.png" alt="" /> -->
+         <DrawResult />
       </div>
 
       <!-- order summary -->
@@ -388,6 +389,8 @@ import CustomerMap from "@/components/Dashboard/CustomerMap/index.vue";
 import TableChair from "@/components/TableChair/index.vue";
 import DashBoardManagementService from "./Api/index.js";
 import { gsap } from 'gsap';
+import DrawResult from "@/components/DrawResult";
+import DiningTableService from "../views/DiningTable/Api/index.js";
 
 export default {
   components: {
@@ -396,9 +399,11 @@ export default {
     Revenue,
     TableChair,
     CustomerMap,
-    RevenueChart
+    RevenueChart,
+    DrawResult
   },
   mounted() {
+   
     this.cardData();
     this.summaryData(this.activeTab);
     this.revenueData(this.revenueActiveTab);
@@ -412,12 +417,14 @@ export default {
       dailyRevenueData: [],
       weeklyRevenueData: [],
       monthlyRevenueData: [],
+      diningTables: [],
       activeTab: 'daily',
       revenueActiveTab: 'daily',
       customerActiveTab: 'daily',
       tabLoading: false,
       revenueTabLoading: false,
       customerTabLoading: false,
+      diningTableService:new DiningTableService(),
       tabs: [
         { id: 'monthly', label: 'Monthly' },
         { id: 'weekly', label: 'Weekly' },
@@ -559,6 +566,7 @@ export default {
       else if (percentage === 0) return 'text-black';
       else return 'text-red';
     },
+   
     percentageIcon(percentage) {
       if (percentage > 0) return 'arrow_upward';
       else if (percentage === 0) return 'drag_handle';
