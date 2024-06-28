@@ -34,6 +34,7 @@
 
 <script>
 import DiningTableService from "../../views/DiningTable/Api/index";
+import { Notify } from 'quasar';
 
 export default {
   data() {
@@ -64,6 +65,15 @@ export default {
     canvas.height = canvas.clientHeight;
   },
   methods: {
+       notifySuccess(message) {
+      Notify.create({
+
+        message: message,
+        timeout: 3000,
+        position: 'center',
+        color: 'green'
+      });
+    },
     retrieveAllDiningTables() {
       this.diningTableService
         .retrieve()
@@ -91,10 +101,11 @@ export default {
       console.log("i called",log.x,log.y);
       matchingTable.xCord = log.x;
       matchingTable.yCord = log.y;
-          console.log("Match", matchingTable);
+       //   console.log("Match", matchingTable);
       this.diningTableService.update(matchingTable)
         .then(() => {
-          console.log(`Table with ID ${tableId} updated successfully.`);
+       //   console.log(`Table with ID ${tableId} updated successfully.`);
+          this.notifySuccess(`Position of table ${matchingTable.name}  updated successfully! `)
         })
         .catch(err => {
           console.error(`Failed to update table with ID ${tableId}:`, err);
