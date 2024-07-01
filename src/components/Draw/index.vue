@@ -98,22 +98,24 @@ export default {
     const matchingTable = this.diningTablesReserve.find(table => table.id === tableId); // Find the matching table
 
     if (matchingTable) {
-      console.log("i called",log.x,log.y);
+    //  console.log("i called",log.x,log.y);
       matchingTable.xCord = log.x;
       matchingTable.yCord = log.y;
        //   console.log("Match", matchingTable);
       this.diningTableService.update(matchingTable)
         .then(() => {
        //   console.log(`Table with ID ${tableId} updated successfully.`);
-          this.notifySuccess(`Position of table ${matchingTable.name}  updated successfully! `)
+          
         })
         .catch(err => {
           console.error(`Failed to update table with ID ${tableId}:`, err);
         });
     }
+    // this.notifySuccess(`Position of table ${matchingTable.name}  updated successfully! `)
+    this.notifySuccess(`Position of tables  updated successfully! `)
   });
 
-  console.log("Final Table", this.logs);
+ // console.log("Final Table", this.logs);
   this.loadingSave = false; // Reset the loading state after the updates
 },
     onMouseDown(event) {
@@ -244,7 +246,7 @@ export default {
       ctx.closePath();
     },
     addImage(table) {
-      console.log('Adding image for table ID:', table.id);
+      //console.log('Adding image for table ID:', table.id);
       const canvas = this.$refs.canvas;
       const x = (canvas.width - this.width) / 2;
       const y = (canvas.height - this.height) / 2;
@@ -294,7 +296,7 @@ export default {
   align-items: center !important;
   margin-left: 50px !important;
   margin-top: 50px;
-  width: 1000px !important;
+  width: 1300px !important;
   height: 500px !important;
   cursor: pointer; /* Optional: Change cursor to pointer on hover */
 }

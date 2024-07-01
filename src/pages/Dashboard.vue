@@ -132,10 +132,20 @@
           </div>
         </div>
       </div>
+        <div style="position: absolute;top:100px;">
+          <div v-if="!displayTable" @click="showTable">
+            <md-icon  style="color:black !important;font-size: x-large;">arrow_drop_down</md-icon>
+          </div>
+           <div v-if="displayTable" @click="showTable">
+            <md-icon   style="color:black !important;font-size: x-large;">arrow_drop_up</md-icon>
+           </div>
+           
+           
+        </div>
       <!-- table -->
-      <div style="margin:auto;margin-bottom: 20px;">
+      <div v-if="displayTable" style="margin-bottom: 20px;width: 100%;">
         <!-- <img class="image box-shadow" src="../assets/img/table.png" alt="" /> -->
-         <DrawResult />
+         <DrawResult style="width:100%;" />
       </div>
 
       <!-- order summary -->
@@ -392,6 +402,7 @@ import { gsap } from 'gsap';
 import DrawResult from "@/components/DrawResult";
 import DiningTableService from "../views/DiningTable/Api/index.js";
 
+
 export default {
   components: {
     MostSells,
@@ -413,6 +424,7 @@ export default {
   },
   data() {
     return {
+      displayTable:false,
       hourlyRevenueData: [],
       dailyRevenueData: [],
       weeklyRevenueData: [],
@@ -561,6 +573,10 @@ export default {
   },
 
   methods: {
+     
+    showTable() {
+      this.displayTable=!this.displayTable
+    },
     percentageClass(percentage) {
       if (percentage > 0) return 'text-green';
       else if (percentage === 0) return 'text-black';
