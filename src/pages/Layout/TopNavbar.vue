@@ -17,7 +17,7 @@
               <q-item v-for="(notification, index) in notifications" :key="index" clickable>
                 <q-item-section>
                   <div class="notification-info">
-                    <span>Table {{ notification.tableNumber }} </span>
+                    <span>Table {{ notification.tableName }} </span>
                     <span :style="{ color: notification.isVip ? 'green' : 'black' }" v-if="notification.isVip"
                       class="vip-tag">
                       (VIP)
@@ -84,7 +84,7 @@
               <q-item v-for="(notification, index) in notifications" :key="index" clickable>
                 <q-item-section>
                   <div class="notification-info">
-                    <span>Table {{ notification.tableNumber }} </span>
+                    <span>Table {{ notification.tableName }} </span>
                     <span :style="{ color: notification.isVip ? 'green' : 'black' }" v-if="notification.isVip"
                       class="vip-tag">
                       (VIP)
@@ -230,7 +230,7 @@ export default {
       if (
         message &&
         message.hasOwnProperty('time') &&
-        message.hasOwnProperty('tableNumber') &&
+        message.hasOwnProperty('tableName') &&
         message.hasOwnProperty('isVip')
       ) {
         // message.time = this.formattedTime(message.time);

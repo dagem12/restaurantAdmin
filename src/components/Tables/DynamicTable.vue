@@ -28,7 +28,7 @@
         </md-table-cell>
         <md-table-cell md-label="Actions">
           <q-btn v-for="action in actions" :key="action.label" :color="action.color" :icon="action.icon"
-            v-if="action.label2 == null && action.label22 == null" :label="action.label2" @click="action.method(item)"
+            v-if="action.label2 == null && action.label22 == null && action.labelV == null" :label="action.label2" @click="action.method(item)"
             :dense="true" flat="true" style="margin: 2px" round />
 
             <q-btn-dropdown
@@ -48,6 +48,31 @@
                     v-close-popup
                     @click="!shouldDisable(item, index) && action.methodOptions(option, item)"
                     :class="{ 'q-item-selected': item.status.value === option }"
+                    clickable
+                  >
+                    <q-item-section>
+                      <q-item-label>{{ option }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-btn-dropdown>
+
+
+               <q-btn-dropdown
+                style="margin-left: 10px;"
+                v-for="action in actions"
+                :key="item.id"
+                v-if="action.labelV != null"
+                color="primary"
+                :label="action.labelV"
+                :loading="action.loadingS && (action.specificItem.id == item.id)"
+              >
+                <q-list>
+                  <q-item
+                    v-for="(option, index) in action.labelVOptions"
+                    :key="option"
+                    v-close-popup
+                    @click="action.methodOptions(option, item)"
                     clickable
                   >
                     <q-item-section>

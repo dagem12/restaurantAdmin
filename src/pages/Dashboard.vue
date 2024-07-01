@@ -132,7 +132,7 @@
           </div>
         </div>
       </div>
-        <div style="position: absolute;top:100px;">
+        <!-- <div style="position: absolute;top:100px;">
           <div v-if="!displayTable" @click="showTable">
             <md-icon  style="color:black !important;font-size: x-large;">arrow_drop_down</md-icon>
           </div>
@@ -141,12 +141,30 @@
            </div>
            
            
-        </div>
+        </div> -->
       <!-- table -->
-      <div v-if="displayTable" style="margin-bottom: 20px;width: 100%;">
-        <!-- <img class="image box-shadow" src="../assets/img/table.png" alt="" /> -->
+    <div style="width: 100%;padding-bottom: 10px;padding-left: 10px;">
+          <q-expansion-item
+      class="shadow-1 overflow-hidden"
+      style="border-radius: 30px"
+    
+      label="Table Formation"
+        
+      header-class="bg-primary text-white"
+      expand-icon-class="text-white"
+    >
+      <q-card>
+        <q-card-section>
+        <DrawResult style="width:100%;" />
+        </q-card-section>
+      </q-card>
+          </q-expansion-item>
+    </div>
+
+      <!-- <div v-if="displayTable" style="margin-bottom: 20px;width: 100%;">
+      
          <DrawResult style="width:100%;" />
-      </div>
+      </div> -->
 
       <!-- order summary -->
       <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
@@ -1561,4 +1579,6 @@ p {
 .sub-title {
   font-size: 14px !important;
 }
+
+
 </style>

@@ -51,7 +51,7 @@
       </div>
     </div>
     <SpecialOfferForm ref="SpecialOffersDialog" @getShop="retrieveAllSpecialOffer" :shops="shops" :products="products" />
-    <ShopEditForm ref="editFormDialog" :shop="shop" @getShop="retrieveAllSpecialOffer" />
+    <ShopEditForm ref="editFormDialog" :specialOffers="specialOffer" @getShop="retrieveAllSpecialOffer"  :shops="shops" :products="products" />
     <q-dialog v-model="confirm" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -79,6 +79,7 @@ import { gsap } from 'gsap';
 import { Notify } from 'quasar';
 import ShopService from "../../Shop/Api";
 import ProductService from "../../Menu/menuList/Api";
+import SpecialOfferService from "../Api/index";
 
 export default {
   name: "specialOfferList",
@@ -115,17 +116,22 @@ export default {
       ],
       selectedSort:'',
       actions: [
-      // {
-      //     label: "Edit",
-      //     label2: "Update Status",
-      //     label2Options: ['Active', 'Inactive'],
-      //     method: this.editItem,
-      //     methodOptions: this.updateStatus,
-      //     loadingS: false,
-      //     specificItem: null,
-      //     icon: "edit",
-      //     color: "blue",
-      //   },
+  
+            {
+        
+          labelV: "Update Visiblity",
+          labelVOptions: ['vissible','not vissible'],
+          methodOptions: this.updateStatus,
+          loadingS: false,
+          specificItem: null,
+      
+        },
+       {
+          label: "Edit",
+          method: this.editItem,
+          icon: "edit",
+          color: "blue",
+        },
         {
           label: "Delete",
           method: this.deleteItem,
@@ -151,7 +157,11 @@ export default {
       shop: {},
       shops:[],
       products:[],
-      searchWord: ''
+      searchWord: '',
+      specialOffer: {},
+      loadingS: false,
+      specificItem: null,
+        specialOfferService:new SpecialOfferService()
     };
   },
   computed: {
@@ -220,9 +230,38 @@ export default {
     addItem() {
       // Define your add item logic here
     },
+     updateStatus(option, item) {
+
+      let bool ='' ;
+      if (option == 'vissible') {
+        bool = true
+      } else if (option == 'not vissible') {
+        bool = false
+       } 
+      
+
+      this.actions[1].loadingS = true;
+       this.actions[1].specificItem = item;
+
+       item.isVisible = bool;
+
+      this.specialOfferService.partialUpdate(item).then((res) => {
+
+        this.actions[1].loadingS = false;
+        this.notifySuccess(`Vissiblity Status Changed To ${option} successfully`);
+        this.retrieveAllSpecialOffer();
+      }).catch(err => {
+        console.log(err)
+        this.actions[1].loadingS = false;
+        this.notifyError('Error Occured')
+
+      })
+
+
+    },
     editItem(item) {
       
-      this.shop = item;
+      this.specialOffer = item;
       this.$refs.editFormDialog.showDialogEdit = true;
 
       // Define your edit item logic here

@@ -1,36 +1,68 @@
 <template>
     <q-dialog v-model="showDialogEdit" class="customdialog" transition-show="rotate" transition-hide="rotate">
-        <q-card class="q-pa-md" style="width: 600px; max-width: 90vw;">
-            <q-card-section class="row items-center q-pb-none">
-                <div class="text-h6">Update Shop</div>
-                <q-space />
-                <q-btn icon="close" flat round dense v-close-popup />
-            </q-card-section>
+         <q-card class="q-pa-md" style="width: 600px; max-width: 90vw;">
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">Update Offer</div>
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
+      </q-card-section>
 
-            <q-card-section>
-                <q-input ref="name" v-model="shop.name" label="Name" class="q-mb-md" :rules="[rules.required]" />
+      <q-card-section>
+        <q-input  v-model:number="specialOffers.newPrice" label="New Price" class="q-mb-md" :rules="[rules.required]" />
 
-                <q-input v-model="shop.description" label="Description" type="textarea" class="q-mb-md" />
-               
-                <q-toggle v-model="shop.enable" label="Enable" type="number" class="q-mb-md" />
-                <q-input  ref="address" v-model="shop.address" label="Address" type="text" class="q-mb-md" :rules="[rules.required]" />
-                <q-toggle v-model="shop.orderService" label="Order Service" class="q-mb-md" />
+     
+        <!-- <q-select v-model="specialOffersItem.tenant" :options="tenantOptions" label="Tenant" type="select" class="q-mb-md" /> -->
+       
+        
+      
+      
 
-                <q-uploader ref="imageUploader" url="http://localhost:8081/upload" label="Click or Drag logo "
-                    @added="onFileAdded" @uploaded="onFileUploaded" :headers="uploadHeaders" :factory="uploadFactory" />
-                <label></label>
+      <q-select filled v-model="specialOffers.priorityLevel" :options="options" label="Priority Level:" />
+      <q-select ref="catalog" v-model="specialOffers.product" :options="products" option-label="name"
+      option-value="id" label="Product " class="q-mb-md"  />
+       
+          <div class="date-picker" >
+    <q-input filled v-model="specialOffers.startDate" mask="date" :rules="['date']" label="Start Date">
+      <template v-slot:append>
+        <q-icon name="event" class="cursor-pointer">
+          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-date v-model="specialOffers.startDate">
+              <div class="row items-center justify-end">
+                <q-btn v-close-popup label="Close" color="primary" flat />
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-input>
+  </div>
+  <div class="date-picker" >
+    <q-input filled v-model="specialOffers.endDate" mask="date" :rules="['date']" label="End Date">
+      <template v-slot:append>
+        <q-icon name="event" class="cursor-pointer">
+          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-date v-model="specialOffers.endDate">
+              <div class="row items-center justify-end">
+                <q-btn v-close-popup label="Close" color="primary" flat />
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-input>
+  </div>
+      </q-card-section>
+      <label v-if="imageError" style="color:red">{{ imageError }}</label>
 
-            </q-card-section>
 
 
+      <q-card-actions align="right">
+        <q-btn color="primary" label="Update" :loading="loading" @click="validateForm" />
+        <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
+      </q-card-actions>
 
-            <q-card-actions align="right">
-                <q-btn color="primary" label="Update" :loading="loading" @click="validateForm" />
-                <q-btn color="secondary" label="Cancel" @click="cancelAddItem" />
-            </q-card-actions>
 
-
-        </q-card>
+    </q-card>
     </q-dialog>
 </template>
 
@@ -39,14 +71,7 @@ import ShopService from "../Api/index.js";
 import fileService from "../../../utils/file.service.js";
 import { Notify } from 'quasar';
 export default {
-    props: {
-        retrieveAllShops: {
-            type: Function,
-        },
-        shop: {
-            type: Object
-        }
-    },
+     props: ['retrieveAllShops','products','shops','specialOffers'],
     data() {
         return {
             imageError: '',
@@ -86,6 +111,9 @@ export default {
                 contact: null,
                 shortcutIcon: ''
             },
+                  options: [
+        1, 2, 3, 4, 5
+      ],
             contactOptions: [
                 { label: 'Abebe', value: '1' },
                 { label: 'Kebede', value: '2' },
@@ -103,9 +131,7 @@ export default {
 
         // Perform form validation
         const inputs = [
-            this.$refs.name,
-            this.$refs.address,
-
+                
         ];
 
         const valid = inputs.reduce((acc, input) => acc && input.validate(), true);
@@ -119,13 +145,13 @@ export default {
             this.loading = true;
             // console.log('Updating shopItem item:', this.shop);
 
-            this.shopService.update(this.shop)
+            this.shopService.update(this.specialOffers)
                 .then(() => {
                     // console.log(' Shop Updated successfully.');
                     this.loading = false;
                     this.showDialogEdit = false;
 
-                    this.notifySuccess('Shop Updated successfully');
+                    this.notifySuccess('Offer Updated successfully');
                     this.$emit('getShop');
                     this.resetMenuItem();
                 })
@@ -140,15 +166,13 @@ export default {
             this.resetMenuItem();
         },
         resetMenuItem() {
-            this.shop = {
-                name: '',
-                tenant: null,
-                description: '',
-                address: '',
-                enable: '',
-                orderService: '',
-                contact: null,
-                shortcutIcon: ""
+            this.specialOffers = {
+              newPrice:0,
+        priorityLevel:'',
+        stateDate: '',
+        endDate: '',
+        product:null
+                
             };
         },
         notifySuccess(message) {

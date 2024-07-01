@@ -97,4 +97,16 @@ export default class AdvertisementService {
                 });
         });
     }
+    // changeVissible(id, bool) {
+    //     return new Promise((resolve, reject) => {
+    //         axios
+    //             .post(`${baseApiUrl}/changeVissible/${id}`, bool)
+    //             .then(res => {
+    //                 resolve(res.data);
+    //             })
+    //             .catch(err => {
+    //                 reject(err);
+    //             });
+    //     });
+    // }
 }
