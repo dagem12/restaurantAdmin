@@ -47,6 +47,16 @@
                   <span>Add Item</span>
                 </md-button>
               </div>
+               <div class="add-item-button" style="margin-left:30px;">
+                <router-link :to="{ name: 'DrawTable' }">
+                  <md-button md-theme="" style="background-color: white !important;color:black !important">
+                    <md-icon style="color:black !important">draw</md-icon>
+                    <span>Design Table Position</span>
+                  </md-button>
+                </router-link>
+               
+              </div>
+          
             </div>
           </md-card-header>
           <md-card-content>
@@ -63,6 +73,8 @@
     </div>
     <MenuForm :shops="shops" :organizations="organizations" ref="menuFormDialog"
       @getDiningTable="retrieveAllDiningTables" />
+
+
     <DiningTableEditForm :shops="shops" :organizations="organizations" ref="editFormDialog"
       @getDiningTable="retrieveAllDiningTables" :dining="dining" />
     <q-dialog v-model="confirm" persistent>
@@ -416,6 +428,10 @@ export default {
     showAddItemDialog() {
       // Show the MenuForm dialog
       this.$refs.menuFormDialog.showDialog = true;
+    },
+    showDesignTableDialog() {
+      // Show the MenuForm dialog
+      this.$refs.designFormDialog.showDialog = true;
     },
     initRelationships() {
 

@@ -132,9 +132,20 @@
           </div>
         </div>
       </div>
+        <div style="position: absolute;top:100px;">
+          <div v-if="!displayTable" @click="showTable">
+            <md-icon  style="color:black !important;font-size: x-large;">arrow_drop_down</md-icon>
+          </div>
+           <div v-if="displayTable" @click="showTable">
+            <md-icon   style="color:black !important;font-size: x-large;">arrow_drop_up</md-icon>
+           </div>
+           
+           
+        </div>
       <!-- table -->
-      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
-        <img class="image box-shadow" src="../assets/img/table.png" alt="" />
+      <div v-if="displayTable" style="margin-bottom: 20px;width: 100%;">
+        <!-- <img class="image box-shadow" src="../assets/img/table.png" alt="" /> -->
+         <DrawResult style="width:100%;" />
       </div>
 
       <!-- order summary -->
@@ -388,6 +399,9 @@ import CustomerMap from "@/components/Dashboard/CustomerMap/index.vue";
 import TableChair from "@/components/TableChair/index.vue";
 import DashBoardManagementService from "./Api/index.js";
 import { gsap } from 'gsap';
+import DrawResult from "@/components/DrawResult";
+import DiningTableService from "../views/DiningTable/Api/index.js";
+
 
 export default {
   components: {
@@ -396,9 +410,11 @@ export default {
     Revenue,
     TableChair,
     CustomerMap,
-    RevenueChart
+    RevenueChart,
+    DrawResult
   },
   mounted() {
+   
     this.cardData();
     this.summaryData(this.activeTab);
     this.revenueData(this.revenueActiveTab);
@@ -408,16 +424,19 @@ export default {
   },
   data() {
     return {
+      displayTable:false,
       hourlyRevenueData: [],
       dailyRevenueData: [],
       weeklyRevenueData: [],
       monthlyRevenueData: [],
+      diningTables: [],
       activeTab: 'daily',
       revenueActiveTab: 'daily',
       customerActiveTab: 'daily',
       tabLoading: false,
       revenueTabLoading: false,
       customerTabLoading: false,
+      diningTableService:new DiningTableService(),
       tabs: [
         { id: 'monthly', label: 'Monthly' },
         { id: 'weekly', label: 'Weekly' },
@@ -554,11 +573,16 @@ export default {
   },
 
   methods: {
+     
+    showTable() {
+      this.displayTable=!this.displayTable
+    },
     percentageClass(percentage) {
       if (percentage > 0) return 'text-green';
       else if (percentage === 0) return 'text-black';
       else return 'text-red';
     },
+   
     percentageIcon(percentage) {
       if (percentage > 0) return 'arrow_upward';
       else if (percentage === 0) return 'drag_handle';

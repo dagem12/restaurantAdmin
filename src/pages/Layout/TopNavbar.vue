@@ -205,7 +205,7 @@ export default {
             const data = JSON.parse(event.data);
             this.addNotification(data.message);
             Notify.create({
-              message: "Waiter Called from Table " + data.message.tableNumber,
+              message: "Waiter Called from " + data.message.tableName,
               timeout: 3000,
               position: 'right',
               actions: [
