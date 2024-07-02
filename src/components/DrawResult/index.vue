@@ -94,7 +94,7 @@ export default {
       const img = new Image();
 
       img.onload = () => {
-        const padding = 5;
+        const padding = 0;
         const borderRadius = 15;
 
         // Define the desired width and height for the image
@@ -145,7 +145,7 @@ export default {
 
 <style>
 .canvas-container {
-  border: 1px solid black; /* Optional: Adds a border to the canvas */
+  border: 1px solid black; 
   width:1300px !important;
 }
 </style>

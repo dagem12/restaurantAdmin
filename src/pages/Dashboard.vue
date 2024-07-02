@@ -143,7 +143,7 @@
            
         </div> -->
       <!-- table -->
-    <div style="width: 100%;padding-bottom: 10px;padding-left: 10px;">
+    <div style="width: 100%;padding-bottom: 10px;padding-left: 10px;" v-if="accountService.hasAuthorities(Authority.SHOP_ADMIN)">
           <q-expansion-item
       class="shadow-1 overflow-hidden"
       style="border-radius: 30px"
@@ -419,6 +419,8 @@ import DashBoardManagementService from "./Api/index.js";
 import { gsap } from 'gsap';
 import DrawResult from "@/components/DrawResult";
 import DiningTableService from "../views/DiningTable/Api/index.js";
+import { Authority } from "../utils/authority.js";
+import AccountService from "../views/Login/api/account.service.js";
 
 
 export default {
@@ -454,7 +456,9 @@ export default {
       tabLoading: false,
       revenueTabLoading: false,
       customerTabLoading: false,
-      diningTableService:new DiningTableService(),
+      diningTableService: new DiningTableService(),
+      accountService: new AccountService(),
+      Authority:new Authority(),
       tabs: [
         { id: 'monthly', label: 'Monthly' },
         { id: 'weekly', label: 'Weekly' },

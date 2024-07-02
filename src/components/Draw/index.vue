@@ -292,9 +292,8 @@ export default {
 .canvas-container {
   border: 1px solid #000;
   display: flex !important;
-  justify-content: center !important;
   align-items: center !important;
-  margin-left: 50px !important;
+  
   margin-top: 50px;
   width: 1300px !important;
   height: 500px !important;
