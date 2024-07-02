@@ -96,13 +96,14 @@ export default {
       //     specificItem: null,
       //     icon: "edit",
       //     color: "blue",
-      //   },
-        {
-          label: "Delete",
-          method: this.deleteItem,
-          icon: "edit",
-          color: "blue",
-        }
+        //   },
+      
+        // {
+        //   label: "Delete",
+        //   method: this.deleteItem,
+        //   icon: "edit",
+        //   color: "blue",
+        // }
       ],
       removeId: null,
       loading: false,
