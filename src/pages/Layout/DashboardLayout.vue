@@ -62,6 +62,12 @@
         <md-icon>person</md-icon>
         <p v-if="isExpanded">Users</p>
       </sidebar-link>
+
+           <sidebar-link to="/payment"
+        v-if="accountService.hasAuthorities(Authority.SHOP_ADMIN) || accountService.hasAuthorities(Authority.ORGANIZATION_ADMIN)">
+        <md-icon>payments</md-icon>
+        <p v-if="isExpanded">Payment</p>
+      </sidebar-link>
       <!-- <sidebar-link to="/upgrade" class="active-pro">
         <md-icon>unarchive</md-icon>
         <p>Upgrade to PRO</p>

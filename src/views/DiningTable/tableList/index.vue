@@ -47,11 +47,12 @@
                   <span>Add Item</span>
                 </md-button>
               </div>
-               <div class="add-item-button" style="margin-left:30px;">
+           
+               <div class="add-item-button" style="margin-left:30px;" v-if="accountService.hasAuthorities(Authority.SHOP_ADMIN)">
                 <router-link :to="{ name: 'DrawTable' }">
                   <md-button md-theme="" style="background-color: white !important;color:black !important">
                     <md-icon style="color:black !important">draw</md-icon>
-                    <span>Design Table Position</span>
+                    <span>Design Table Position</span>  
                   </md-button>
                 </router-link>
                
@@ -103,7 +104,9 @@ import AccountService from "../../Login/api/account.service.js";
 import { Notify } from 'quasar';
 import QRCode from 'qrcode';
 import { gsap } from 'gsap';
+import { Authority } from "../../../utils/authority.js";
 import { accountStore } from "../../../store/modules/user/index.js";
+
 // import QRCode from 'qrcode';
 
 export default {
@@ -185,6 +188,7 @@ export default {
       shopService: new ShopService(),
       organizationService: new OrganizationService(),
       accountService: new AccountService(),
+       Authority: new Authority(),
       organizations: [],
       shops: [],
 

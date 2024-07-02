@@ -22,6 +22,7 @@ import specialOfferList from "@/views/special-offer/specialOfferList"
 import ResetPage from "@/views/ResetPassword";
 import ChangePassword from "@/views/ChangePassword";
 import DrawTable from "@/components/Draw";
+import PaymentList from "@/views/Payment/paymentList";
 
 const routes = [
   {
@@ -144,6 +145,12 @@ const routes = [
         path: "users",
         name: "Users List",
         component: UsersList,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "payment",
+        name: "Payment List",
+        component: PaymentList,
         meta: { requiresAuth: true },
       },
     ],
