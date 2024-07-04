@@ -12,19 +12,23 @@
             {{ formatDate(item[column.field]) }}
            
           </template>
-          <template v-else>
-            {{ column.isRelation 
-    ? (item[column.field]?.name 
-        ? item[column.field]?.name 
-        : item[column.field]?.value) 
-    : (column.isRelationPO 
-        ? item[column.field]?.amount 
-        : (column.isRelationPOP
-            ? item[column.field]?.status?.value 
-            : item[column.field]))
-}}
-            
-          </template>
+            <template v-else>
+      {{
+        column.truncated 
+          ? truncateText(item[column.field], 20)
+          : (
+            column.isRelation 
+              ? (item[column.field]?.name 
+                  ? item[column.field]?.name 
+                  : item[column.field]?.value) 
+              : (column.isRelationPO 
+                  ? item[column.field]?.amount 
+                  : (column.isRelationPOP
+                      ? item[column.field]?.status?.value 
+                      : item[column.field]))
+          )
+      }}
+    </template>
         </md-table-cell>
         <md-table-cell md-label="Actions">
           <q-btn v-for="action in actions" :key="action.label" :color="action.color" :icon="action.icon"
@@ -142,6 +146,21 @@ export default {
 
   },
   methods: {
+ truncateText(text, length) {
+    if (typeof text === 'string' && text.length > length) {
+      let truncated = '';
+      let charCount = 0;
+
+      for (const char of text) {
+        if (charCount >= length) break;
+        truncated += char;
+        charCount++;
+      }
+
+      return truncated + '...';
+    }
+    return text;
+  },
     selectRow(item) {
       this.selectedRow = item;
     },

@@ -11,7 +11,8 @@
             <md-empty-state md-rounded md-icon="description" md-label="Not Found !" md-description="No record founded">
             </md-empty-state>
         </div>
-        <div v-if="orderItems.length > 0" class="col-xl-9 col-xxl-9 col-lg-12 col-md-12">
+    <div style="display: flex;">
+            <div v-if="orderItems.length > 0" class="col-xl-9 col-xxl-9 col-lg-12 col-md-12" style="width:65%;">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card">
@@ -63,10 +64,19 @@
                 </div>
 
             </div>
-        </div>
-        <div v-else style="padding: 10px;justify-content: center;align-items: center;">
+            
+            </div>
+              <div v-else style="padding: 10px;justify-content: center;align-items: center;">
             No Details To Show
         </div>
+            <div v-if="productOrder && orderItems.length>0" style="padding:10px;width:25%;padding-left: 30px;padding-top:15px;">
+                <h4 style="font-weight: bold;">Preferences</h4>
+                {{ productOrder?.addtionalNote }}
+        
+            </div>
+    </div>
+     
+      
     </div>
 
 </template>
