@@ -106,6 +106,7 @@ import QRCode from 'qrcode';
 import { gsap } from 'gsap';
 import { Authority } from "../../../utils/authority.js";
 import { accountStore } from "../../../store/modules/user/index.js";
+import { createCanvas, loadImage } from 'canvas';
 
 // import QRCode from 'qrcode';
 
@@ -320,28 +321,89 @@ export default {
       this.page = 1;
       this.retrieveAllDiningTables();
     },
-    async generateQR(item) {
-      this.actions[2].loadingS = true;
-      const tableId = item?.id;
-      const shopKey = item?.shop?.shopKey;
-      // console.log("dinin",tableId,shopKey); 
-      try {
-        const qrText = `${shopKey}/${tableId}`;
-        const qrCodeImage = await QRCode.toDataURL(qrText);
+    
+    // async generateQR(item) {
+    //   this.actions[2].loadingS = true;
+    //   const tableId = item?.id;
+    //   const shopKey = item?.shop?.shopKey;
+    //   // console.log("dinin",tableId,shopKey); 
+    //   try {
+    //     const qrText = `${shopKey}/${tableId}`;
+    //     const qrCodeImage = await QRCode.toDataURL(qrText);
 
-        const downloadLink = document.createElement('a');
-        downloadLink.href = qrCodeImage;
-        downloadLink.download = item?.name + '_' + 'qr_code.png';
+    //     const downloadLink = document.createElement('a');
+    //     downloadLink.href = qrCodeImage;
+    //     downloadLink.download = item?.name + '_' + 'qr_code.png';
 
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-        this.actions[2].loadingS = false;
-      } catch (error) {
-        console.error('Error generating QR code:', error);
-        this.actions[2].loadingS = false;
+    //     document.body.appendChild(downloadLink);
+    //     downloadLink.click();
+    //     document.body.removeChild(downloadLink);
+    //     this.actions[2].loadingS = false;
+    //   } catch (error) {
+    //     console.error('Error generating QR code:', error);
+    //     this.actions[2].loadingS = false;
+    //   }
+    // },
+async generateQR(item) {
+  this.actions[2].loadingS = true;
+  const tableId = item?.id;
+  const shopKey = item?.shop?.shopKey;
+
+  try {
+    const qrText = `${shopKey}/${tableId}`;
+    const backgroundImageUrl = `${process.env.VUE_APP_SERVER_URL}/api/images/${item.shop.shortcutIcon}`;
+
+    // Create a canvas
+    const canvas = createCanvas(800, 800); // Adjust size as needed
+    const context = canvas.getContext('2d');
+
+    // Load the background image
+    const backgroundImage = await loadImage(backgroundImageUrl, { crossOrigin: 'anonymous' });
+    
+    // Draw the background image on the canvas
+    context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+
+    // Generate the QR code and draw it on a temporary canvas
+    const qrCodeCanvas = createCanvas(256, 256); // Size of the QR code
+    const qrCodeContext = qrCodeCanvas.getContext('2d');
+
+    // Set the QR code background to white
+    await QRCode.toCanvas(qrCodeCanvas, qrText, {
+      errorCorrectionLevel: 'H',
+      margin: 1,
+      scale: 10,
+      width: 256, // QR code size
+      color: {
+        dark: '#000000', // QR code color
+        light: '#FFFFFF' // QR code background (white)
       }
-    },
+    });
+
+    // Calculate the position to center the QR code
+    const qrCodeX = (canvas.width - qrCodeCanvas.width) / 2;
+    const qrCodeY = (canvas.height - qrCodeCanvas.height) / 2;
+
+    // Draw the QR code on top of the background image
+    context.drawImage(qrCodeCanvas, qrCodeX, qrCodeY);
+
+    // Convert the canvas to a data URL
+    const qrCodeImage = canvas.toDataURL('image/png');
+
+    // Create a download link
+    const downloadLink = document.createElement('a');
+    downloadLink.href = qrCodeImage;
+    downloadLink.download = `${item?.name}_qr_code.png`;
+
+    // Trigger the download
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    this.actions[2].loadingS = false;
+  } catch (error) {
+    console.error('Error generating QR code:', error);
+    this.actions[2].loadingS = false;
+  }
+},
     retrieveAllDiningTables() {
       this.isFetching = true;
       const paginationQuery = {
