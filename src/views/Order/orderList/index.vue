@@ -82,7 +82,7 @@ export default {
       searchKeyword: '',
       columns: [
         { label: "Code", field: "code", isRelation: false },
-        { label: "Status", field: "status", isRelation: true },
+        { label: "Status", field: "status", isRelation: true,isColor:true },
         { label: "Total Price", field: "payment", isRelationPO: true },
         { label: "Additional Note", field: "addtionalNote", truncated: true },
             { label: "Payment Type", field: "paymentMethod" },

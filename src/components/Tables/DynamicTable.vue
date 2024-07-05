@@ -5,7 +5,7 @@
         <md-table-cell v-for="column in columns" :key="column.label" :md-label="column.label">
        
           <template v-if="column.isImage">
-            <img :src="`https://localhost:8080/api/images/${item[column.field]}`" style="height: 50px; width: 50px;"
+            <img :src="`${baseUrl}/api/images/${item[column.field]}`" style="height: 50px; width: 50px;"
               alt="Image" @error="handleImageError" />
           </template>
           <template v-else-if="column.isCreateTime">
@@ -13,6 +13,7 @@
            
           </template>
             <template v-else>
+       <span v-if="column.isColor" :style="column.isColor ? { backgroundColor: getBackgroundColor(item[column.field]?.value) } : {}">|||</span>
       {{
         column.truncated 
           ? truncateText(item[column.field], 20)
@@ -134,6 +135,7 @@ export default {
     return {
       selectedRow: null, 
       localDataItems: [...this.dataItems],
+      baseUrl:process.env.VUE_APP_SERVER_URL
     };
   },
   watch: {
@@ -146,6 +148,23 @@ export default {
 
   },
   methods: {
+    getBackgroundColor(status) {
+      console.log("status",status)
+      switch (status) {
+        case 'Open':
+          return  'green';
+        case 'Preparing':
+          return 'blue' ;
+        case 'Delivered':
+          return 'yellow' ;
+        case 'Paid':
+          return 'orange' ;
+        case 'Cancelled':
+          return 'red' ;
+        default:
+          return {};
+      }
+    },
  truncateText(text, length) {
     if (typeof text === 'string' && text.length > length) {
       let truncated = '';
