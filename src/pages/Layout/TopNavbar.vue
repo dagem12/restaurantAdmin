@@ -204,7 +204,7 @@ export default {
           try {
            
             const data = JSON.parse(event.data);
-            console.log("the data", data);
+        console.log("dada",data)
             if (data.message.type == "call") { 
                     this.addNotification(data.message);
                               Notify.create({
@@ -221,7 +221,7 @@ export default {
                                   }
                                 ]
                               });
-            } else if (data.message.type = "order") {
+            } else if (data.message.type == "order") {
                this.addNotification(data.message);
                               Notify.create({
                                 message: "Order Created from " + data.message.tableName,
@@ -237,7 +237,7 @@ export default {
                                   }
                                 ]
                               });
-            } else if (data.message.type = "addMore") {
+            } else if (data.message.type == "addMore") {
                this.addNotification(data.message);
                               Notify.create({
                                 message: "More Item Added from " + data.message.tableName,
