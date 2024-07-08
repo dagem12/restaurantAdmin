@@ -5,26 +5,31 @@
         <md-table-cell v-for="column in columns" :key="column.label" :md-label="column.label">
        
           <template v-if="column.isImage">
-            <img :src="`https://localhost:8080/api/images/${item[column.field]}`" style="height: 50px; width: 50px;"
+            <img :src="`${baseUrl}/api/images/${item[column.field]}`" style="height: 50px; width: 50px;"
               alt="Image" @error="handleImageError" />
           </template>
           <template v-else-if="column.isCreateTime">
             {{ formatDate(item[column.field]) }}
            
           </template>
-          <template v-else>
-            {{ column.isRelation 
-    ? (item[column.field]?.name 
-        ? item[column.field]?.name 
-        : item[column.field]?.value) 
-    : (column.isRelationPO 
-        ? item[column.field]?.amount 
-        : (column.isRelationPOP
-            ? item[column.field]?.status?.value 
-            : item[column.field]))
-}}
-            
-          </template>
+            <template v-else>
+       <span v-if="column.isColor" :style="column.isColor ? { backgroundColor: getBackgroundColor(item[column.field]?.value) } : {}">|||</span>
+      {{
+        column.truncated 
+          ? truncateText(item[column.field], 20)
+          : (
+            column.isRelation 
+              ? (item[column.field]?.name 
+                  ? item[column.field]?.name 
+                  : item[column.field]?.value) 
+              : (column.isRelationPO 
+                  ? item[column.field]?.amount 
+                  : (column.isRelationPOP
+                      ? item[column.field]?.status?.value 
+                      : item[column.field]))
+          )
+      }}
+    </template>
         </md-table-cell>
         <md-table-cell md-label="Actions">
           <q-btn v-for="action in actions" :key="action.label" :color="action.color" :icon="action.icon"
@@ -130,6 +135,7 @@ export default {
     return {
       selectedRow: null, 
       localDataItems: [...this.dataItems],
+      baseUrl:process.env.VUE_APP_SERVER_URL
     };
   },
   watch: {
@@ -142,6 +148,38 @@ export default {
 
   },
   methods: {
+    getBackgroundColor(status) {
+      console.log("status",status)
+      switch (status) {
+        case 'Open':
+          return  'green';
+        case 'Preparing':
+          return 'blue' ;
+        case 'Delivered':
+          return 'yellow' ;
+        case 'Paid':
+          return 'orange' ;
+        case 'Cancelled':
+          return 'red' ;
+        default:
+          return {};
+      }
+    },
+ truncateText(text, length) {
+    if (typeof text === 'string' && text.length > length) {
+      let truncated = '';
+      let charCount = 0;
+
+      for (const char of text) {
+        if (charCount >= length) break;
+        truncated += char;
+        charCount++;
+      }
+
+      return truncated + '...';
+    }
+    return text;
+  },
     selectRow(item) {
       this.selectedRow = item;
     },
