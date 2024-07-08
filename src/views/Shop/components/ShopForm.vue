@@ -167,7 +167,7 @@ export default {
         orderService: this.shopItem.orderService,
         // contact: this.shopItem.contact.name,
         shortcutIcon: this.shopItem.shortcutIcon,
-        code: this.shopItem.name,
+        code: this.shopItem.name.replace(/\s+/g, ''),
         latitude: this.selectedLocation.lat,
         longitude:this.selectedLocation.lng
       };

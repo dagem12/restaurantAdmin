@@ -25,7 +25,9 @@ module.exports = defineConfig({
         }, //将所有含/api路径的，去掉/api转发给服务器
         ws: false, //用于支持websocket
         changeOrigin: true //用于控制请求头中的host值
-      }
+      },
+
+      
     },
     // port: 3000,
     // proxy: {
@@ -39,10 +41,10 @@ module.exports = defineConfig({
     //     changeOrigin: true //用于控制请求头中的host值
     //   }
     // },
-    // https: {
-    //   key: fs.readFileSync('./key.pem'),
-    //   cert: fs.readFileSync('./certificate.pem'),
-    // },
+    https: {
+      key: fs.readFileSync('./key.pem'),
+      cert: fs.readFileSync('./cert.pem'),
+    },
   },
   chainWebpack: (config) => {
     config.resolve.alias
