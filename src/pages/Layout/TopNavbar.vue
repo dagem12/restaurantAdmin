@@ -18,10 +18,10 @@
                 <q-item-section>
                   <div class="notification-info">
                     <span>Table {{ notification.tableName }} </span>
-                    <span :style="{ color: notification.isVip ? 'green' : 'black' }" v-if="notification.isVip"
+                    <!-- <span :style="{ color: notification.isVip ? 'green' : 'black' }" v-if="notification.isVip"
                       class="vip-tag">
                       (VIP)
-                    </span>
+                    </span> -->
                   </div>
                 </q-item-section>
                 <q-item-section>
@@ -84,11 +84,11 @@
               <q-item v-for="(notification, index) in notifications" :key="index" clickable>
                 <q-item-section>
                   <div class="notification-info">
-                    <span>Table {{ notification.tableName }} </span>
-                    <span :style="{ color: notification.isVip ? 'green' : 'black' }" v-if="notification.isVip"
+                    <span>Table<span style="font-weight: bold;margin-left: 3px;">{{ notification.tableName }} </span></span>
+                    <!-- <span :style="{ color: notification.isVip ? 'green' : 'black' }" v-if="notification.isVip"
                       class="vip-tag">
                       (VIP)
-                    </span>
+                    </span> -->
                   </div>
                 </q-item-section>
                 <q-item-section>
@@ -202,22 +202,60 @@ export default {
 
         WebSocketService.socket.onmessage = (event) => {
           try {
+           
             const data = JSON.parse(event.data);
-            this.addNotification(data.message);
-            Notify.create({
-              message: "Waiter Called from " + data.message.tableName,
-              timeout: 3000,
-              position: 'right',
-              actions: [
-                {
-                  label: 'Dismiss',
-                  color: 'yellow',
-                  handler: () => {
-                    // console.log('Dismiss clicked');
-                  }
-                }
-              ]
-            });
+            console.log("the data", data);
+            if (data.message.type == "call") { 
+                    this.addNotification(data.message);
+                              Notify.create({
+                                message: "Waiter Called from " + data.message.tableName,
+                                timeout: 3000,
+                                position: 'right',
+                                actions: [
+                                  {
+                                    label: 'Dismiss',
+                                    color: 'yellow',
+                                    handler: () => {
+                                      // console.log('Dismiss clicked');
+                                    }
+                                  }
+                                ]
+                              });
+            } else if (data.message.type = "order") {
+               this.addNotification(data.message);
+                              Notify.create({
+                                message: "Order Created from " + data.message.tableName,
+                                timeout: 3000,
+                                position: 'right',
+                                actions: [
+                                  {
+                                    label: 'Dismiss',
+                                    color: 'yellow',
+                                    handler: () => {
+                                      // console.log('Dismiss clicked');
+                                    }
+                                  }
+                                ]
+                              });
+            } else if (data.message.type = "addMore") {
+               this.addNotification(data.message);
+                              Notify.create({
+                                message: "More Item Added from " + data.message.tableName,
+                                timeout: 3000,
+                                position: 'right',
+                                actions: [
+                                  {
+                                    label: 'Dismiss',
+                                    color: 'yellow',
+                                    handler: () => {
+                                      // console.log('Dismiss clicked');
+                                    }
+                                  }
+                                ]
+                              });
+             }
+             
+          
           } catch (error) {
             console.error('Error processing WebSocket message:', error.message);
           }
@@ -230,8 +268,8 @@ export default {
       if (
         message &&
         message.hasOwnProperty('time') &&
-        message.hasOwnProperty('tableName') &&
-        message.hasOwnProperty('isVip')
+        message.hasOwnProperty('tableName')
+        // message.hasOwnProperty('isVip')
       ) {
         // message.time = this.formattedTime(message.time);
 
