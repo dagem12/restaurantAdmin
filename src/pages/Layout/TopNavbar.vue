@@ -204,7 +204,7 @@ export default {
           try {
            
             const data = JSON.parse(event.data);
-        console.log("dada",data)
+       // console.log("dada",data)
             if (data.message.type == "call") { 
                     this.addNotification(data.message);
                               Notify.create({
