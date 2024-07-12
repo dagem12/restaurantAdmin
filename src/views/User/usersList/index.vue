@@ -276,13 +276,21 @@ export default {
     }
     ,
     editItem(item) {
-      // console.log("Editing item:", item);
+     // console.log("Editing item:", this.$store.state.accountStore.userIdentity.id );
+      if (this.$store.state.accountStore.userIdentity.id == item.id) {
+        this.notifyError("you cannot edit your account")
+    return
+  }
       this.user = item;
       this.$refs.editFormDialog.showDialogEdit = true;
 
     },
     deleteItem(item) {
       // console.log("Deleting item:", item);
+         if (this.$store.state.accountStore.userIdentity.id == item.id) {
+        this.notifyError("you cannot delete your account")
+    return
+  }
       this.prepareRemove(item);
     },
     viewItem(item) {
