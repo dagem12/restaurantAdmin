@@ -5,7 +5,7 @@
         <md-table-cell v-for="column in columns" :key="column.label" :md-label="column.label">
        
           <template v-if="column.isImage">
-            <img :src="`${baseUrl}/api/images/${item[column.field]}`" style="height: 50px; width: 50px;"
+            <img :src="`/api/images/${item[column.field]}`" style="height: 50px; width: 50px;"
               alt="Image" @error="handleImageError" />
           </template>
           <template v-else-if="column.isCreateTime">
